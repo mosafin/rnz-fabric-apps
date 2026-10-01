@@ -1,0 +1,7 @@
+node_modules
+dist
+*.log
+.env.local
+rayfin/.env
+src/fabric.generated.ts
+rnz/backup/

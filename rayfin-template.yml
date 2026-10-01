@@ -1,0 +1,9 @@
+apiVersion: v1
+metadata:
+  name: rnz-fabric-apps
+  displayName: Ricoh NZ Fabric app templates
+  description: Ricoh New Zealand templates for Microsoft Fabric Apps, styled to the RNZ Digital Design System
+entries:
+  - path: templates/rnz-data-app
+    name: RNZ Data App
+    description: Fabric data app connected to a semantic model, styled to the RNZ Digital Design System, with RNZ agent skills

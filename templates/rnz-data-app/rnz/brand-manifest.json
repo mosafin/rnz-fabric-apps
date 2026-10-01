@@ -1,0 +1,29 @@
+{
+  "templateVersion": "1.0.0",
+  "brandSource": "ricoh-brand-methodology-v12.html (RNZ Digital Design System v12.2)",
+  "description": "Files the RNZ template owns. Apps don't edit these; change them in the template, then run `npm run rnz:sync` in each app.",
+  "files": [
+    "src/global.css",
+    "src/data-palette-presets.json",
+    "src/hooks/use-theme.ts",
+    "src/ErrorFallback.tsx",
+    "src/components/auth-gate.component.tsx",
+    "scripts/rnz-check.mjs",
+    "scripts/rnz-sync.mjs",
+    ".github/copilot-instructions.md",
+    "CLAUDE.md",
+    ".agents/skills/app-design/SKILL.md",
+    "rnz/brand-manifest.json"
+  ],
+  "directories": [
+    "src/components/rnz",
+    ".agents/skills/rnz-new-app",
+    ".agents/skills/rnz-app-brand",
+    ".agents/skills/rnz-app-patterns",
+    ".agents/skills/rnz-app-content",
+    ".agents/skills/rnz-app-qa"
+  ],
+  "blocks": [
+    { "file": "AGENTS.md", "begin": "<!-- RNZ:BEGIN -->", "end": "<!-- RNZ:END -->" }
+  ]
+}

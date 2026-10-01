@@ -1,0 +1,154 @@
+{
+  "palettes": [
+    {
+      "id": "rnz-workplace-experience",
+      "name": "Workplace Experience pages",
+      "colors": {
+        "light": [
+          "#606CBF",
+          "#666666",
+          "#4F8FAC",
+          "#428994",
+          "#7B9C6B",
+          "#5EA8E6",
+          "#00A9C5",
+          "#96C120",
+          "#FFC13D",
+          "#FF9AA8"
+        ],
+        "dark": [
+          "#606CBF",
+          "#666666",
+          "#4F8FAC",
+          "#428994",
+          "#7B9C6B",
+          "#5EA8E6",
+          "#00A9C5",
+          "#96C120",
+          "#FFC13D",
+          "#FF9AA8"
+        ]
+      }
+    },
+    {
+      "id": "rnz-workflow-automation",
+      "name": "Workflow and Automation pages",
+      "colors": {
+        "light": [
+          "#517D32",
+          "#666666",
+          "#4F8FAC",
+          "#428994",
+          "#7B9C6B",
+          "#5EA8E6",
+          "#00A9C5",
+          "#96C120",
+          "#FFC13D",
+          "#FF9AA8"
+        ],
+        "dark": [
+          "#517D32",
+          "#666666",
+          "#4F8FAC",
+          "#428994",
+          "#7B9C6B",
+          "#5EA8E6",
+          "#00A9C5",
+          "#96C120",
+          "#FFC13D",
+          "#FF9AA8"
+        ]
+      }
+    },
+    {
+      "id": "rnz-cloud-it",
+      "name": "Cloud and IT pages",
+      "colors": {
+        "light": [
+          "#0F7AC9",
+          "#666666",
+          "#428994",
+          "#7B9C6B",
+          "#4F8FAC",
+          "#5EA8E6",
+          "#00A9C5",
+          "#96C120",
+          "#FFC13D",
+          "#FF9AA8"
+        ],
+        "dark": [
+          "#0F7AC9",
+          "#666666",
+          "#428994",
+          "#7B9C6B",
+          "#4F8FAC",
+          "#5EA8E6",
+          "#00A9C5",
+          "#96C120",
+          "#FFC13D",
+          "#FF9AA8"
+        ]
+      }
+    },
+    {
+      "id": "rnz-cybersecurity",
+      "name": "Cybersecurity pages",
+      "colors": {
+        "light": [
+          "#00328F",
+          "#666666",
+          "#4F8FAC",
+          "#428994",
+          "#7B9C6B",
+          "#5EA8E6",
+          "#00A9C5",
+          "#96C120",
+          "#FFC13D",
+          "#FF9AA8"
+        ],
+        "dark": [
+          "#00328F",
+          "#666666",
+          "#4F8FAC",
+          "#428994",
+          "#7B9C6B",
+          "#5EA8E6",
+          "#00A9C5",
+          "#96C120",
+          "#FFC13D",
+          "#FF9AA8"
+        ]
+      }
+    },
+    {
+      "id": "rnz-muted",
+      "name": "Muted (no red, for charts beside a red primary action)",
+      "colors": {
+        "light": [
+          "#666666",
+          "#4F8FAC",
+          "#428994",
+          "#7B9C6B",
+          "#BB9273",
+          "#DD7A87",
+          "#5EA8E6",
+          "#00A9C5",
+          "#96C120",
+          "#FFC13D"
+        ],
+        "dark": [
+          "#666666",
+          "#4F8FAC",
+          "#428994",
+          "#7B9C6B",
+          "#BB9273",
+          "#DD7A87",
+          "#5EA8E6",
+          "#00A9C5",
+          "#96C120",
+          "#FFC13D"
+        ]
+      }
+    }
+  ]
+}

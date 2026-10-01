@@ -1,0 +1,270 @@
+/* =====================================================================
+   RNZ FABRIC APP THEME
+   Source of truth: ricoh-brand-methodology-v12.html (RNZ Digital Design
+   System), Sections 04, 05, 06, 09, 12 and 13.
+   This file is brand-managed. Apps do not edit it. Update it only in the
+   template, then run `npm run rnz:sync` in each app.
+
+   House rules baked in:
+   - Light theme only. No black or near-black anywhere.
+   - All text is Ricoh Grey #666666. White text only on Ricoh Red,
+     Ricoh Grey or a pillar colour.
+   - Frutiger, falling back to Arial. No font links.
+   - Shadows and scrims tinted with Ricoh Grey, never black.
+   ===================================================================== */
+
+@layer fabric-visual-tokens, theme, base, fabric-visuals, components, utilities;
+
+@import "tailwindcss";
+
+/* Dark mode is not part of the RNZ palette. The variant is kept so
+   Microsoft components compile, but no .dark tokens differ from light. */
+@custom-variant dark (&:is(.dark *));
+
+/* Consumed directly as CSS variables by Fabric visuals and DataGrid. */
+@theme static {
+  --color-brand:            #CF142B;  /* single-series bar/area fills (Ricoh Red) */
+  --color-brand-foreground: #CF142B;  /* line/point marks, branded emphasis */
+  --color-hover:            #F5F5F5;  /* row/cell hover surface */
+
+  /* Chart series order (v12.1 Section 10). Series 6 to 10 are below 3:1 on
+     white, so charts using them need direct labels or white separators. */
+  --color-data-1:  #CF142B;  /* Ricoh Red      5.54:1 */
+  --color-data-2:  #666666;  /* Ricoh Grey     5.74:1 */
+  --color-data-3:  #4F8FAC;  /* Muted blue     3.59:1 */
+  --color-data-4:  #428994;  /* Muted teal     4.01:1 */
+  --color-data-5:  #7B9C6B;  /* Muted green    3.08:1 */
+  --color-data-6:  #5EA8E6;  /* Blue           2.55:1, label directly */
+  --color-data-7:  #00A9C5;  /* Teal           2.81:1, label directly */
+  --color-data-8:  #96C120;  /* Green          2.11:1, label directly */
+  --color-data-9:  #FFC13D;  /* Amber          1.62:1, label directly */
+  --color-data-10: #FF9AA8;  /* Pink           2.01:1, label directly */
+
+  --font-page-title: var(--font-heading);
+  --font-page-subtitle: var(--font-base);
+  --font-visual-title: var(--font-heading);
+  --font-visual-subtitle: var(--font-base);
+  --font-data-label: var(--font-base);
+}
+
+@theme {
+  /* Colour roles: v12.1 Section 12 theming contract.
+     Usage: bg-*, text-*, border-* (e.g. bg-primary text-primary-foreground) */
+  --color-background: #FFFFFF;          /* page and screen background */
+  --color-foreground: #666666;          /* ALL text, Ricoh Grey */
+
+  --color-card: #FFFFFF;                /* cards and panels (with border) */
+  --color-card-foreground: #666666;
+
+  --color-popover: #FFFFFF;             /* menus, popovers, toasts */
+  --color-popover-foreground: #666666;
+
+  --color-primary: #CF142B;             /* one primary action per view, links, selected state */
+  --color-primary-foreground: #FFFFFF;
+  --color-primary-pressed: #A51022;     /* hover and pressed on red only */
+
+  --color-secondary: #F5F5F5;           /* light surface: side nav, panels, table header */
+  --color-secondary-foreground: #666666;
+
+  --color-surface: #F5F5F5;             /* alias of the RNZ light surface */
+  --color-surface-foreground: #666666;
+
+  --color-muted: #F5F5F5;               /* subtle backgrounds, skeletons */
+  --color-muted-foreground: #666666;    /* RNZ has one text grey; use size and weight for hierarchy */
+
+  --color-accent: #F5F5F5;              /* hover surface for rows, menu items */
+  --color-accent-foreground: #666666;
+
+  --color-destructive: #CF142B;         /* errors; always with icon and text */
+  --color-destructive-foreground: #FFFFFF;
+
+  --color-success: #7B9C6B;             /* indicator only (bars, icons). Never put text on it */
+  --color-success-foreground: #FFFFFF;
+  --color-warning: #FFC13D;             /* indicator only */
+  --color-info: #4F8FAC;                /* indicator only */
+
+  --color-border: #E0E0E0;              /* dividers and card outlines only, never behind text */
+  --color-input: #666666;               /* input borders need 3:1 (WCAG 1.4.11) */
+  --color-ring: #CF142B;                /* focus ring */
+
+  /* Pillar accents: thin accents on that pillar's pages only (v12.1 Section 11).
+     Components read var(--rnz-accent); set it with a .pillar-* class. */
+  --color-pillar-workplace: #606CBF;
+  --color-pillar-workflow: #517D32;
+  --color-pillar-cloud: #0F7AC9;
+  --color-pillar-cyber: #00328F;
+  --color-pillar-print: #CF142B;
+
+  /* Elevation: Cool Gray 10C tint, never black. Most surfaces use a border instead. */
+  --shadow-2:  0 1px 3px rgba(100, 102, 106, 0.16);
+  --shadow-4:  0 1px 3px rgba(100, 102, 106, 0.16);
+  --shadow-8:  0 4px 12px rgba(100, 102, 106, 0.16);
+  --shadow-16: 0 4px 12px rgba(100, 102, 106, 0.16);
+  --shadow-28: 0 12px 32px rgba(100, 102, 106, 0.20);
+  --shadow-64: 0 12px 32px rgba(100, 102, 106, 0.20);
+
+  /* Radius: 4 buttons/inputs/tags, 8 cards/panels/menus, 12 heroes/modals, 16 large containers */
+  --radius-none: 0;
+  --radius-sm: 4px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 8px;
+  --radius-2xl: 12px;
+  --radius-3xl: 16px;
+  --radius-4xl: 16px;
+  --radius-5xl: 16px;
+  --radius-6xl: 16px;
+  --radius-full: 9999px;                /* spinners and avatars only */
+  --radius: 8px;
+
+  /* Spacing: 8px grid with a 4px half step. p-1 = 4, p-2 = 8, p-4 = 16, p-6 = 24, p-8 = 32 */
+  --spacing: 4px;
+
+  /* Type scale: v12.1 Section 06 app scale. Nothing below 12px. */
+  --text-100: 12px;        /* legal lines only */
+  --text-200: 13px;        /* captions, timestamps */
+  --text-300: 14px;        /* labels, dense tables, help text */
+  --text-400: 16px;        /* body and inputs */
+  --text-500: 18px;        /* card or panel title */
+  --text-600: 22px;        /* section title */
+  --text-hero-700: 28px;   /* screen title */
+  --text-hero-800: 36px;   /* KPI value */
+  --text-hero-900: 48px;   /* hero figure */
+  --text-hero-1000: 64px;
+
+  --leading-100: 16px;
+  --leading-200: 18px;
+  --leading-300: 20px;
+  --leading-400: 24px;
+  --leading-500: 24px;
+  --leading-600: 28px;
+  --leading-hero-700: 34px;
+  --leading-hero-800: 40px;
+  --leading-hero-900: 56px;
+  --leading-hero-1000: 72px;
+
+  /* Weights: Frutiger 300/400/500/700. Arial has no Light or Medium, so those fall back to Regular. */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 700;  /* Frutiger has no 600; semibold renders as Bold */
+  --font-weight-bold: 700;
+
+  /* Fonts: Frutiger then Arial. Never link a font service. */
+  --font-heading: 'Frutiger', 'Frutiger LT Std', Arial, sans-serif;
+  --font-base: 'Frutiger', 'Frutiger LT Std', Arial, sans-serif;
+  --font-numeric: 'Frutiger', 'Frutiger LT Std', Arial, sans-serif;
+  --font-monospace: Consolas, 'Courier New', monospace;
+
+  /* Icon sizes: 16 or 20 inline, 24 UI, 40 feature (use 700 = 48 sparingly) */
+  --icon-size-100: 12px;
+  --icon-size-200: 16px;
+  --icon-size-300: 20px;
+  --icon-size-400: 24px;
+  --icon-size-500: 28px;
+  --icon-size-600: 32px;
+  --icon-size-700: 40px;
+}
+
+@utility gap-grid {
+  gap: var(--grid-gap, calc(var(--spacing) * 4));
+}
+
+@utility icon-size-* {
+  width: --value(--icon-size-*);
+  height: --value(--icon-size-*);
+}
+
+/* Pillar context. Set once on the app wrapper; components inherit it.
+   Default accent is Ricoh Red. */
+@layer base {
+  :root { --rnz-accent: #CF142B; }
+  .pillar-workplace { --rnz-accent: #606CBF; }
+  .pillar-workflow  { --rnz-accent: #517D32; }
+  .pillar-cloud     { --rnz-accent: #0F7AC9; }
+  .pillar-cyber     { --rnz-accent: #00328F; }
+  .pillar-print     { --rnz-accent: #CF142B; }
+}
+
+@layer base {
+  /* Light only. If a host or library adds .dark, nothing changes. */
+  .dark {
+    color-scheme: light;
+    --color-background: #FFFFFF;
+    --color-foreground: #666666;
+    --color-card: #FFFFFF;
+    --color-card-foreground: #666666;
+    --color-popover: #FFFFFF;
+    --color-popover-foreground: #666666;
+    --color-primary: #CF142B;
+    --color-primary-foreground: #FFFFFF;
+    --color-secondary: #F5F5F5;
+    --color-secondary-foreground: #666666;
+    --color-muted: #F5F5F5;
+    --color-muted-foreground: #666666;
+    --color-accent: #F5F5F5;
+    --color-accent-foreground: #666666;
+    --color-destructive: #CF142B;
+    --color-destructive-foreground: #FFFFFF;
+    --color-success: #7B9C6B;
+    --color-success-foreground: #FFFFFF;
+    --color-border: #E0E0E0;
+    --color-input: #666666;
+    --color-ring: #CF142B;
+    --color-brand: #CF142B;
+    --color-brand-foreground: #CF142B;
+    --color-hover: #F5F5F5;
+  }
+}
+
+@layer base {
+  :root { color-scheme: light; }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased font-base text-400 leading-400;
+  }
+
+  h1, h2, h3, h4, h5 {
+    color: var(--color-foreground);
+    font-family: var(--font-heading);
+    font-weight: var(--font-weight-bold);
+  }
+
+  a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  a:hover { color: var(--color-primary-pressed); }
+
+  /* Native form controls don't inherit the page font by default. */
+  select, input, textarea, button {
+    font-family: inherit;
+    color: inherit;
+  }
+
+  /* Focus: 2px Ricoh Red ring with a 2px white gap (v12.1 Section 05). */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px var(--color-ring);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
