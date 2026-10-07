@@ -2,6 +2,10 @@
 
 All brand-layer changes are listed here. After updating the template, run `scripts\update-app.ps1 -App C:\dev\your-app` for each app.
 
+## 1.1.1 (October 2026)
+
+The brand test no longer expects the starter heading, so apps with their own first screen pass.
+
 ## 1.1.0 (October 2026)
 
 - **Logo: lock-up only** (RNZ decision; departs from global guidelines §3.3.9 for software and needs APAC brand approval). `<AppShell>` always shows the RICOH lock-up (`public/brand/RICOH-Logo_sRGB_full-colour.png`, logo with the "imagine. change." tagline) at 40px tall, about 92px wide. It can't be swapped or hidden. The lock-up is now brand-managed, so updates reach every app. The brand check fails on any other logo file, a typed "RICOH" logo, or a logo favicon.

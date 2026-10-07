@@ -6,10 +6,10 @@ import { useAppTheme } from "@/hooks/use-theme";
 import { useState } from "react";
 
 describe("RNZ brand layer", () => {
-    it("renders the starter screen inside the RNZ shell", () => {
+    it("renders the app inside the RNZ shell with one h1", () => {
         render(<App />);
-        expect(screen.getByRole("heading", { level: 1, name: "Your app starts here" })).toBeInTheDocument();
         expect(screen.getByRole("main")).toBeInTheDocument();
+        expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
     });
 
     it("always shows the RICOH lock-up (logo with tagline) in the header", () => {
