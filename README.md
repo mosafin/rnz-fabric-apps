@@ -1,50 +1,49 @@
 # Ricoh NZ Fabric app templates
 
-Templates for building Microsoft Fabric Apps that look and behave like one Ricoh New Zealand product. Each template carries the RNZ Digital Design System (`ricoh-brand-methodology-v12.html`) as theme tokens, a component kit, agent skills and a brand gate that runs before every deploy.
+Templates for building Microsoft Fabric Apps that look and behave like one Ricoh New Zealand product. Each template carries the RNZ Digital Design System (`ricoh-brand-methodology-v12.html`) as theme tokens, a component kit with the RICOH lock-up built in, agent skills, and a brand check that runs before every deploy.
 
 | Template | Use it for |
 |---|---|
 | `templates/rnz-data-app` | Dashboards, register explorers and detail views over a Power BI semantic model |
 
-## Make a new app (5 minutes)
+You never work inside this repo. You clone it once, and the scripts below create and update apps in their own folders.
 
-1. Get this folder onto your computer (clone the repository, or copy the folder from the shared location).
-2. In a terminal, go to where you keep projects and run:
+## Make a new app
 
-   ```bash
-   npm create @microsoft/rayfin@latest -- my-app --template <path to this folder> --workspace "<Fabric workspace name>"
+1. Clone this repo once (later, the script pulls updates for you).
+2. In PowerShell, from this repo's folder (replace the name and the workspace ID; never type angle brackets):
+
+   ```powershell
+   .\scripts\new-app.ps1 -Name pipeline-by-pillar -WorkspaceId 00000000-0000-0000-0000-000000000000
    ```
 
-   Choose **RNZ Data App** if asked.
+   The workspace ID is the GUID after `/groups/` in the workspace's URL. The script creates the app in `C:\dev` (outside OneDrive), checks the brand and opens VS Code.
 
-3. Open `my-app` in VS Code. In Copilot Chat (Agent mode), type:
+3. In Copilot Chat (Agent mode):
 
-   > Build this RNZ app. It's for <who> to see <what>. Model: <semantic model share link>. Workspace: <workspace name>. Pillar: <pillar or none>.
+   > Build this RNZ app. It's for [who] to see [what]. Model: [semantic model share link]. Pillar: [pillar or none].
 
-4. Sign in when the browser asks. The agent does the rest, then runs the brand check.
-5. Deploy with `npx rayfin up` when you're happy.
+4. Deploy with `npx rayfin up` when you're happy.
 
-## Keep existing apps up to date
+## Update an app, or rebrand one made elsewhere
 
-When the brand layer changes here (see `CHANGELOG.md`), run this inside each app:
-
-```bash
-npm run rnz:sync -- --from <path to this folder>            # preview
-npm run rnz:sync -- --from <path to this folder> --apply    # update
+```powershell
+.\scripts\update-app.ps1 -App C:\dev\pipeline-by-pillar
 ```
 
-Only brand-managed files change (theme, component kit, RNZ skills, scripts and the RNZ block in `AGENTS.md`). Screens, queries and `App.tsx` are never touched. Edited brand files are backed up first.
+It previews first, then only changes brand-managed files (theme, component kit, RNZ skills, scripts, the RICOH lock-up and the RNZ block in `AGENTS.md`). Screens, queries and `App.tsx` are never touched, files are never renamed or deleted, and anything replaced is backed up in the app's `rnz/backup/` folder.
 
-## Change the brand layer
+For an app that wasn't made from this template, run the same script, then ask Copilot in that app: "Rebrand this app to RNZ. Change the look only."
 
-Edit the template, not the apps:
+## Rules that never change
 
-1. Change the files in `templates/rnz-data-app` (theme, components, skills or scripts).
-2. In that folder run `npm install`, `npm run rnz:check`, `npm test` and `npm run build`.
-3. Bump `templateVersion` in `rnz/brand-manifest.json` and `version` in `package.json`, and add a `CHANGELOG.md` entry.
-4. Tell app owners to run `rnz:sync`.
+- **The RICOH logo is always the lock-up** (logo with the "imagine. change." tagline), at least 80px wide. Never the logo alone, never a logo favicon. (RNZ decision; for apps it departs from global guidelines §3.3.9 and needs APAC brand approval.)
+- **File names never change.** Skills, scripts and other repos reference exact names, including `ricoh-brand-methodology-v12.html`, `RNZ Tables & Structured Data Design Standard.html` and `RICOH-Logo_sRGB_full-colour.png`.
+- **The brand guide's source of truth is the `rnz-ai-library` repo.** This repo carries a copy for the skills.
 
-If a change comes from the brand guide, update `ricoh-brand-methodology-v12.html` first (keep the file name; skills reference it), then mirror it here.
+## Change the brand layer (maintainers)
+
+Follow the root `AGENTS.md`. In short: change the template, run `node scripts/rnz-lock.mjs`, bump the version, add a `CHANGELOG.md` entry, open a pull request (the Template checks workflow must pass), merge, then tag the release.
 
 ## Where the rules come from
 
@@ -52,5 +51,6 @@ If a change comes from the brand guide, update `ricoh-brand-methodology-v12.html
 |---|---|
 | Ricoh Brand Communication Guidelines v6.0 | Logo, balloon, typeface, palettes, creative principles |
 | RNZ Brand Colour Chart | RNZ hex values |
-| `ricoh-brand-methodology-v12.html` | How those apply to websites, apps and AI-built interfaces |
+| `ricoh-brand-methodology-v12.html` (in `rnz-ai-library`) | How those apply to websites, apps and AI-built interfaces, including the RNZ lock-up-only rule |
 | This template | The working code version of that guide for Fabric Apps |
+| `UPSTREAM.md` | Which Microsoft template version this is built on |

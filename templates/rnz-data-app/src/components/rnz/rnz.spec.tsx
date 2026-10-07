@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen, fireEvent, renderHook } from "@testing-library/react";
 import App from "@/App";
-import { Button, Tabs, StatusMessage, KpiCard } from "@/components/rnz";
+import { AppShell, Button, Tabs, StatusMessage, KpiCard, RICOH_LOCKUP_ALT, RICOH_LOCKUP_SRC } from "@/components/rnz";
 import { useAppTheme } from "@/hooks/use-theme";
 import { useState } from "react";
 
@@ -12,9 +12,18 @@ describe("RNZ brand layer", () => {
         expect(screen.getByRole("main")).toBeInTheDocument();
     });
 
-    it("never draws or types the logo when no master file is supplied", () => {
+    it("always shows the RICOH lock-up (logo with tagline) in the header", () => {
         render(<App />);
-        expect(screen.queryByAltText("RICOH")).toBeNull();
+        const logo = screen.getByAltText(RICOH_LOCKUP_ALT);
+        expect(logo).toHaveAttribute("src", "/brand/RICOH-Logo_sRGB_full-colour.png");
+        expect(logo).toHaveAttribute("height", "40");
+    });
+
+    it("ignores any other logo file passed to AppShell", () => {
+        render(<AppShell appName="Test" logoSrc="/brand/some-other-logo.svg">x</AppShell>);
+        const imgs = screen.getAllByRole("img");
+        expect(imgs).toHaveLength(1);
+        expect(imgs[0]).toHaveAttribute("src", RICOH_LOCKUP_SRC);
     });
 
     it("keeps the app light even when a host adds .dark", async () => {

@@ -9,6 +9,7 @@
 // rnz/brand-manifest.json are touched. Your screens, queries and App.tsx are not.
 // Files with local edits are backed up to rnz/backup/<timestamp>/ before being replaced.
 // Brand-managed file: update it in the template, then run `npm run rnz:sync`.
+// It never renames or deletes files: references depend on exact names.
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, statSync, copyFileSync } from "node:fs";
 import { createHash } from "node:crypto";
@@ -33,7 +34,13 @@ if (!existsSync(manifestPath)) {
 }
 
 const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
-const sha = (buf) => createHash("sha256").update(buf).digest("hex");
+// Line endings are ignored, so a Windows checkout (CRLF) doesn't count as an edit.
+// Keep identical to brandHash() in rnz-check.mjs and the template repo's root scripts/rnz-lock.mjs.
+const BINARY = /\.(png|jpe?g|gif|webp|ico|woff2?|ttf|otf|pdf)$/i;
+const sha = (buf, name) => {
+    const data = BINARY.test(name) ? buf : Buffer.from(buf.toString("utf8").replace(/\r\n/g, "\n"), "utf8");
+    return createHash("sha256").update(data).digest("hex");
+};
 const posix = (p) => p.split(sep).join("/");
 
 function listDir(base, rel) {
@@ -64,7 +71,7 @@ for (const rel of [...managed].sort()) {
     if (!existsSync(from)) continue;
     const to = join(app, rel);
     const incoming = readFileSync(from);
-    newLock.files[rel] = sha(incoming);
+    newLock.files[rel] = sha(incoming, rel);
 
     if (!existsSync(to)) {
         report.added.push(rel);
@@ -75,11 +82,11 @@ for (const rel of [...managed].sort()) {
         continue;
     }
     const current = readFileSync(to);
-    if (sha(current) === sha(incoming)) {
+    if (sha(current, rel) === sha(incoming, rel)) {
         report.unchanged.push(rel);
         continue;
     }
-    const locallyEdited = lock.files[rel] && lock.files[rel] !== sha(current);
+    const locallyEdited = lock.files[rel] && lock.files[rel] !== sha(current, rel);
     (locallyEdited ? report.localEditsReplaced : report.updated).push(rel);
     if (apply) {
         if (locallyEdited || !lock.files[rel]) {

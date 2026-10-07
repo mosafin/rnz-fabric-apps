@@ -3,9 +3,11 @@
 <!-- RNZ:BEGIN -->
 ## RNZ rules (read first, these win)
 
+**Stop check:** if this folder's path contains `rnz-fabric-apps/templates/rnz-data-app` (or `rnz-fabric-apps\templates\rnz-data-app`), you are inside the template source, not an app. Don't build or change anything here. Tell the person to create an app with `scripts/new-app.ps1` from the repo root, or to follow the root `AGENTS.md` if they are maintaining the template.
+
 This is a **Ricoh New Zealand Limited** Fabric app built from the RNZ Data App template, which is Microsoft's data app template plus the RNZ brand layer. Where anything below this block, in a Microsoft skill or in a general design habit conflicts with this block, **this block wins**.
 
-**Brand authority:** `ricoh-brand-methodology-v12.html` (RNZ Digital Design System). The template already encodes it in `src/global.css` and `src/components/rnz/`. Don't restate brand values in components; use the tokens and components.
+**Brand authority:** `ricoh-brand-methodology-v12.html` (RNZ Digital Design System), shipped at `.agents/skills/rnz-app-brand/references/ricoh-brand-methodology-v12.html`. The template already encodes it in `src/global.css` and `src/components/rnz/`. Don't restate brand values in components; use the tokens and components. Open the guide only when a skill doesn't answer the question.
 
 ### Skills to load
 
@@ -16,6 +18,7 @@ This is a **Ricoh New Zealand Limited** Fabric app built from the RNZ Data App t
 | Choosing a screen layout or component | `.agents/skills/rnz-app-patterns/SKILL.md` |
 | Writing any visible text: titles, labels, buttons, empty and error states | `.agents/skills/rnz-app-content/SKILL.md` |
 | Before saying the work is done, and before `npx rayfin up` | `.agents/skills/rnz-app-qa/SKILL.md` |
+| Restyling an app that wasn't made from this template | `.agents/skills/rnz-rebrand/SKILL.md` |
 | Schema discovery, DAX, visuals, validation, Rayfin CLI | Microsoft skills, as described in the rest of this file |
 
 ### Non-negotiables
@@ -26,12 +29,13 @@ This is a **Ricoh New Zealand Limited** Fabric app built from the RNZ Data App t
 4. **Frutiger, falling back to Arial.** Never add Google Fonts or any font link. Never choose a "characterful" font.
 5. **One red primary action per view.** Secondary is white with a red border. Neutral is white with a grey border.
 6. **Sentence case.** No eyebrow or kicker labels, no ALL CAPS, no letter-spaced small labels. Metadata goes below a title.
-7. **Never type, draw or rebuild the RICOH logo or the Imagination Balloon.** Use the master file in `public/brand/` via `<AppShell logoSrc>`. Never use the balloon as a chat bubble or UI shape.
+7. **The RICOH logo is always the lock-up** (logo with the "imagine. change." tagline): `public/brand/RICOH-Logo_sRGB_full-colour.png`, which `<AppShell>` shows automatically. Never show the logo without the tagline, never crop the tagline off, never add another logo file, never use it as a favicon, never show it under 80px wide. Never type, draw or rebuild the logo or the Imagination Balloon, and never use the balloon as a chat bubble or UI shape.
 8. **Pillar colours are accents only**, on that pillar's apps: set `pillar` on `<AppShell>`. Never fill buttons, heroes or sections with them.
 9. **Real data only.** No mock data, no invented figures, no placeholder statistics shown as real.
 10. **NZ English**, no em or en dashes in interface text, no colleague names in labels or sample text.
 11. **Don't edit brand-managed files** (listed in `rnz/brand-manifest.json`). If the brand layer needs a change, say so; it is changed in the template and synced with `npm run rnz:sync`.
 12. **Run `npm run rnz:check` before finishing.** It also runs automatically before every deploy build and blocks deploys on errors.
+13. **Never rename or move existing files.** Skills, scripts, the brand check and references use exact file names, including `ricoh-brand-methodology-v12.html` and `RICOH-Logo_sRGB_full-colour.png`. Add new files instead, and ask before deleting any.
 
 ### Build order
 

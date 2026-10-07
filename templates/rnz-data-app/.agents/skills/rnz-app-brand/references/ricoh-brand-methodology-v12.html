@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Ricoh New Zealand Digital Design System: brand-true colour, type, Imagination Balloon, components, tokens and AI rules for websites, apps and AI-generated interfaces.">
+<title>Ricoh NZ — RNZ Digital Design System v12.3</title>
+<style>
+/* =====================================================================
+   RICOH NZ DIGITAL DESIGN SYSTEM — v12.3 (October 2026)
+   File name kept as ricoh-brand-methodology-v12.html (referenced by skills).
+
+   Authority order (highest first):
+   1. Ricoh Brand Communication Guidelines v6.0 (Ricoh Company, Ltd.)
+   2. Ricoh APAC Brand Management Policy 06-2024 (approvals)
+   3. RNZ Brand Colour Chart.pdf (RNZ hex values)
+   4. This document (digital application: web, apps, AI-generated UI)
+   5. RNZ companion guides (visual language, visual guide, elements guide)
+
+   House rules baked into these tokens:
+   - No black or near-black anywhere, as text or fill (see Section 04).
+   - Text is Ricoh Grey #666666. White text only on Ricoh Red, Ricoh Grey or pillar accents.
+   - No eyebrow / kicker labels. No all-caps UI labels.
+   - Shadows and scrims are tinted with Ricoh Grey (Cool Gray 10C), not black.
+   ===================================================================== */
+:root {
+  /* Primary (RNZ Brand Colour Chart) */
+  --red:        #CF142B;
+  --grey:       #666666;
+  --white:      #FFFFFF;
+
+  /* RNZ neutrals (established in RNZ digital guides) */
+  --off-white:  #F5F5F5;   /* light surface */
+  --border:     #E0E0E0;   /* dividers and card outlines only, never behind text */
+
+  /* Functional state (not a brand colour, never used on its own) */
+  --red-dark:   #A51022;   /* hover / pressed on Ricoh Red */
+
+  /* Secondary: clear */
+  --pink:  #FF9AA8;  --amber: #FFC13D;  --green: #96C120;  --teal: #00A9C5;  --blue: #5EA8E6;
+  /* Secondary: muted */
+  --muted-pink: #DD7A87;  --muted-sand: #BB9273;  --muted-green: #7B9C6B;  --muted-teal: #428994;  --muted-blue: #4F8FAC;
+  /* Secondary: pastel (50% of clear) */
+  --pastel-pink: #FFCDD3;  --pastel-amber: #FFE19E;  --pastel-green: #CAE08F;  --pastel-teal: #80D4E1;  --pastel-blue: #B0D4F4;
+
+  /* Area of Expertise (non-brand colours, pillar context only, accents only) */
+  --pillar-workplace: #606CBF;
+  --pillar-workflow:  #517D32;
+  --pillar-cloud:     #0F7AC9;
+  --pillar-cyber:     #00328F;
+  --pillar-print:     #CF142B;
+
+  /* Typography */
+  --font: 'Frutiger', 'Frutiger LT Std', Arial, sans-serif;
+  --mono: Consolas, 'Courier New', monospace;
+  --fs-h1: 48px; --fs-h2: 36px; --fs-h3: 28px; --fs-h4: 22px; --fs-h5: 18px;
+  --fs-body: 16px; --fs-small: 14px; --fs-caption: 13px;
+
+  /* Spacing (8px grid, 4px half-step) */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px; --s9: 80px;
+
+  /* Shape */
+  --radius-sm: 4px; --radius: 8px; --radius-lg: 12px; --radius-xl: 16px;
+
+  /* Elevation (Cool Gray 10C tint, never black) */
+  --shadow-sm: 0 1px 3px rgba(100,102,106,0.16);
+  --shadow:    0 4px 12px rgba(100,102,106,0.16);
+  --shadow-lg: 0 12px 32px rgba(100,102,106,0.20);
+  --scrim:     rgba(102,102,102,0.60);
+
+  /* Focus */
+  --focus: 0 0 0 2px var(--white), 0 0 0 4px var(--red);
+
+  --container: 1160px;
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }
+body {
+  margin: 0; background: var(--white); color: var(--grey);
+  font-family: var(--font); font-size: var(--fs-body); line-height: 1.6;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+h1, h2, h3, h4, h5 { color: var(--grey); font-weight: 700; margin: 0; }
+h1 { font-size: clamp(32px, 5vw, var(--fs-h1)); line-height: 1.1; letter-spacing: -0.5px; }
+h2 { font-size: clamp(28px, 3.6vw, var(--fs-h2)); line-height: 1.15; letter-spacing: -0.3px; }
+h3 { font-size: clamp(22px, 2.6vw, var(--fs-h3)); line-height: 1.2; margin: var(--s7) 0 var(--s3); }
+h4 { font-size: var(--fs-h4); line-height: 1.25; margin: var(--s5) 0 var(--s2); }
+h5 { font-size: var(--fs-h5); line-height: 1.3; margin: var(--s4) 0 var(--s2); }
+p { margin: 0 0 var(--s4); max-width: 72ch; }
+ul, ol { margin: 0 0 var(--s4); padding-left: 22px; max-width: 72ch; }
+li { margin-bottom: 6px; }
+strong { font-weight: 700; }
+a { color: var(--red); text-decoration: underline; text-underline-offset: 2px; }
+a:hover { color: var(--red-dark); }
+:focus-visible { outline: none; box-shadow: var(--focus); border-radius: 2px; }
+.hl { color: var(--red); }
+td code, th code { white-space: nowrap; }
+code { font-family: var(--mono); font-size: 0.88em; background: var(--off-white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1px 5px; color: var(--grey); word-break: break-word; }
+.wrap { max-width: var(--container); margin: 0 auto; padding: 0 var(--s4); }
+@media (min-width: 768px) { .wrap { padding: 0 var(--s6); } }
+
+/* ---------- Document navigation ---------- */
+.doc-nav {
+  position: sticky; top: 0; z-index: 50; background: var(--white);
+  border-bottom: 3px solid var(--red); box-shadow: var(--shadow-sm);
+}
+.doc-nav .wrap { display: flex; align-items: center; gap: var(--s4); }
+.doc-nav-brand { font-weight: 700; color: var(--red); white-space: nowrap; font-size: 14px; padding: 12px 0; }
+.doc-nav-links { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+.doc-nav-links a {
+  color: var(--grey); text-decoration: none; font-size: 13px; white-space: nowrap;
+  padding: 12px 10px; border-bottom: 3px solid transparent; margin-bottom: -3px;
+}
+.doc-nav-links a:hover { color: var(--red); }
+@media (min-width: 1100px) { .doc-nav-brand { display: none; } .doc-nav-links a { padding: 12px 8px; } }
+.doc-nav-links a.active { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
+
+/* ---------- Cover ---------- */
+.cover { padding: var(--s8) 0 var(--s7); border-bottom: 1px solid var(--border); }
+.cover-grid { display: grid; grid-template-columns: 1fr; gap: var(--s6); align-items: center; }
+@media (min-width: 900px) { .cover-grid { grid-template-columns: 1.6fr 1fr; } }
+.cover .lead { font-size: 18px; font-weight: 300; max-width: 60ch; margin-top: var(--s4); }
+.cover-balloon { position: relative; width: min(280px, 70vw); justify-self: center; }
+.cover-balloon img { width: 100%; height: auto; display: block; }
+.cover-balloon span {
+  position: absolute; left: 12%; top: 14%; right: 18%;
+  color: var(--white); font-weight: 300; font-size: clamp(20px, 3vw, 28px); line-height: 1.2;
+}
+.meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--s4) var(--s5); margin-top: var(--s6); padding-top: var(--s5); border-top: 1px solid var(--border); }
+.meta div { font-size: 14px; }
+.meta b { display: block; color: var(--grey); font-weight: 700; }
+
+/* ---------- Sections ---------- */
+.section { padding: var(--s8) 0; border-bottom: 1px solid var(--border); }
+.section.tint { background: var(--off-white); }
+.section-head { display: flex; gap: var(--s4); align-items: baseline; margin-bottom: var(--s3); flex-wrap: wrap; }
+.num { color: var(--red); font-weight: 700; font-size: clamp(28px, 3.6vw, 36px); line-height: 1.15; min-width: 2ch; }
+.section-lead { font-size: 18px; font-weight: 300; max-width: 70ch; margin-bottom: var(--s6); }
+.rule-red { width: 48px; height: 3px; background: var(--red); border: 0; margin: 0 0 var(--s5); }
+
+/* ---------- Content blocks ---------- */
+.grid { display: grid; gap: var(--s4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); margin: var(--s4) 0 var(--s5); }
+.grid-2 { display: grid; gap: var(--s4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); margin: var(--s4) 0 var(--s5); }
+.card {
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: var(--s5); box-shadow: var(--shadow-sm);
+}
+.card h4, .card h3 { margin-top: 0; }
+h3.t4 { font-size: var(--fs-h4); line-height: 1.25; margin: var(--s5) 0 var(--s2); }
+.card h3.t4 { margin-top: 0; }
+.card p, .card li { font-size: 15px; }
+.card p:last-child, .card ul:last-child { margin-bottom: 0; }
+.card.accent { border-top: 4px solid var(--red); }
+.card.do { border-top: 4px solid var(--muted-green); }
+.card.dont { border-top: 4px solid var(--red); }
+.card .tag-line { font-weight: 700; margin-bottom: var(--s2); display: block; }
+
+.note {
+  background: var(--white); border: 1px solid var(--border); border-left: 4px solid var(--red);
+  border-radius: var(--radius-sm); padding: var(--s4) var(--s5); margin: var(--s5) 0; max-width: 80ch;
+}
+.note p:last-child { margin-bottom: 0; }
+.note.info { border-left-color: var(--muted-blue); }
+.note.warn { border-left-color: var(--amber); }
+.note.ok { border-left-color: var(--muted-green); }
+.note b:first-child { color: var(--grey); }
+
+pre.code {
+  background: var(--off-white); border: 1px solid var(--border); border-left: 4px solid var(--red);
+  border-radius: var(--radius-sm); padding: var(--s4) var(--s5); overflow-x: auto;
+  font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--grey); margin: var(--s4) 0 var(--s5);
+  white-space: pre; max-width: 100%;
+}
+pre.code .k { color: var(--red); }
+pre.code .c { font-style: italic; }
+
+.table-wrap { overflow-x: auto; margin: var(--s4) 0 var(--s5); border: 1px solid var(--border); border-radius: var(--radius); }
+table { width: 100%; border-collapse: collapse; font-size: 15px; background: var(--white); }
+th { background: var(--off-white); color: var(--grey); font-weight: 700; text-align: left; padding: 12px 16px; border-bottom: 2px solid var(--red); white-space: nowrap; }
+td { padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+td.num-cell { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pass { font-weight: 700; }
+.fail { font-weight: 700; color: var(--red); }
+
+/* ---------- Colour chips ---------- */
+.chips { display: grid; gap: var(--s3); grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); margin: var(--s3) 0 var(--s5); }
+.chip { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--white); }
+.chip-sw { height: 64px; }
+.chip-info { padding: 8px 12px; font-size: 13px; line-height: 1.4; }
+.chip-info b { display: block; font-size: 14px; }
+.chip-info code { background: none; border: 0; padding: 0; }
+
+/* ---------- Type specimen ---------- */
+.specimen { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: var(--s4) 0 var(--s5); background: var(--white); }
+.spec-row { display: grid; grid-template-columns: 110px 1fr; gap: var(--s4); align-items: center; padding: var(--s4) var(--s5); border-bottom: 1px solid var(--border); }
+.spec-row:last-child { border-bottom: 0; }
+.spec-row .lbl { font-size: 13px; }
+.spec-row .lbl b { display: block; font-size: 14px; }
+@media (max-width: 600px) { .spec-row { grid-template-columns: 1fr; gap: 4px; } }
+
+/* =========================================================
+   RNZ COMPONENTS (reference implementations)
+   ========================================================= */
+.demo { background: var(--white); border: 1px dashed var(--border); border-radius: var(--radius); padding: var(--s5); margin: var(--s4) 0 var(--s5); }
+.demo-row { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: center; }
+
+/* Buttons */
+.rnz-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 10px 24px; border-radius: var(--radius-sm);
+  font-family: var(--font); font-size: 16px; font-weight: 700; line-height: 1.2;
+  text-decoration: none; cursor: pointer; border: 2px solid transparent;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+.rnz-btn--primary { background: var(--red); color: var(--white); border-color: var(--red); }
+.rnz-btn--primary:hover { background: var(--red-dark); border-color: var(--red-dark); color: var(--white); }
+.rnz-btn--secondary { background: var(--white); color: var(--red); border-color: var(--red); }
+.rnz-btn--secondary:hover { background: var(--red); color: var(--white); }
+.rnz-btn--neutral { background: var(--white); color: var(--grey); border: 1px solid var(--grey); padding: 11px 25px; }
+.rnz-btn--neutral:hover { background: var(--off-white); color: var(--grey); }
+.rnz-btn--on-red { background: transparent; color: var(--white); border-color: var(--white); }
+.rnz-btn--on-red:hover { background: var(--white); color: var(--red); }
+.rnz-btn[disabled], .rnz-btn[aria-disabled="true"] { background: var(--off-white); color: var(--grey); border-color: var(--border); opacity: .6; cursor: not-allowed; }
+.rnz-btn:focus-visible { box-shadow: var(--focus); }
+
+/* Inputs */
+.rnz-field { margin-bottom: var(--s4); max-width: 420px; }
+.rnz-label { display: block; font-size: 15px; font-weight: 700; color: var(--grey); margin-bottom: 6px; }
+.rnz-req { color: var(--red); }
+.rnz-input {
+  width: 100%; min-height: 44px; padding: 10px 12px; font-family: var(--font); font-size: 16px; color: var(--grey);
+  background: var(--white); border: 1px solid var(--grey); border-radius: var(--radius-sm);
+}
+.rnz-input:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 1px var(--red); }
+.rnz-input[aria-invalid="true"] { border-color: var(--red); }
+.rnz-help { font-size: 14px; margin-top: 4px; }
+.rnz-error { font-size: 14px; margin-top: 4px; color: var(--red); font-weight: 700; }
+
+/* Cards */
+.rnz-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--s5); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: var(--s2); }
+.rnz-card--accent { border-top: 4px solid var(--accent, var(--red)); }
+.rnz-card h4 { margin: 0; }
+.rnz-card p { margin: 0; font-size: 15px; }
+
+/* Status message (meaning = icon + text in grey; colour bar supports) */
+.rnz-status { display: flex; gap: 12px; align-items: flex-start; background: var(--white); border: 1px solid var(--border); border-left: 4px solid var(--status, var(--muted-blue)); border-radius: var(--radius-sm); padding: 12px 16px; font-size: 15px; margin-bottom: var(--s2); max-width: 560px; }
+.rnz-status svg { flex: 0 0 20px; margin-top: 2px; }
+.rnz-status--error { --status: var(--red); }
+.rnz-status--success { --status: var(--muted-green); }
+.rnz-status--warning { --status: var(--amber); }
+.rnz-status--info { --status: var(--muted-blue); }
+
+/* Tags */
+.rnz-tag { display: inline-block; font-size: 14px; padding: 4px 10px; border-radius: var(--radius-sm); border: 1px solid var(--grey); color: var(--grey); background: var(--white); }
+.rnz-tag--red { border-color: var(--red); color: var(--red); }
+
+/* Tabs */
+.rnz-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); overflow-x: auto; }
+.rnz-tab { background: none; border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px; padding: 12px 16px; font-family: var(--font); font-size: 16px; color: var(--grey); cursor: pointer; min-height: 44px; white-space: nowrap; }
+.rnz-tab[aria-selected="true"] { color: var(--red); border-bottom-color: var(--accent, var(--red)); font-weight: 700; }
+.rnz-tabpanel { padding: var(--s4) 0; }
+
+/* Accordion */
+.rnz-acc { border-top: 1px solid var(--border); max-width: 760px; }
+.rnz-acc-btn { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: var(--s4); background: none; border: 0; border-bottom: 1px solid var(--border); padding: 16px 4px; font-family: var(--font); font-size: 17px; font-weight: 700; color: var(--grey); text-align: left; cursor: pointer; min-height: 44px; }
+.rnz-acc-btn::after { content: '+'; color: var(--red); font-size: 24px; font-weight: 300; line-height: 1; }
+.rnz-acc-btn[aria-expanded="true"]::after { content: '\2212'; }
+.rnz-acc-panel { padding: var(--s3) 4px var(--s4); border-bottom: 1px solid var(--border); }
+.rnz-acc-panel[hidden] { display: none; }
+
+/* Stat strip */
+.rnz-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); background: var(--red); color: var(--white); border-radius: var(--radius); overflow: hidden; }
+.rnz-stats div { padding: var(--s5); border-right: 1px solid rgba(255,255,255,0.25); }
+.rnz-stats div:last-child { border-right: 0; }
+.rnz-stats b { display: block; font-size: 36px; line-height: 1.1; }
+.rnz-stats span { font-size: 15px; }
+.rnz-stats--light { background: var(--white); color: var(--grey); border: 1px solid var(--border); }
+.rnz-stats--light div { border-right-color: var(--border); }
+.rnz-stats--light b { color: var(--red); }
+
+/* Hero patterns */
+.rnz-hero { border-radius: var(--radius-lg); overflow: hidden; display: grid; grid-template-columns: 1fr; margin: var(--s4) 0 var(--s5); }
+@media (min-width: 800px) { .rnz-hero--split { grid-template-columns: 1.1fr 1fr; } }
+.rnz-hero-body { padding: var(--s6); display: flex; flex-direction: column; gap: var(--s3); justify-content: center; }
+.rnz-hero-body h2 { font-size: clamp(26px, 3.4vw, 36px); }
+.rnz-hero--light { background: var(--off-white); border-left: 6px solid var(--accent, var(--red)); }
+.rnz-hero--red { background: var(--red); color: var(--white); }
+.rnz-hero--red h2 { color: var(--white); }
+.img-placeholder { background: repeating-linear-gradient(135deg, var(--border) 0 12px, var(--off-white) 12px 24px); min-height: 220px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.rnz-hero--photo { position: relative; min-height: 320px; }
+.rnz-hero--photo .img-placeholder { position: absolute; inset: 0; min-height: 0; }
+.rnz-hero--photo .rnz-hero-card { position: relative; background: var(--white); border-radius: var(--radius); margin: var(--s5); padding: var(--s5); max-width: 440px; box-shadow: var(--shadow); }
+.rnz-hero-card h2 { font-size: clamp(24px, 3vw, 30px); margin-bottom: var(--s3); }
+
+/* CTA band */
+.rnz-cta { display: flex; flex-wrap: wrap; gap: var(--s5); align-items: center; justify-content: space-between; padding: var(--s6); border-radius: var(--radius-lg); margin: var(--s4) 0; }
+.rnz-cta h3 { margin: 0 0 6px; font-size: 26px; }
+.rnz-cta p { margin: 0; }
+.rnz-cta--red { background: var(--red); color: var(--white); }
+.rnz-cta--red h3 { color: var(--white); }
+.rnz-cta--light { background: var(--off-white); border: 1px solid var(--border); }
+
+/* App shell sample */
+.app-frame { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; background: var(--white); box-shadow: var(--shadow); margin: var(--s4) 0 var(--s5); }
+.app-top { display: flex; align-items: center; gap: var(--s5); padding: 0 var(--s5); height: 56px; border-bottom: 1px solid var(--border); background: var(--white); }
+.app-logo { display: inline-flex; align-items: center; justify-content: center; width: 96px; height: 40px; border: 1px dashed var(--grey); border-radius: var(--radius-sm); font-size: 12px; color: var(--grey); white-space: nowrap; }
+.app-top nav { display: flex; gap: var(--s4); height: 100%; overflow-x: auto; }
+.app-top nav a { display: flex; align-items: center; color: var(--grey); text-decoration: none; font-size: 15px; border-bottom: 3px solid transparent; white-space: nowrap; }
+.app-top nav a[aria-current="page"] { color: var(--red); border-bottom-color: var(--red); font-weight: 700; }
+.app-body { display: grid; grid-template-columns: 1fr; min-height: 260px; }
+@media (min-width: 760px) { .app-body { grid-template-columns: 220px 1fr; } }
+.app-side { background: var(--off-white); border-right: 1px solid var(--border); padding: var(--s4); }
+.app-side a { display: block; padding: 10px 12px; border-radius: var(--radius-sm); color: var(--grey); text-decoration: none; font-size: 15px; border-left: 3px solid transparent; }
+.app-side a[aria-current="page"] { background: var(--white); border-left-color: var(--red); color: var(--red); font-weight: 700; }
+.app-main { padding: var(--s5); }
+.chat { display: flex; flex-direction: column; gap: var(--s3); max-width: 560px; }
+.msg { padding: 12px 16px; border-radius: var(--radius); font-size: 15px; max-width: 85%; }
+.msg--user { align-self: flex-end; background: var(--off-white); border: 1px solid var(--border); }
+.msg--ai { align-self: flex-start; background: var(--white); border: 1px solid var(--border); border-left: 3px solid var(--red); }
+.tooltip { display: inline-block; background: var(--grey); color: var(--white); font-size: 14px; padding: 6px 10px; border-radius: var(--radius-sm); }
+.toast { display: flex; gap: 12px; align-items: center; background: var(--white); border: 1px solid var(--border); border-left: 4px solid var(--muted-green); border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 12px 16px; max-width: 380px; font-size: 15px; }
+.scrim-demo { position: relative; height: 150px; border-radius: var(--radius); overflow: hidden; background: var(--off-white); }
+.scrim-demo::before { content: ''; position: absolute; inset: 0; background: var(--scrim); }
+.scrim-demo .modal { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: var(--white); border-radius: var(--radius-lg); padding: var(--s4) var(--s5); box-shadow: var(--shadow-lg); width: min(300px, 80%); font-size: 15px; }
+
+/* Balloon figures */
+.balloon-fig { display: flex; flex-wrap: wrap; gap: var(--s5); align-items: flex-end; }
+.balloon-fig figure { margin: 0; text-align: center; font-size: 14px; }
+.balloon-fig img { display: block; height: auto; margin: 0 auto var(--s2); }
+.on-red { background: var(--red); padding: var(--s4); border-radius: var(--radius); }
+
+/* Chart sample */
+.bars { display: flex; align-items: flex-end; gap: 10px; height: 160px; padding: var(--s3); border-bottom: 1px solid var(--grey); }
+.bars div { flex: 1; border-radius: 3px 3px 0 0; position: relative; }
+.bars div span { position: absolute; top: -22px; left: 0; right: 0; text-align: center; font-size: 13px; font-weight: 700; color: var(--grey); }
+
+/* Footer */
+.doc-footer { padding: var(--s6) 0; border-top: 4px solid var(--red); font-size: 14px; }
+.doc-footer p { max-width: none; }
+
+@media print {
+  .doc-nav { position: static; }
+  .section { padding: 32px 0; break-inside: avoid-page; }
+}
+</style>
+</head>
+<body>
+
+<nav class="doc-nav" aria-label="Sections">
+  <div class="wrap">
+    <div class="doc-nav-brand">RNZ Design System</div>
+    <div class="doc-nav-links">
+      <a href="#s01">Use</a>
+      <a href="#s02">Foundations</a>
+      <a href="#s03">Logo</a>
+      <a href="#s04">Colour</a>
+      <a href="#s05">Contrast</a>
+      <a href="#s06">Type</a>
+      <a href="#s07">Balloon</a>
+      <a href="#s08">Imagery</a>
+      <a href="#s09">Layout</a>
+      <a href="#s10">Components</a>
+      <a href="#s11">Pillars</a>
+      <a href="#s12">Apps and AI</a>
+      <a href="#s13">Tokens</a>
+      <a href="#s14">AI rules</a>
+      <a href="#s15">Web pages</a>
+      <a href="#s16">Governance</a>
+      <a href="#s17">QA</a>
+    </div>
+  </div>
+</nav>
+
+<header class="cover">
+  <div class="wrap">
+    <div class="cover-grid">
+      <div>
+        <h1>RNZ Digital <span class="hl">Design System</span></h1>
+        <p class="lead">How the Ricoh brand is applied to Ricoh New Zealand websites, apps and AI-generated interfaces. Every rule here traces back to the Ricoh Brand Communication Guidelines v6.0 or the RNZ Brand Colour Chart, and every colour pairing has been contrast-tested.</p>
+        <div class="meta">
+          <div><b>Version</b>12.3 · October 2026</div>
+          <div><b>File</b><code>ricoh-brand-methodology-v12.html</code></div>
+          <div><b>Owner</b>Ricoh NZ Marketing</div>
+          <div><b>Status</b>Internal working standard</div>
+          <div><b>Applies to</b>Websites, web apps, mobile apps, AI-generated UI, HTML documents</div>
+          <div><b>Typeface</b>Frutiger · Arial substitute</div>
+        </div>
+      </div>
+      <div class="cover-balloon" aria-hidden="true">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU8AAAFLCAYAAABWXA7kAAAE/UlEQVR42u3c8XESQRiH4R9UYAfhCnBDB0kHxgpCKpAOTAmUQDqIFYgVGLeBSzpIKsA/Ag6jxkBUuNPnaYDl25l39u44BsvlMk+pTTlNcpbkNMlxAP6OuySLJNelrdd9WPDgZ/FcRfMyyYk9BQ4Q0mnXI/pDPGtTLpO8t3/AgV2Vtk56Ec/alHmSc3sGCOivDTfCORVOoGPOV4e6bp48a1PGST7bJ6Cj3nbtHuj65DmzN0CHda5Rw9qUUTxVB7rtqDblrGsnzzP7AvSAeAK8wLhr8XxlT4Ae6NRbjsN47RLgRfEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEEE8jABBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDxNAIA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEEE8jABBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEE6LjalJF4Auxu2pWFDL6MXi/tB9AjV0nm+/qw0taFeAK8zIcks82QumwHeN6bJB9rU2ab8XwwF4CtvKtNuVxfti+SnJgJwNaaYZJbcwDYyXSYZGEOADsZD5Ncx31PgF2cDEtb75PMzAJge4Pl8vFnnrUpN0mOjQTgeZu/85y4fAfYMZ6lrTdJTgUUYLeT5zqg4ySfjAbgad/ueX6vNmWSx38wcR8UYNt4bkR0tLqcHxkX8BvWLTn6L+IJ8CfVpsyTnPf9e/hXJWDfpv/ClxBPYK9WL+b0/qG0eAKIJ4B4AogngHgCiCcA4gkgngDiCSCeAOIJgHgCiCeAeAKIJ4B4AiCeAOIJIJ4A4gkgngCIJ4B4AogngHgCiCfAXtz3fP2fxBM4hEXP138jnsAhzJM89Hj9M/EE9q609T7JpKfLvyhtvRVP4FABvU5y0bMT6EVp6zzxwAg4bEDnScZJrpLcdXSZD6v1NetwJslX2HCQjP/fxZgAAAAASUVORK5CYII=" alt="">
+        <span>Ideas that change the way you work</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ===================== 01 HOW TO USE ===================== -->
+<section class="section" id="s01">
+  <div class="wrap">
+    <div class="section-head"><span class="num">01</span><h2>How to use this document</h2></div>
+    <p class="section-lead">This is the RNZ standard for how things look and behave on screen. It is written for designers, developers and AI builders. Copy, SEO and campaign messaging live in their own skills and are only referenced here.</p>
+
+    <div class="grid">
+      <div class="card accent"><h3 class="t4">Use it for</h3><ul><li>Colour, type, spacing, shape and elevation</li><li>Logo, tagline and Imagination Balloon use on screen</li><li>Components and their states</li><li>App shells and AI interfaces ("skins")</li><li>Design tokens for code</li><li>Rules for AI-generated pages and UI</li></ul></div>
+      <div class="card"><h3 class="t4">Look elsewhere for</h3><ul><li>Website and email copy: <code>rnz-brand-writer</code></li><li>SEO, metadata and schema: <code>rnz-seo-geo-specialist</code></li><li>LinkedIn and social: <code>rnz-linkedin-writer</code></li><li>Sitecore classes: <code>rnz-design-elements-guide.html</code></li><li>Tables: <code>RNZ Tables &amp; Structured Data Design Standard.html</code></li><li>Fabric Apps build kit: <code>rnz-fabric-apps</code> template (RNZ Data App), Section 13</li></ul></div>
+      <div class="card"><h3 class="t4">Five rules if you read nothing else</h3><ol><li>Red, white and grey make up 80–90% of any screen.</li><li>Ricoh Red is for the one primary action and key emphasis.</li><li>Text is Ricoh Grey. Never black, never near-black.</li><li>No eyebrow labels. Headings stand on their own.</li><li>Use master artwork for the logo and Imagination Balloon. Never draw them. The logo is always the lock-up with its tagline.</li></ol></div>
+    </div>
+
+    <h3>Authority order</h3>
+    <p>When two sources disagree, the higher one wins.</p>
+    <div class="table-wrap" tabindex="0"><table>
+      <thead><tr><th>#</th><th>Source</th><th>Governs</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Ricoh Brand Communication Guidelines v6.0 (Ricoh Company, Ltd., Dec 2024)</td><td>Logo, tagline, Imagination Balloon, typeface, colour palettes, creative principles</td></tr>
+        <tr><td>2</td><td>Ricoh APAC Brand Management Policy (06-2024)</td><td>Approvals. Local adaptations need sign-off from the APAC Head of Marketing Communications.</td></tr>
+        <tr><td>3</td><td>RNZ Brand Colour Chart.pdf</td><td>The hex values RNZ uses on screen</td></tr>
+        <tr><td>4</td><td>This document</td><td>How 1–3 apply to websites, apps and AI-generated UI</td></tr>
+        <tr><td>5</td><td>RNZ companion guides: digital brand visual language, design visual guide, design elements guide</td><td>Page patterns and Sitecore implementation. If they conflict with 1–4, 1–4 win.</td></tr>
+        <tr><td>6</td><td>ricoh.co.nz (live)</td><td>Reference only, not an authority</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- ===================== 02 FOUNDATIONS ===================== -->
+<section class="section tint" id="s02">
+  <div class="wrap">
+    <div class="section-head"><span class="num">02</span><h2>Brand foundations</h2></div>
+    <p class="section-lead">What the brand stands for decides how the interface should feel. These are the global definitions, not local reinterpretations.</p>
+
+    <div class="grid-2">
+      <div class="card"><h3 class="t4">Mission and vision</h3><p>Ricoh empowers individuals to find <strong>Fulfillment through Work</strong> by understanding and transforming how people work, so their potential and creativity can realise a sustainable future.</p></div>
+      <div class="card"><h3 class="t4">How Ricoh describes itself</h3><p>Use the exact phrase <strong>"workplace services provider"</strong> when saying what Ricoh is. The global focus areas are process automation, workplace experience and IT services.</p></div>
+    </div>
+
+    <h3>Creative principles</h3>
+    <p>Three principles govern tone of voice and tone and manner across all external communication (Guidelines §4). They apply to interfaces as much as to print.</p>
+    <div class="table-wrap" tabindex="0"><table>
+      <thead><tr><th>Principle</th><th>Role</th><th>In design</th><th>In words</th><th>In an interface</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Close</strong></td><td>Fundamental</td><td>Bright colours with soft tones. Care shows in the details. Close-ups of people that convey emotion without sentimentality.</td><td>Genuine and warm. Easy to understand, open, honest. No jargon.</td><td>Plain labels, helpful empty states and errors, generous white space, real people in imagery.</td></tr>
+        <tr><td><strong>Active</strong></td><td>Transformational</td><td>New angles, freeze-frame images, scalable graphic elements.</td><td>Innovative and lively. Direct, active verbs, the reader's point of view.</td><td>One clear next step per screen, verb-led buttons, responsive feedback on every action.</td></tr>
+        <tr><td><strong>Unlimited</strong></td><td>Aspirational</td><td>Simple, imaginative layouts. Imagery that speaks of possibility.</td><td>Simple and imaginative. Confident, never boastful.</td><td>Uncluttered screens, restrained colour, no hype or superlatives in UI copy.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>How RNZ digital should feel</h3>
+    <p>Professional, approachable, practical, human, outcome-focused. When in doubt:</p>
+    <ul>
+      <li><strong>Clarity over decoration.</strong> Every element earns its place.</li>
+      <li><strong>Content first.</strong> If the layout draws more attention than the message, simplify.</li>
+      <li><strong>One primary action</strong> per page or screen.</li>
+      <li><strong>White space is a feature,</strong> not empty room to fill.</li>
+      <li><strong>Consistency builds trust.</strong> One Ricoh experience across site, apps and documents.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== 03 LOGO ===================== -->
+<section class="section" id="s03">
+  <div class="wrap">
+    <div class="section-head"><span class="num">03</span><h2>Logo and tagline</h2></div>
+    <p class="section-lead">Only master artwork is used. Never retype, redraw, recolour or rebuild the logo or tagline in HTML, CSS or SVG.</p>
+
+    <div class="grid">
+      <div class="card accent"><h3 class="t4">Lock-up logo: always</h3><p>The RICOH logo with the "imagine. change." tagline logo below it. <strong>RNZ always uses the lock-up</strong>, on websites, apps, documents and AI-built interfaces. Minimum on-screen size is <strong>80 px</strong> wide. Protected area is <strong>0.6X</strong> on all sides, where X is the height of the "H". Master file: <code>RICOH-Logo_sRGB_full-colour.png</code> (never renamed).</p></div>
+      <div class="card"><h3 class="t4">Never the logo without the tagline</h3><p>RNZ does not use the RICOH logo on its own, at any size. Where the lock-up can't be shown at 80 px wide or more (favicons, very small UI), show no logo. Size app headers to fit the lock-up: 40 px tall gives about 92 px wide. Never crop the tagline off the lock-up to make a logo-only version. For apps and portals this departs from global §3.3.9 and needs APAC brand approval (Section 16).</p></div>
+      <div class="card"><h3 class="t4">Colour</h3><p>Ricoh Red and grey on white. Use the solid white version on Ricoh Red, dark imagery or other strong colour. Never place it on a background with too little contrast.</p></div>
+    </div>
+
+    <h3>Never</h3>
+    <ul>
+      <li>Change the colour, proportion, angle or font. Never add effects, outlines or shadows.</li>
+      <li>Animate, move or deform the logo, including in video and app splash screens. Only the Imagination Balloon may be animated.</li>
+      <li>Place anything inside the protected area, or combine the logo with other shapes to make a new mark or app icon.</li>
+      <li>Put the logo or tagline on the Imagination Balloon.</li>
+      <li>Use the tagline logo on its own. In running text, write the tagline exactly as <strong>imagine. change.</strong> (lower case, full stops).</li>
+    </ul>
+    <div class="note info"><p><b>Apps and app icons:</b> The guidelines list Software, Hardware and Service Portal as separate application categories (§3.3.9). A new app icon, launcher icon or co-branded mark is a new use of the brand. Get it approved through the APAC brand team before release.</p></div>
+    <div class="note"><p><b>Partner logos:</b> On RNZ-made material, the RICOH lock-up sits on the right. Both logos keep their protected areas and appear at equal visual weight. A dividing line, if used, should not be in either company's corporate colour (§3.3.6).</p></div>
+  </div>
+</section>
+
+<!-- ===================== 04 COLOUR ===================== -->
+<section class="section tint" id="s04">
+  <div class="wrap">
+    <div class="section-head"><span class="num">04</span><h2>Colour</h2></div>
+    <p class="section-lead">The RNZ Brand Colour Chart sets the hex values. The global guidelines set how each palette may be used. Red, white and grey carry the interface. Everything else is supporting.</p>
+
+    <h3>Primary</h3>
+    <div class="chips">
+      <div class="chip"><div class="chip-sw" style="background:#CF142B"></div><div class="chip-info"><b>Ricoh Red</b><code>#CF142B</code><br>Pantone 186C</div></div>
+      <div class="chip"><div class="chip-sw" style="background:#666666"></div><div class="chip-info"><b>Ricoh Grey</b><code>#666666</code><br>Cool Gray 10C</div></div>
+      <div class="chip"><div class="chip-sw" style="background:#FFFFFF;border-bottom:1px solid #E0E0E0"></div><div class="chip-info"><b>White</b><code>#FFFFFF</code></div></div>
+    </div>
+    <h4>RNZ neutrals</h4>
+    <div class="chips">
+      <div class="chip"><div class="chip-sw" style="background:#F5F5F5"></div><div class="chip-info"><b>Light surface</b><code>#F5F5F5</code><br>Panels, sections, table headers</div></div>
+      <div class="chip"><div class="chip-sw" style="background:#E0E0E0"></div><div class="chip-info"><b>Border</b><code>#E0E0E0</code><br>Dividers and outlines only</div></div>
+      <div class="chip"><div class="chip-sw" style="background:#A51022"></div><div class="chip-info"><b>Red, pressed</b><code>#A51022</code><br>Hover and pressed states only</div></div>
+    </div>
+
+    <h3>Secondary (clear)</h3>
+    <div class="chips">
+      <div class="chip"><div class="chip-sw" style="background:#FF9AA8"></div><div class="chip-info"><b>Pink</b><code>#FF9AA8</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#FFC13D"></div><div class="chip-info"><b>Amber</b><code>#FFC13D</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#96C120"></div><div class="chip-info"><b>Green</b><code>#96C120</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#00A9C5"></div><div class="chip-info"><b>Teal</b><code>#00A9C5</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#5EA8E6"></div><div class="chip-info"><b>Blue</b><code>#5EA8E6</code></div></div>
+    </div>
+    <h4>Muted options</h4>
+    <div class="chips">
+      <div class="chip"><div class="chip-sw" style="background:#DD7A87"></div><div class="chip-info"><b>Muted pink</b><code>#DD7A87</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#BB9273"></div><div class="chip-info"><b>Muted sand</b><code>#BB9273</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#7B9C6B"></div><div class="chip-info"><b>Muted green</b><code>#7B9C6B</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#428994"></div><div class="chip-info"><b>Muted teal</b><code>#428994</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#4F8FAC"></div><div class="chip-info"><b>Muted blue</b><code>#4F8FAC</code></div></div>
+    </div>
+    <h4>Pastel options (50% of clear)</h4>
+    <div class="chips">
+      <div class="chip"><div class="chip-sw" style="background:#FFCDD3"></div><div class="chip-info"><b>Pastel pink</b><code>#FFCDD3</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#FFE19E"></div><div class="chip-info"><b>Pastel amber</b><code>#FFE19E</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#CAE08F"></div><div class="chip-info"><b>Pastel green</b><code>#CAE08F</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#80D4E1"></div><div class="chip-info"><b>Pastel teal</b><code>#80D4E1</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#B0D4F4"></div><div class="chip-info"><b>Pastel blue</b><code>#B0D4F4</code></div></div>
+    </div>
+
+    <h3>Area of Expertise colours</h3>
+    <p>The RNZ Colour Chart marks these as <strong>non-brand colours, not for general use</strong>. They identify a pillar and appear only as accents on that pillar's pages. See Section 11.</p>
+    <div class="chips">
+      <div class="chip"><div class="chip-sw" style="background:#606CBF"></div><div class="chip-info"><b>Workplace Experience</b><code>#606CBF</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#517D32"></div><div class="chip-info"><b>Workflow &amp; Automation</b><code>#517D32</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#0F7AC9"></div><div class="chip-info"><b>Cloud &amp; IT</b><code>#0F7AC9</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#00328F"></div><div class="chip-info"><b>Cybersecurity</b><code>#00328F</code></div></div>
+      <div class="chip"><div class="chip-sw" style="background:#CF142B"></div><div class="chip-info"><b>Print &amp; Device Mgmt</b><code>#CF142B</code> (Ricoh Red)</div></div>
+    </div>
+
+    <h3>What each colour is for</h3>
+    <div class="table-wrap" tabindex="0"><table>
+      <thead><tr><th>Colour</th><th>Use for</th><th>Never</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Ricoh Red</strong></td><td>Primary buttons, links, active and selected states, focus rings, key figures, one emphasis per section, red hero and CTA bands (sparingly)</td><td>Body text blocks, more than one competing primary action, decoration</td></tr>
+        <tr><td><strong>Ricoh Grey</strong></td><td>All text, icons, input borders, tooltips</td><td>Replaced by #333, #999 or any other grey</td></tr>
+        <tr><td><strong>White / #F5F5F5</strong></td><td>All page, screen, card and panel backgrounds</td><td>—</td></tr>
+        <tr><td><strong>#E0E0E0</strong></td><td>Dividers, card outlines, skeleton loaders</td><td>A background behind text (grey on it is 4.35:1, which fails AA)</td></tr>
+        <tr><td><strong>Secondary (clear)</strong></td><td>Charts, diagrams, illustrations, category accents, Imagination Balloons (non-corporate)</td><td>Buttons, links, text, large section fills</td></tr>
+        <tr><td><strong>Muted</strong></td><td>Chart series, status accent bars and icons (muted green, teal, blue)</td><td>Text, buttons</td></tr>
+        <tr><td><strong>Pastel</strong></td><td>Chart area fills, illustration, decorative panels without body text</td><td>Behind body text (grey fails AA on four of five pastels), Imagination Balloons</td></tr>
+        <tr><td><strong>Area of Expertise</strong></td><td>4 px top border, left accent bar, active tab underline, icons and diagrams on that pillar's pages</td><td>Buttons, links, section or hero fills, homepage or general UI, social</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="grid-2">
+      <div class="card dont"><h4>Not part of the RNZ palette</h4><ul>
+        <li>Black and near-black: <code>#000000</code>, <code>#111111</code>, <code>#1A1A1A</code>, <code>#333333</code>. No dark backgrounds, dark bands, dark heroes, dark table headers, dark footers or dark tooltips.</li>
+        <li>Invented tints and shades (e.g. pillar "pastels", <code>#B01025</code>, <code>#A50F22</code>). The only functional shade is <code>#A51022</code> for pressed red.</li>
+        <li>Legacy or generic reds: <code>#CC0000</code>, <code>#990000</code>, <code>#FF0000</code>.</li>
+        <li>Framework defaults: Bootstrap blue <code>#007BFF</code>, <code>#DC3545</code>, Material purple.</li>
+        <li>Gradients on brand colours.</li>
+      </ul></div>
+      <div class="card"><h4>Colour usage rule</h4><p>Red, white and grey should make up roughly <strong>80–90%</strong> of any screen. Secondary colours are for information graphics and small accents. Area of Expertise colours appear only in their own pillar context. If a screen looks like a rainbow, remove colour until it doesn't.</p></div>
+    </div>
+
+    <div class="note info"><p><b>Two reds, one rule:</b> The global guidelines define Ricoh Red as Pantone 186C, sRGB 207/18/46 (<code>#CF122E</code>). The RNZ Colour Chart and ricoh.co.nz use <code>#CF142B</code>. The difference is not visible on screen. RNZ digital work uses <code>#CF142B</code>. Use <code>#CF122E</code> only when matching supplied global artwork. Never mix the two in one product.</p></div>
+    <div class="note info"><p><b>Pastel values:</b> The global guidelines' colour page (§3.7.3) and conversion chart (§3.7.4) list slightly different pastel values. The RNZ Colour Chart uses the conversion-chart hex values shown above. Keep to those.</p></div>
+  </div>
+</section>
+
+<!-- ===================== 05 CONTRAST ===================== -->
+<section class="section" id="s05">
+  <div class="wrap">
+    <div class="section-head"><span class="num">05</span><h2>Accessibility and contrast</h2></div>
+    <p class="section-lead">WCAG 2.2 AA is the minimum for every RNZ screen. The ratios below were calculated with the WCAG relative-luminance formula. They replace the figures in earlier versions, several of which were wrong.</p>
+
+    <div class="table-wrap" tabindex="0"><table>
+      <thead><tr><th>Foreground on background</th><th>Ratio</th><th>Normal text (4.5)</th><th>Large text / UI (3.0)</th></tr></thead>
+      <tbody>
+        <tr><td>Ricoh Grey on White</td><td class="num-cell">5.74:1</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+        <tr><td>Ricoh Grey on #F5F5F5</td><td class="num-cell">5.27:1</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+        <tr><td>Ricoh Red on White (links, text)</td><td class="num-cell">5.54:1</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+        <tr><td>Ricoh Red on #F5F5F5</td><td class="num-cell">5.08:1</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+        <tr><td>White on Ricoh Red</td><td class="num-cell">5.54:1</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+        <tr><td>White on #A51022 (pressed)</td><td class="num-cell">7.79:1</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+        <tr><td>White on Ricoh Grey (tooltips)</td><td class="num-cell">5.74:1</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+        <tr><td>Ricoh Grey on Pastel amber</td><td class="num-cell">4.52:1</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+        <tr><td>Ricoh Grey on Pastel pink / green / blue / teal</td><td class="num-cell">4.08 / 3.98 / 3.71 / 3.40</td><td class="fail">Fail</td><td class="pass">Pass</td></tr>
+        <tr><td>Ricoh Grey on #E0E0E0</td><td class="num-cell">4.35:1</td><td class="fail">Fail</td><td class="pass">Pass</td></tr>
+        <tr><td>White on pillar Workplace / Workflow / Cloud</td><td class="num-cell">4.78 / 4.85 / 4.52</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+        <tr><td>White on pillar Cybersecurity</td><td class="num-cell">11.33:1</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+        <tr><td>Muted teal / Muted blue / Muted green on White (icons, bars)</td><td class="num-cell">4.01 / 3.59 / 3.08</td><td class="fail">Fail</td><td class="pass">Pass</td></tr>
+        <tr><td>Muted green on #F5F5F5</td><td class="num-cell">2.83:1</td><td class="fail">Fail</td><td class="fail">Fail</td></tr>
+        <tr><td>Any clear secondary colour on White</td><td class="num-cell">1.62–2.81</td><td class="fail">Fail</td><td class="fail">Fail</td></tr>
+        <tr><td>White or grey text on any clear secondary colour</td><td class="num-cell">≤ 3.54</td><td class="fail">Fail</td><td>Varies</td></tr>
+        <tr><td>#E0E0E0 border on White</td><td class="num-cell">1.32:1</td><td>—</td><td class="fail">Fail (decorative only)</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>What this means in practice</h3>
+    <ul>
+      <li><strong>Text</strong> is Ricoh Grey on white or #F5F5F5, or white on Ricoh Red, Ricoh Grey or a pillar colour. No other text pairings.</li>
+      <li><strong>Input borders</strong> use Ricoh Grey (5.74:1). A light #E0E0E0 or #CCCCCC border fails the 3:1 non-text contrast requirement (WCAG 1.4.11).</li>
+      <li><strong>Colour is never the only signal.</strong> Status, errors, chart series and pillars always carry an icon, text label or pattern as well.</li>
+      <li><strong>Secondary colours in charts</strong> need direct labels or a 2 px white separator between marks, because none reach 3:1 on white.</li>
+      <li><strong>Focus</strong> is always visible: a 2 px Ricoh Red ring with a 2 px white gap.</li>
+      <li><strong>Targets</strong> are at least 44 × 44 px on touch screens (WCAG 2.2 minimum is 24 × 24).</li>
+      <li><strong>Structure</strong> is sequential: one H1, then H2 and H3 with no skipped levels. Every input has a visible label. Every meaningful image has alt text, and decorative images use <code>alt=""</code>.</li>
+      <li><strong>Lists styled without bullets</strong> keep <code>role="list"</code>, because Safari and VoiceOver drop list semantics when <code>list-style: none</code> is set.</li>
+      <li><strong>Motion</strong> respects <code>prefers-reduced-motion</code>.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== 06 TYPOGRAPHY ===================== -->
+<section class="section tint" id="s06">
+  <div class="wrap">
+    <div class="section-head"><span class="num">06</span><h2>Typography</h2></div>
+    <p class="section-lead">Frutiger is Ricoh's specified typeface. Where Frutiger cannot be used, Arial is the substitute (Guidelines §3.6). No other typeface is used in RNZ production work.</p>
+
+    <div class="grid">
+      <div class="card"><h3 class="t4" style="font-weight:300">Frutiger Light · 300</h3><p>Large intro text, hero sub-lines, big numbers. Not for small text.</p></div>
+      <div class="card"><h3 class="t4" style="font-weight:400">Frutiger Regular · 400</h3><p>Body copy, form values, table data.</p></div>
+      <div class="card"><h3 class="t4" style="font-weight:500">Frutiger Medium · 500</h3><p>Sub-headings and UI labels that need slightly more presence.</p></div>
+      <div class="card"><h3 class="t4" style="font-weight:700">Frutiger Bold · 700</h3><p>Headings, buttons, key figures. Arial has no Light or Medium, so those weights fall back to Regular.</p></div>
+    </div>
+
+    <h3>Font stack and loading</h3>
+    <pre class="code" tabindex="0"><span class="k">font-family</span>: 'Frutiger', 'Frutiger LT Std', Arial, sans-serif;</pre>
+    <ul>
+      <li><strong>Web (Sitecore):</strong> ricoh.co.nz provides the licensed font. Exported HTML and CSS declare the stack only. They never link a font service such as Google Fonts or a CDN.</li>
+      <li><strong>Web apps and other hosts:</strong> Frutiger is a licensed Monotype/Linotype webfont. It is <em>not</em> available through Adobe Fonts. Self-host it only under a web licence that covers the domain. Without a licence, the stack falls back to Arial, which is correct.</li>
+      <li><strong>Native apps:</strong> Embed Frutiger only under an app licence. Otherwise use Arial. Android does not ship Arial, so bundle a licensed Arial or accept the system sans-serif as a last resort.</li>
+      <li><strong>Documents (Word, PowerPoint, Excel, PDF):</strong> Use Frutiger if installed, otherwise Arial.</li>
+      <li>Prototype fonts (Inter, DM Sans, Outfit, Roboto, Helvetica) must not reach production.</li>
+    </ul>
+
+    <h3>Web scale</h3>
+    <div class="specimen">
+      <div class="spec-row"><div class="lbl"><b>H1</b>48 · Bold · 1.1</div><div style="font-size:clamp(30px,5vw,48px);font-weight:700;line-height:1.1;letter-spacing:-0.5px">Workplace services for NZ</div></div>
+      <div class="spec-row"><div class="lbl"><b>H2</b>36 · Bold · 1.15</div><div style="font-size:clamp(26px,3.6vw,36px);font-weight:700;line-height:1.15">Why choose Ricoh</div></div>
+      <div class="spec-row"><div class="lbl"><b>H3</b>28 · Bold · 1.2</div><div style="font-size:28px;font-weight:700;line-height:1.2">Managed print services</div></div>
+      <div class="spec-row"><div class="lbl"><b>H4</b>22 · Bold · 1.25</div><div style="font-size:22px;font-weight:700;line-height:1.25">Key benefit</div></div>
+      <div class="spec-row"><div class="lbl"><b>Lead</b>18 · Light · 1.5</div><div style="font-size:18px;font-weight:300;line-height:1.5">Reduce costs and improve security with local support across New Zealand.</div></div>
+      <div class="spec-row"><div class="lbl"><b>Body</b>16 · Regular · 1.6</div><div style="font-size:16px;line-height:1.6">Our NZ team works alongside yours, with practical outcomes and no jargon.</div></div>
+      <div class="spec-row"><div class="lbl"><b>Small</b>14 · Regular · 1.5</div><div style="font-size:14px;line-height:1.5">Supporting text, help text, metadata.</div></div>
+      <div class="spec-row"><div class="lbl"><b>Caption</b>13 · Regular · 1.4</div><div style="font-size:13px;line-height:1.4">Image captions and legal lines. Nothing smaller than 12 px.</div></div>
+    </div>
+
+    <h3>App scale</h3>
+    <p>Denser screens use a tighter scale on the same weights.</p>
+    <div class="table-wrap" tabindex="0"><table>
+      <thead><tr><th>Role</th><th>Size / line height</th><th>Weight</th></tr></thead>
+      <tbody>
+        <tr><td>Screen title</td><td class="num-cell">28 / 34</td><td>Bold</td></tr>
+        <tr><td>Section title</td><td class="num-cell">22 / 28</td><td>Bold</td></tr>
+        <tr><td>Card or panel title</td><td class="num-cell">18 / 24</td><td>Bold</td></tr>
+        <tr><td>Body and inputs</td><td class="num-cell">16 / 24</td><td>Regular</td></tr>
+        <tr><td>Labels and dense tables</td><td class="num-cell">14 / 20</td><td>Regular or Medium</td></tr>
+        <tr><td>Captions and timestamps</td><td class="num-cell">13 / 18</td><td>Regular</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Rules</h3>
+    <ul>
+      <li><strong>All text is Ricoh Grey.</strong> Hierarchy comes from size and weight, not darker colours.</li>
+      <li><strong>Emphasis in red:</strong> one or two key words in a headline may be Ricoh Red. Only one highlight per heading, and never on body text.</li>
+      <li><strong>Sentence case everywhere:</strong> headings, buttons, labels, tabs and table headers. No all-caps labels and no letter-spaced kicker text.</li>
+      <li><strong>No eyebrows.</strong> Small labels above headings are not part of the Ricoh system. Headings carry the message. Category or date metadata sits <em>below</em> a title as plain small text.</li>
+      <li>Line length 60–75 characters for reading text. Left-aligned, never justified.</li>
+      <li>Bold only for emphasis, never whole paragraphs.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== 07 BALLOON ===================== -->
+<section class="section" id="s07">
+  <div class="wrap">
+    <div class="section-head"><span class="num">07</span><h2>The Imagination Balloon</h2></div>
+    <p class="section-lead">The main graphic element of Ricoh communication. It presents copy and imagery in a direct, friendly way. It is a rounded square with a small square tail at one corner. It is not a circle or a teardrop.</p>
+
+    <div class="balloon-fig">
+      <figure><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU8AAAFLCAYAAABWXA7kAAAE/UlEQVR42u3c8XESQRiH4R9UYAfhCnBDB0kHxgpCKpAOTAmUQDqIFYgVGLeBSzpIKsA/Ag6jxkBUuNPnaYDl25l39u44BsvlMk+pTTlNcpbkNMlxAP6OuySLJNelrdd9WPDgZ/FcRfMyyYk9BQ4Q0mnXI/pDPGtTLpO8t3/AgV2Vtk56Ec/alHmSc3sGCOivDTfCORVOoGPOV4e6bp48a1PGST7bJ6Cj3nbtHuj65DmzN0CHda5Rw9qUUTxVB7rtqDblrGsnzzP7AvSAeAK8wLhr8XxlT4Ae6NRbjsN47RLgRfEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEEE8jABBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDxNAIA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEQDwBxBNAPAHEE0A8ARBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEEEE8jABBPAPEEEE8A8QQQTwDEE0A8AcQTQDwBxBMA8QQQTwDxBBBPAPEE6LjalJF4Auxu2pWFDL6MXi/tB9AjV0nm+/qw0taFeAK8zIcks82QumwHeN6bJB9rU2ab8XwwF4CtvKtNuVxfti+SnJgJwNaaYZJbcwDYyXSYZGEOADsZD5Ncx31PgF2cDEtb75PMzAJge4Pl8vFnnrUpN0mOjQTgeZu/85y4fAfYMZ6lrTdJTgUUYLeT5zqg4ySfjAbgad/ueX6vNmWSx38wcR8UYNt4bkR0tLqcHxkX8BvWLTn6L+IJ8CfVpsyTnPf9e/hXJWDfpv/ClxBPYK9WL+b0/qG0eAKIJ4B4AogngHgCiCcA4gkgngDiCSCeAOIJgHgCiCeAeAKIJ4B4AiCeAOIJIJ4A4gkgngCIJ4B4AogngHgCiCfAXtz3fP2fxBM4hEXP138jnsAhzJM89Hj9M/EE9q609T7JpKfLvyhtvRVP4FABvU5y0bMT6EVp6zzxwAg4bEDnScZJrpLcdXSZD6v1NetwJslX2HCQjP/fxZgAAAAASUVORK5CYII=" width="150" alt="Imagination Balloon, filled Ricoh Red master artwork">Filled (master PNG)</figure>
+      <figure><img src="data:image/png;base64,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" width="150" alt="Imagination Balloon, RNZ red outline variant">RNZ outline variant</figure>
+      <figure><div class="on-red"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU8AAAFLCAYAAABWXA7kAAAE4UlEQVR42u3c0VETURiG4W8z3pMOCBWQDkgJWAFQgenAlKAdLB1gB6ECQwdQgVDB8YLdGUaNblCTs/o8Mwxwxcl/Zt7Z5OzSlFLyE4sk59330wD8HQ9J1kluuq/qNVviuUiySnJmT4EDhHRZe0R/FM9Vkvf2Dziw6ySXtS7uzTe/t0ku7BlQgb5FVQZ08uLnpXACFQa0rflt+zzJZ/sEVOptKvsMtI/nOg6HgHo9JJnV9rZ9JpxA5Y7zfNtkVfE8ty/ACIgnwCvMa4vn1J4AI1DVU45N+cXzmQA1NaumK08AxBNAPAHEE0A8AcQTAPEEEE8A8QQQTwDxBEA8AcQTQDwBxBNAPAEQTwDxBBBPAPEEEE8AxBNAPAHEE0A8AcQTAPEEEE8A8QQQTwDxBEA8AcQTQDwBxBNAPAEQTwDxBBBPAPEEEE8AxBNAPAHEE0A8AcQTAPEEEE8A8QQQTwDxBEA8AcQTQDwBxBNAPAEQTwDxBBBPAPEEEE8AxBNAPAHEE0A8AcQTAPEEEE8A8QQQTwDxBEA8AcQTQDwBxBNAPAEQTwDxBBBPAPEEEE8A8TQCAPEEEE8A8QQQTwDxBEA8AcQTQDwBxBNAPAEQTwDxBBBPAPEEEE8AxBNAPAHEE0A8AcQTAPEEEE8A8QQQTwDxBEA8AcQTQDwBxBNAPAEQTwDxBBBPAPEEEE8AxBNAPAHEE0A8AcQTAPEEEE8A8QQQTwDxBEA8AcQTQDwBxBNAPAEQTwDxBBBPAPEEEE8AxBNAPAHEE0A8AcQTAPEEEE8A8QQQTwDxBEA8AcQTQDwBxBNAPAEQTwDxBBBPAPEEEE8AxBNAPAHEE0A8AcQTAPEEEE8A8QQQTwDxBBBPIwAQTwDxBBBPAPEEEE8AxBNAPAHEE0A8AcQTAPEEEE8A8QQQTwDxBEA8AcQTQDwBxBNAPAEQTwDxBBBPAPEEEE8AxBNAPAHEE0A8AcQTAPEEEE8A8QQQTwDxBEA8AcQTQDwBxBNAPAEQTwDxBBBPAPEEEE8AxBNAPAHEE0A8AcQTAPEEEE8A8QQQTwDxBEA8AcQTQDwBxBNAPAEQTwDxBBBPAPEEEE8AxBNAPAHEE0A8AcQTAPEEEE8A8QQQTwDxBEA8AcQTQDwBxBNAPAEQTwDxBBBPAPEEEE8A8TQCAPEEEE8A8QQQTwDxBEA8AcQTQDwBxBNAPAEQTwDxBBBPAPEEEE+A+s3EE2B3y1oW0pRSiv0ARuQ6SbvHv7cWT4DX+ZTkw8uQiifAcB/TfXQwSfJkHgCDvEuy6q8810nOzARgsJNJkntzANjJcpItJ0kAbDVvSinT7urzyDwAhpkkeczzETwAAzUv7lTaJDk1EoBhV569y7htCWDneG6SLAQUYLd49gGdJ7k1GoDh8UyeT94XSa6S3BkRwPeaAY+2z7qYzowL+A19S47/l3gC/EltkgvxBNjNNMmXsb8I/0ke2LfH/AOH0uIJIJ4A4gkgngDiCSCeAIgngHgCiCeAeAKIJwDiCSCeAOIJIJ4A4gmAeAKIJ4B4AogngHgCIJ4A4gkgngDiCSCeAHvxOPL134oncAjrka9/05RSbCOwb9Mk90mORrr+E1eewKHetl+OdO1XSe7FEziUmy5ETyMLZ5s4MAIOq00yT3Kd5KHSNT516zvpw5kkXwHc0nINIi5pMwAAAABJRU5ErkJggg==" width="110" alt="Imagination Balloon, white master artwork at 70% opacity on Ricoh Red" style="opacity:.7"></div>White at about 70% on red</figure>
+    </div>
+    <p style="font-size:14px;margin-top:var(--s3)">Assets: <code>rnz-context/Imagination Balloon/</code> (<code>Ribbon RNZ fill.png</code>, <code>Ribbon RNZ White Fill.png</code>, <code>Ribbon Red.png</code>). Translucency comes from opacity on the white master, never from a CSS colour filter.</p>
+
+    <div class="grid-2">
+      <div class="card do"><h3 class="t4">Do</h3><ul>
+        <li>Use master artwork only: PNG or SVG from the brand team or the RNZ asset folder.</li>
+        <li>Give it a bold, confident presence. It anchors a layout and is never a tiny ornament.</li>
+        <li>Use Version A (tail bottom-right) first. Use Version B only when the layout needs it.</li>
+        <li>Colour it Ricoh Red, grey or translucent white (about 70%). For non-corporate uses, secondary colours are allowed.</li>
+        <li>Keep text inside the permitted area, with at least 0.06X clearance from the edges.</li>
+        <li>Animate it gently where motion is used. It is the only brand element that may move.</li>
+      </ul></div>
+      <div class="card dont"><h3 class="t4">Never</h3><ul>
+        <li>Draw it in CSS or SVG (e.g. <code>border-radius: 50% 50% 50% 0</code>). That creates a different shape.</li>
+        <li>Tint the PNG with CSS filters to pillar colours, or colour it in a pastel.</li>
+        <li>Stretch, rotate, flip upside down, crop or use only part of it.</li>
+        <li>Outline a coloured balloon, or combine it with other shapes.</li>
+        <li>Put the RICOH logo or the tagline on it, or use it in place of the logo.</li>
+        <li>Use it as a UI component: chat bubbles, buttons, avatar frames, loaders or map pins.</li>
+        <li>Imitate it with decorative circles in heroes or CTA bands.</li>
+      </ul></div>
+    </div>
+    <div class="note warn"><p><b>Check before wider use:</b> The RNZ outline ("Ribbon") balloons in pillar colours are a local variant. The global guidelines only allow outlines on white balloons over white or grey imagery (§3.5.9). Confirm APAC approval before using them in new apps or campaigns. Until then, the filled Red and White masters are the safe default.</p></div>
+  </div>
+</section>
+
+<!-- ===================== 08 IMAGERY ===================== -->
+<section class="section tint" id="s08">
+  <div class="wrap">
+    <div class="section-head"><span class="num">08</span><h2>Imagery and icons</h2></div>
+    <p class="section-lead">Imagery should feel credible, local and practical. If an image could belong to any IT vendor, it is not Ricoh enough.</p>
+
+    <div class="grid-2">
+      <div class="card do"><h3 class="t4">Use</h3><ul>
+        <li>Real people in real NZ workplaces: offices, schools, councils, clinics, production floors</li>
+        <li>Technology in use: devices, screens and MFPs in context</li>
+        <li>Natural collaboration, hybrid meetings, natural light</li>
+        <li>Close-ups that show emotion without sentimentality (Close)</li>
+        <li>Fresh angles and freeze-frame moments (Active)</li>
+        <li>Open, simple compositions that suggest possibility (Unlimited)</li>
+      </ul></div>
+      <div class="card dont"><h3 class="t4">Avoid</h3><ul>
+        <li>Handshakes, boardroom stare-downs, people smiling at the camera</li>
+        <li>Hooded hackers, matrix code, red warning screens, "war room" cyber imagery</li>
+        <li>Holograms, globes, floating interfaces, abstract blue tech backgrounds</li>
+        <li>Obviously AI-generated or uncanny people</li>
+        <li>Dark photos used as a way to get a dark background</li>
+      </ul></div>
+    </div>
+
+    <h3>Image treatment</h3>
+    <ul>
+      <li>Don't put text over a busy image. Use a white content card on the image (Hero C) or place text beside it.</li>
+      <li>If a scrim is unavoidable, use Ricoh Grey at 60% (<code>rgba(102,102,102,.6)</code>) and check contrast. Never use a black gradient.</li>
+      <li>Crop to the subject. Keep aspect ratios consistent within a set: 16:9 heroes, 4:3 or 1:1 cards.</li>
+      <li>Use the RNZ image sizes in <code>rnz-context/RNZ Image Ratios/</code> for Sitecore banners and thumbnails.</li>
+      <li>AI-generated images follow the same standard and must never show real, identifiable people, customer logos or Ricoh devices that don't exist.</li>
+    </ul>
+
+    <h3>Icons</h3>
+    <ul>
+      <li>Source: <code>RNZ_Icon_Library.html</code> in <code>rnz-context</code>. Use one set per product, with consistent stroke weight.</li>
+      <li>Colour: Ricoh Grey by default. Ricoh Red for the primary or active icon. A pillar colour only on that pillar's pages.</li>
+      <li>Sizes: 16 or 20 px inline, 24 px UI, 40 px feature, 56 px hero support.</li>
+      <li>No emoji as UI icons, no 3D or cartoon icons, and no mixed icon packs.</li>
+      <li>Icon-only buttons have an accessible name (<code>aria-label</code>) and a tooltip.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== 09 LAYOUT ===================== -->
+<section class="section" id="s09">
+  <div class="wrap">
+    <div class="section-head"><span class="num">09</span><h2>Layout, spacing and shape</h2></div>
+    <p class="section-lead">Rounded corners echo the Imagination Balloon. Accent bars carry colour. Generous spacing carries quality.</p>
+
+    <div class="grid-2">
+      <div>
+        <h3 class="t4">Spacing (8 px grid)</h3>
+        <div class="table-wrap" tabindex="0"><table>
+          <thead><tr><th>Token</th><th>Value</th><th>Typical use</th></tr></thead>
+          <tbody>
+            <tr><td><code>--s1</code></td><td class="num-cell">4</td><td>Icon to label</td></tr>
+            <tr><td><code>--s2</code></td><td class="num-cell">8</td><td>Tight groups</td></tr>
+            <tr><td><code>--s3</code></td><td class="num-cell">12</td><td>Field gaps</td></tr>
+            <tr><td><code>--s4</code></td><td class="num-cell">16</td><td>Card gaps, mobile gutter</td></tr>
+            <tr><td><code>--s5</code></td><td class="num-cell">24</td><td>Card padding</td></tr>
+            <tr><td><code>--s6</code></td><td class="num-cell">32</td><td>Desktop gutter</td></tr>
+            <tr><td><code>--s7</code></td><td class="num-cell">48</td><td>Block separation</td></tr>
+            <tr><td><code>--s8</code></td><td class="num-cell">64</td><td>Section padding (desktop)</td></tr>
+            <tr><td><code>--s9</code></td><td class="num-cell">80</td><td>Hero padding</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div>
+        <h3 class="t4">Radius</h3>
+        <div class="table-wrap" tabindex="0"><table>
+          <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+          <tbody>
+            <tr><td><code>--radius-sm</code></td><td class="num-cell">4</td><td>Buttons, inputs, tags, tooltips</td></tr>
+            <tr><td><code>--radius</code></td><td class="num-cell">8</td><td>Cards, panels, menus</td></tr>
+            <tr><td><code>--radius-lg</code></td><td class="num-cell">12</td><td>Heroes, CTA bands, modals</td></tr>
+            <tr><td><code>--radius-xl</code></td><td class="num-cell">16</td><td>Large feature containers</td></tr>
+          </tbody>
+        </table></div>
+        <h3 class="t4">Elevation</h3>
+        <p>Shadows are tinted with Ricoh Grey (Cool Gray 10C), never black. Use <code>--shadow-sm</code> for cards, <code>--shadow</code> for raised panels and <code>--shadow-lg</code> for menus, toasts and modals. Most surfaces need a border rather than a shadow.</p>
+      </div>
+    </div>
+
+    <h3>Grid and breakpoints</h3>
+    <ul>
+      <li>Max content width is <strong>1160 px</strong>. Gutters are 16 px on mobile and 32 px on desktop.</li>
+      <li>Breakpoints: 600, 768, 1024 and 1280 px. Design mobile-first, with no horizontal scrolling at 320 px.</li>
+      <li>Cards sit in 1, 2, 3 or 4 columns. An incomplete last row aligns left.</li>
+    </ul>
+
+    <h3>Accent bars</h3>
+    <ul>
+      <li><strong>Top accent:</strong> 4 px on a card, in red or the pillar colour.</li>
+      <li><strong>Left accent:</strong> 3–6 px on callouts, quotes, hero panels and the active nav item.</li>
+      <li><strong>Heading rule:</strong> a 48 × 3 px red bar, optional, used under a section heading.</li>
+      <li>Use one accent style per component. Never stack a top and a left accent.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== 10 COMPONENTS ===================== -->
+<section class="section tint" id="s10">
+  <div class="wrap">
+    <div class="section-head"><span class="num">10</span><h2>Components</h2></div>
+    <p class="section-lead">These are working reference implementations. Build fewer components, not more. Use one only when it helps someone understand or act.</p>
+
+    <h3>Buttons</h3>
+    <div class="demo">
+      <div class="demo-row">
+        <a class="rnz-btn rnz-btn--primary" href="#s10">Request an assessment</a>
+        <a class="rnz-btn rnz-btn--secondary" href="#s10">View services</a>
+        <button class="rnz-btn rnz-btn--neutral" type="button">Cancel</button>
+        <button class="rnz-btn rnz-btn--primary" type="button" disabled>Submitting…</button>
+      </div>
+      <div class="demo-row on-red" style="margin-top:var(--s4)">
+        <a class="rnz-btn rnz-btn--on-red" href="#s10">Talk to our team</a>
+        <a class="rnz-btn rnz-btn--on-red" href="tel:0800807676">Call 0800 80 76 76</a>
+      </div>
+    </div>
+    <div class="table-wrap" tabindex="0"><table>
+      <thead><tr><th>Variant</th><th>Default</th><th>Hover / pressed</th><th>Use</th></tr></thead>
+      <tbody>
+        <tr><td>Primary</td><td>Red fill, white text</td><td><code>#A51022</code> fill</td><td>The single main action. One per view.</td></tr>
+        <tr><td>Secondary</td><td>White, 2 px red border, red text</td><td>Red fill, white text</td><td>Alternative actions</td></tr>
+        <tr><td>Neutral</td><td>White, 1 px grey border, grey text</td><td>#F5F5F5 fill</td><td>Cancel, back, low-priority app actions</td></tr>
+        <tr><td>On red</td><td>White border and text</td><td>White fill, red text</td><td>Only inside red heroes and CTA bands</td></tr>
+      </tbody>
+    </table></div>
+    <p>Minimum height is 44 px. Labels are verb-led, sentence case and say what happens ("Download the report", not "Click here" or "Submit"). Don't use grey-filled, secondary-coloured or pillar-coloured buttons.</p>
+
+    <h3>Form fields</h3>
+    <div class="demo">
+      <div class="rnz-field">
+        <label class="rnz-label" for="f-email">Work email <span class="rnz-req" aria-hidden="true">*</span></label>
+        <input class="rnz-input" id="f-email" type="email" autocomplete="email" required aria-describedby="f-email-help">
+        <div class="rnz-help" id="f-email-help">We'll only use this to reply to your enquiry.</div>
+      </div>
+      <div class="rnz-field">
+        <label class="rnz-label" for="f-company">Company <span class="rnz-req" aria-hidden="true">*</span></label>
+        <input class="rnz-input" id="f-company" type="text" required aria-invalid="true" aria-describedby="f-company-err" value="">
+        <div class="rnz-error" id="f-company-err">Enter your company name</div>
+      </div>
+    </div>
+    <ul>
+      <li>Every field has a visible label above it. Placeholders never replace labels.</li>
+      <li>The border is Ricoh Grey 1 px. It turns red on focus and when there is an error. Error text is red, bold, says how to fix the problem and is linked with <code>aria-describedby</code>.</li>
+      <li>Mark required fields with a red asterisk and explain the asterisk once per form.</li>
+      <li>Website lead forms connect to Dynamics 365 Customer Insights – Journeys. Field strategy and CRM routing belong to <code>rnz-contact-lead-form-optimiser</code>.</li>
+    </ul>
+
+    <h3>Cards</h3>
+    <div class="grid">
+      <div class="rnz-card rnz-card--accent"><h4>Managed print</h4><p>Right-size your fleet and cut waste with local NZ support.</p><a href="#s10">Explore managed print</a></div>
+      <div class="rnz-card rnz-card--accent" style="--accent:#0F7AC9"><h4>Cloud &amp; IT</h4><p>Pillar page example. The top accent uses the pillar colour, and the link stays red.</p><a href="#s10">Explore cloud services</a></div>
+      <div class="rnz-card"><h4>Case study title</h4><p>Case study · 5 min read</p><a href="#s10">Read the case study</a></div>
+    </div>
+    <p>White background, 1 px #E0E0E0 border, 8 px radius and an optional 4 px top accent. Each card has one link or button. Metadata sits below the title as plain text, never as an eyebrow above it.</p>
+
+    <h3>Status messages</h3>
+    <div class="demo">
+      <div class="rnz-status rnz-status--error" role="alert"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="#CF142B" stroke-width="2"/><path d="M10 5v6M10 13.5v1.5" stroke="#CF142B" stroke-width="2" stroke-linecap="round"/></svg><div><strong>We couldn't send your request.</strong> Check your connection and try again.</div></div>
+      <div class="rnz-status rnz-status--success" role="status"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="#666666" stroke-width="2"/><path d="M6 10.5l2.5 2.5L14 7.5" fill="none" stroke="#666666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><div><strong>Saved.</strong> Your changes are live.</div></div>
+      <div class="rnz-status rnz-status--warning" role="status"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2L19 18H1z" fill="none" stroke="#666666" stroke-width="2" stroke-linejoin="round"/><path d="M10 8v4M10 14.5v1" stroke="#666666" stroke-width="2" stroke-linecap="round"/></svg><div><strong>Your session ends in 5 minutes.</strong> Save your work.</div></div>
+      <div class="rnz-status rnz-status--info" role="status"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="#666666" stroke-width="2"/><path d="M10 9v6M10 5.5v1" stroke="#666666" stroke-width="2" stroke-linecap="round"/></svg><div><strong>New:</strong> invoices can now be downloaded as PDF.</div></div>
+    </div>
+    <p>The message and icon carry the meaning, in grey (or red for errors). The 4 px bar adds support: red for errors, muted green for success, amber for warnings, muted blue for information. Always sit these on white. Pastel-filled alert boxes fail contrast with grey text.</p>
+
+    <h3>Tags</h3>
+    <div class="demo"><div class="demo-row"><span class="rnz-tag">Article</span><span class="rnz-tag">Case study</span><span class="rnz-tag rnz-tag--red">New</span></div></div>
+    <p>Tags use sentence case, a 1 px outline and no fill. Tags are for categories, not decoration.</p>
+
+    <h3>Tabs</h3>
+    <div class="demo">
+      <div class="rnz-tabs" role="tablist" aria-label="Example tabs">
+        <button class="rnz-tab" role="tab" id="t1" aria-selected="true" aria-controls="tp1">Overview</button>
+        <button class="rnz-tab" role="tab" id="t2" aria-selected="false" aria-controls="tp2" tabindex="-1">Services</button>
+        <button class="rnz-tab" role="tab" id="t3" aria-selected="false" aria-controls="tp3" tabindex="-1">Support</button>
+      </div>
+      <div class="rnz-tabpanel" role="tabpanel" id="tp1" aria-labelledby="t1">Overview content. Arrow keys move between tabs.</div>
+      <div class="rnz-tabpanel" role="tabpanel" id="tp2" aria-labelledby="t2" hidden>Services content.</div>
+      <div class="rnz-tabpanel" role="tabpanel" id="tp3" aria-labelledby="t3" hidden>Support content.</div>
+    </div>
+
+    <h3>Accordion</h3>
+    <div class="demo">
+      <div class="rnz-acc">
+        <h4 style="margin:0"><button class="rnz-acc-btn" aria-expanded="false" aria-controls="a1">How long does an assessment take?</button></h4>
+        <div class="rnz-acc-panel" id="a1" hidden><p>Most assessments take two to three weeks from kickoff to report.</p></div>
+        <h4 style="margin:0"><button class="rnz-acc-btn" aria-expanded="false" aria-controls="a2">Do you support hybrid teams?</button></h4>
+        <div class="rnz-acc-panel" id="a2" hidden><p>Yes, across New Zealand, in the office and remotely.</p></div>
+      </div>
+    </div>
+    <p>Use accordions for FAQs and technical depth, never to hide information someone needs to decide. Editing panel content must not collapse the accordion.</p>
+
+    <h3>Stat strip</h3>
+    <div class="rnz-stats" style="margin-bottom:var(--s4)"><div><b>00</b><span>Example metric</span></div><div><b>00%</b><span>Example metric</span></div><div><b>00</b><span>Example metric</span></div></div>
+    <div class="rnz-stats rnz-stats--light"><div><b>00%</b><span>Example metric</span></div><div><b>00</b><span>Example metric</span></div><div><b>00</b><span>Example metric</span></div></div>
+    <p style="margin-top:var(--s3)">Use a red strip, or white with red figures. Only use real, sourced numbers. The figures above are placeholders. Never use a dark or pillar-coloured strip.</p>
+
+    <h3>Tables</h3>
+    <p>Header row is #F5F5F5 with bold grey sentence-case text and a 2 px red rule. Body rows are white with #E0E0E0 dividers. Numbers are right-aligned with tabular figures. No dark headers. Full patterns: <code>RNZ Tables &amp; Structured Data Design Standard.html</code>.</p>
+
+    <h3>Data visualisation</h3>
+    <div class="demo">
+      <div class="bars" role="img" aria-label="Example bar chart using the RNZ series order">
+        <div style="height:90%;background:#CF142B"><span>1</span></div>
+        <div style="height:75%;background:#666666"><span>2</span></div>
+        <div style="height:62%;background:#4F8FAC"><span>3</span></div>
+        <div style="height:55%;background:#428994"><span>4</span></div>
+        <div style="height:46%;background:#7B9C6B"><span>5</span></div>
+        <div style="height:38%;background:#5EA8E6"><span>6</span></div>
+        <div style="height:30%;background:#FFC13D"><span>7</span></div>
+      </div>
+    </div>
+    <ul>
+      <li>Primary and secondary colours may be used in charts (Guidelines §3.7.2, §3.7.3).</li>
+      <li>Series order: Ricoh Red, Ricoh Grey, Muted blue, Muted teal, Muted green, then Blue, Teal, Green, Amber and Pink. Use one pillar colour only on that pillar's pages.</li>
+      <li>Highlight the key series in red and push the rest to grey when one number matters most.</li>
+      <li>Label directly on or beside the marks. Clear secondary colours are below 3:1 on white, so they need labels or white separators.</li>
+      <li>Axes and gridlines are Ricoh Grey and #E0E0E0. Backgrounds are white. No 3D, no gradients.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== 11 PILLARS ===================== -->
+<section class="section" id="s11">
+  <div class="wrap">
+    <div class="section-head"><span class="num">11</span><h2>Pillar colours</h2></div>
+    <p class="section-lead">Area of Expertise colours tell visitors which pillar they are in. They are accents, never surfaces, and never compete with Ricoh Red.</p>
+
+    <div class="table-wrap" tabindex="0"><table>
+      <thead><tr><th>Pillar</th><th>Colour</th><th>Also called</th></tr></thead>
+      <tbody>
+        <tr><td>Workplace Experience</td><td><code>#606CBF</code></td><td>Hybrid Workplace (HW)</td></tr>
+        <tr><td>Workflow &amp; Automation</td><td><code>#517D32</code></td><td>Process automation (WA)</td></tr>
+        <tr><td>Cloud &amp; IT</td><td><code>#0F7AC9</code></td><td>IT services (IT)</td></tr>
+        <tr><td>Cybersecurity</td><td><code>#00328F</code></td><td>CS</td></tr>
+        <tr><td>Print &amp; Device Management</td><td><code>#CF142B</code></td><td>Office Print (uses Ricoh Red)</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="grid-2">
+      <div class="card do"><h3 class="t4">Allowed on that pillar's pages</h3><ul>
+        <li>4 px card top accent</li>
+        <li>Left accent bar on the hero panel (Hero A)</li>
+        <li>Active tab underline and side-nav marker</li>
+        <li>Pillar icons, diagram lines and labels, one chart series</li>
+      </ul></div>
+      <div class="card dont"><h3 class="t4">Never</h3><ul>
+        <li>Hero, section, CTA band or stat strip fills</li>
+        <li>Buttons, links or body text. Ricoh Red stays the action colour.</li>
+        <li>Homepage, corporate, general UI or social use</li>
+        <li>More than one pillar colour per page</li>
+        <li>Invented tints or shades of pillar colours</li>
+      </ul></div>
+    </div>
+    <p>In code, set the pillar once on the page wrapper and let components inherit it:</p>
+    <pre class="code" tabindex="0">.pillar-cloud { <span class="k">--accent</span>: #0F7AC9; }   <span class="c">/* components read var(--accent, var(--red)) */</span></pre>
+  </div>
+</section>
+
+<!-- ===================== 12 APPS & AI SKINS ===================== -->
+<section class="section tint" id="s12">
+  <div class="wrap">
+    <div class="section-head"><span class="num">12</span><h2>Apps and AI interfaces</h2></div>
+    <p class="section-lead">An RNZ app or AI tool should feel like ricoh.co.nz: white, calm, grey text, and red only where action or state matters.</p>
+
+    <h3>App shell</h3>
+    <div class="app-frame" aria-label="Example app shell">
+      <div class="app-top">
+        <span class="app-logo" role="img" aria-label="RICOH lock-up placeholder">Lock-up file</span>
+        <nav aria-label="Example primary">
+          <a href="#s12" aria-current="page">Dashboard</a><a href="#s12">Devices</a><a href="#s12">Requests</a>
+        </nav>
+      </div>
+      <div class="app-body">
+        <div class="app-side">
+          <a href="#s12" aria-current="page">Overview</a><a href="#s12">Usage</a><a href="#s12">Billing</a><a href="#s12">Settings</a>
+        </div>
+        <div class="app-main">
+          <div class="chat">
+            <div class="msg msg--user">Which devices are due for service this month?</div>
+            <div class="msg msg--ai">Three devices are due. Level 2 and Level 4 need a toner service, and the reception MFP needs its annual check. Do you want me to log the requests?</div>
+            <div class="demo-row"><button class="rnz-btn rnz-btn--primary" type="button">Log 3 requests</button><button class="rnz-btn rnz-btn--neutral" type="button">Not now</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:14px">The dashed box marks where the master RICOH lock-up file goes (logo with tagline, 40 px tall, about 92 px wide). Never type the logo as text and never use the logo without the tagline.</p>
+
+    <div class="grid">
+      <div class="card"><h4>Header and navigation</h4><ul><li>White header, master RICOH lock-up on the left (logo with tagline, at least 80 px wide), 1 px #E0E0E0 bottom border</li><li>Nav text in grey. The active item is red with a 3 px red underline, or a left bar in side navigation.</li><li>Side navigation sits on #F5F5F5. No dark sidebars.</li></ul></div>
+      <div class="card"><h4>Surfaces</h4><ul><li>Canvas is white or #F5F5F5. Cards and panels are white with a border.</li><li>Tooltips are Ricoh Grey with white text.</li><li>Toasts and menus are white with <code>--shadow-lg</code>.</li><li>Modal scrim is Ricoh Grey at 60%, never black.</li></ul></div>
+      <div class="card"><h4>States</h4><ul><li>Hover is #F5F5F5. Selected uses a red marker with red text.</li><li>Focus is the red ring with a white gap.</li><li>Disabled is a #F5F5F5 fill with grey text at 60% opacity.</li><li>Loading uses #F5F5F5 and #E0E0E0 skeletons or a red spinner.</li></ul></div>
+    </div>
+
+    <div class="demo">
+      <div class="demo-row" style="gap:var(--s5)">
+        <span class="tooltip">Download as PDF</span>
+        <div class="toast" role="status"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3 3L15 6.5" fill="none" stroke="#666666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>3 service requests logged.</div>
+      </div>
+      <div class="scrim-demo" style="margin-top:var(--s4)" aria-hidden="true"><div class="modal"><strong>Discard changes?</strong><br>Your edits will be lost.</div></div>
+    </div>
+
+    <h3>Dark mode</h3>
+    <div class="note"><p><b>RNZ products ship in the light theme only.</b> Black and near-black surfaces are not part of the RNZ palette, so no black or charcoal dark theme is built. If a platform requires a reduced-glare mode, propose a Ricoh Grey (<code>#666666</code>) surface with white text (5.74:1) to the brand team first. Grey is a Ricoh primary colour and needs no black.</p></div>
+
+    <h3>AI assistants and chat</h3>
+    <ul>
+      <li><strong>Messages:</strong> the user's message is on #F5F5F5. The assistant's message is white with a 3 px red left accent. Both have a 1 px border and 8 px radius.</li>
+      <li><strong>Never</strong> shape messages, avatars or the assistant icon like the Imagination Balloon. The balloon cannot be stretched to fit text.</li>
+      <li><strong>Naming:</strong> call the assistant "Ricoh assistant" or a plain descriptive name. Don't give it a persona, mascot or invented character without brand approval.</li>
+      <li><strong>Voice:</strong> Close, Active and Unlimited apply. Plain NZ English, active verbs, short answers, no hype, and say what is unknown.</li>
+      <li><strong>Actions:</strong> confirm before acting. Offer one primary red action and a neutral alternative.</li>
+      <li><strong>Transparency:</strong> label AI-generated content and summaries. Show sources where the answer uses customer or company data.</li>
+    </ul>
+
+    <h3>Motion</h3>
+    <ul>
+      <li>Keep motion short and purposeful: 150–250 ms, ease-out. Use it to show cause and effect, not decoration.</li>
+      <li>The RICOH logo and lock-up never animate. The Imagination Balloon may move gently.</li>
+      <li>Honour <code>prefers-reduced-motion</code>. No flashing (WCAG 2.3.1), parallax or auto-playing carousels.</li>
+    </ul>
+
+    <h3>Theming contract for AI-built skins</h3>
+    <p>Any AI coding tool, component library or theme generator building an RNZ skin must map to these roles and nothing else:</p>
+    <div class="table-wrap" tabindex="0"><table>
+      <thead><tr><th>Role</th><th>Value</th><th>Common library slot</th></tr></thead>
+      <tbody>
+        <tr><td>primary</td><td><code>#CF142B</code></td><td>primary, brand, accent, CTA</td></tr>
+        <tr><td>primary-pressed</td><td><code>#A51022</code></td><td>primary hover / active</td></tr>
+        <tr><td>on-primary</td><td><code>#FFFFFF</code></td><td>primary-foreground</td></tr>
+        <tr><td>text</td><td><code>#666666</code></td><td>foreground, body, heading, muted-foreground</td></tr>
+        <tr><td>background</td><td><code>#FFFFFF</code></td><td>background, card, popover</td></tr>
+        <tr><td>surface</td><td><code>#F5F5F5</code></td><td>muted, secondary, sidebar</td></tr>
+        <tr><td>border</td><td><code>#E0E0E0</code></td><td>border, divider (inputs use <code>#666666</code>)</td></tr>
+        <tr><td>focus</td><td><code>#CF142B</code></td><td>ring</td></tr>
+        <tr><td>error</td><td><code>#CF142B</code></td><td>destructive (with icon and text)</td></tr>
+        <tr><td>success</td><td><code>#7B9C6B</code></td><td>success indicator (not text)</td></tr>
+        <tr><td>warning</td><td><code>#FFC13D</code></td><td>warning indicator (not text)</td></tr>
+        <tr><td>info</td><td><code>#4F8FAC</code></td><td>info indicator (not text)</td></tr>
+        <tr><td>tooltip</td><td><code>#666666</code> / <code>#FFFFFF</code></td><td>tooltip bg / fg</td></tr>
+        <tr><td>font</td><td>Frutiger → Arial</td><td>sans</td></tr>
+        <tr><td>radius</td><td>4 / 8 / 12 / 16 px</td><td>sm / md / lg / xl</td></tr>
+      </tbody>
+    </table></div>
+    <p>Delete any library defaults that fall outside this list. That includes dark themes, black foregrounds, framework blues and purples, and uppercase button styles.</p>
+    <div class="note info"><p><b>Microsoft Fabric Apps:</b> the <code>rnz-fabric-apps</code> template (RNZ Data App) already applies this contract to Microsoft's data app template, with a component kit, RNZ agent skills and a brand check that runs before every deploy. Start Fabric apps from it rather than re-theming Microsoft's template by hand. The token map is in Section 13.</p></div>
+  </div>
+</section>
+
+<!-- ===================== 13 TOKENS ===================== -->
+<section class="section" id="s13">
+  <div class="wrap">
+    <div class="section-head"><span class="num">13</span><h2>Design tokens</h2></div>
+    <p class="section-lead">Copy-ready tokens. Token names match earlier RNZ files wherever the value is still valid, so existing builds keep working.</p>
+
+    <h3>CSS custom properties</h3>
+<pre class="code" tabindex="0"><span class="c">/* RNZ Digital Design System v12.3 — no black, no near-black */</span>
+:root {
+  <span class="k">--red</span>: #CF142B;          <span class="k">--red-dark</span>: #A51022;   <span class="c">/* pressed only */</span>
+  <span class="k">--grey</span>: #666666;         <span class="k">--white</span>: #FFFFFF;
+  <span class="k">--off-white</span>: #F5F5F5;    <span class="k">--border</span>: #E0E0E0;
+
+  <span class="k">--pink</span>: #FF9AA8;  <span class="k">--amber</span>: #FFC13D;  <span class="k">--green</span>: #96C120;  <span class="k">--teal</span>: #00A9C5;  <span class="k">--blue</span>: #5EA8E6;
+  <span class="k">--muted-pink</span>: #DD7A87;  <span class="k">--muted-sand</span>: #BB9273;  <span class="k">--muted-green</span>: #7B9C6B;
+  <span class="k">--muted-teal</span>: #428994;  <span class="k">--muted-blue</span>: #4F8FAC;
+  <span class="k">--pastel-pink</span>: #FFCDD3;  <span class="k">--pastel-amber</span>: #FFE19E;  <span class="k">--pastel-green</span>: #CAE08F;
+  <span class="k">--pastel-teal</span>: #80D4E1;  <span class="k">--pastel-blue</span>: #B0D4F4;
+
+  <span class="k">--pillar-workplace</span>: #606CBF;  <span class="k">--pillar-workflow</span>: #517D32;  <span class="k">--pillar-cloud</span>: #0F7AC9;
+  <span class="k">--pillar-cyber</span>: #00328F;      <span class="k">--pillar-print</span>: #CF142B;
+
+  <span class="k">--font</span>: 'Frutiger', 'Frutiger LT Std', Arial, sans-serif;
+  <span class="k">--fs-h1</span>: 48px; <span class="k">--fs-h2</span>: 36px; <span class="k">--fs-h3</span>: 28px; <span class="k">--fs-h4</span>: 22px; <span class="k">--fs-h5</span>: 18px;
+  <span class="k">--fs-body</span>: 16px; <span class="k">--fs-small</span>: 14px; <span class="k">--fs-caption</span>: 13px;
+
+  <span class="k">--s1</span>: 4px; <span class="k">--s2</span>: 8px; <span class="k">--s3</span>: 12px; <span class="k">--s4</span>: 16px; <span class="k">--s5</span>: 24px;
+  <span class="k">--s6</span>: 32px; <span class="k">--s7</span>: 48px; <span class="k">--s8</span>: 64px; <span class="k">--s9</span>: 80px;
+  <span class="k">--radius-sm</span>: 4px; <span class="k">--radius</span>: 8px; <span class="k">--radius-lg</span>: 12px; <span class="k">--radius-xl</span>: 16px;
+
+  <span class="k">--shadow-sm</span>: 0 1px 3px rgba(100,102,106,.16);
+  <span class="k">--shadow</span>:    0 4px 12px rgba(100,102,106,.16);
+  <span class="k">--shadow-lg</span>: 0 12px 32px rgba(100,102,106,.20);
+  <span class="k">--scrim</span>:     rgba(102,102,102,.60);
+  <span class="k">--focus</span>:     0 0 0 2px #FFFFFF, 0 0 0 4px #CF142B;
+  <span class="k">--container</span>: 1160px;
+}</pre>
+
+    <h3>JSON</h3>
+<pre class="code" tabindex="0">{
+  "rnz": {
+    "color": {
+      "red":        { "$type": "color", "$value": "#CF142B" },
+      "red-dark":   { "$type": "color", "$value": "#A51022", "$description": "Pressed/hover only" },
+      "grey":       { "$type": "color", "$value": "#666666", "$description": "All text and icons" },
+      "white":      { "$type": "color", "$value": "#FFFFFF" },
+      "off-white":  { "$type": "color", "$value": "#F5F5F5" },
+      "border":     { "$type": "color", "$value": "#E0E0E0" },
+      "secondary":  { "pink": "#FF9AA8", "amber": "#FFC13D", "green": "#96C120", "teal": "#00A9C5", "blue": "#5EA8E6" },
+      "muted":      { "pink": "#DD7A87", "sand": "#BB9273", "green": "#7B9C6B", "teal": "#428994", "blue": "#4F8FAC" },
+      "pastel":     { "pink": "#FFCDD3", "amber": "#FFE19E", "green": "#CAE08F", "teal": "#80D4E1", "blue": "#B0D4F4" },
+      "pillar":     { "workplace": "#606CBF", "workflow": "#517D32", "cloud": "#0F7AC9", "cyber": "#00328F", "print": "#CF142B" },
+      "status":     { "error": "#CF142B", "success": "#7B9C6B", "warning": "#FFC13D", "info": "#4F8FAC" }
+    },
+    "font": {
+      "family": { "$type": "fontFamily", "$value": ["Frutiger", "Frutiger LT Std", "Arial", "sans-serif"] },
+      "weight": { "light": 300, "regular": 400, "medium": 500, "bold": 700 },
+      "size":   { "h1": 48, "h2": 36, "h3": 28, "h4": 22, "h5": 18, "body": 16, "small": 14, "caption": 13 }
+    },
+    "space":  [4, 8, 12, 16, 24, 32, 48, 64, 80],
+    "radius": { "sm": 4, "md": 8, "lg": 12, "xl": 16 },
+    "forbidden": ["#000000", "#111111", "#1A1A1A", "#333333", "#CC0000", "#990000", "#007BFF"]
+  }
+}</pre>
+
+    <h3>Fabric Apps (Tailwind v4) token map</h3>
+    <p>How the RNZ Data App template for Microsoft Fabric Apps maps this system onto the token names Microsoft's data app template uses. The values live in <code>src/global.css</code> in the template and are brand-managed: apps don't edit them, and updates reach existing apps through <code>npm run rnz:sync</code>.</p>
+    <div class="table-wrap" tabindex="0"><table>
+      <thead><tr><th>Template token</th><th>Value</th><th>RNZ role</th></tr></thead>
+      <tbody>
+        <tr><td><code>--color-primary</code>, <code>--color-ring</code>, <code>--color-destructive</code></td><td><code>#CF142B</code></td><td>Primary action, focus, errors</td></tr>
+        <tr><td><code>--color-primary-pressed</code></td><td><code>#A51022</code></td><td>Hover and pressed on red</td></tr>
+        <tr><td><code>--color-foreground</code>, <code>--color-muted-foreground</code> and every <code>-foreground</code> on light surfaces</td><td><code>#666666</code></td><td>All text and icons</td></tr>
+        <tr><td><code>--color-background</code>, <code>--color-card</code>, <code>--color-popover</code></td><td><code>#FFFFFF</code></td><td>Page, cards, menus</td></tr>
+        <tr><td><code>--color-secondary</code>, <code>--color-muted</code>, <code>--color-accent</code>, <code>--color-hover</code></td><td><code>#F5F5F5</code></td><td>Light surface, hover, skeletons</td></tr>
+        <tr><td><code>--color-border</code></td><td><code>#E0E0E0</code></td><td>Dividers and outlines</td></tr>
+        <tr><td><code>--color-input</code></td><td><code>#666666</code></td><td>Input and neutral button borders (3:1)</td></tr>
+        <tr><td><code>--color-success</code>, <code>--color-warning</code>, <code>--color-info</code></td><td><code>#7B9C6B</code>, <code>#FFC13D</code>, <code>#4F8FAC</code></td><td>Status indicators only, never text</td></tr>
+        <tr><td><code>--color-brand</code>, <code>--color-data-1</code> to <code>--color-data-10</code></td><td>Red, grey, muted blue, muted teal, muted green, blue, teal, green, amber, pink</td><td>Chart series order (Section 10)</td></tr>
+        <tr><td><code>--rnz-accent</code> via <code>.pillar-workplace</code>, <code>-workflow</code>, <code>-cloud</code>, <code>-cyber</code>, <code>-print</code></td><td>Pillar colours</td><td>Accents on that pillar's apps (Section 11)</td></tr>
+        <tr><td><code>--font-heading</code>, <code>--font-base</code>, <code>--font-numeric</code></td><td>Frutiger, Frutiger LT Std, Arial</td><td>All text. No font links</td></tr>
+        <tr><td><code>--text-200</code> to <code>--text-hero-900</code></td><td>13, 14, 16, 18, 22, 28, 36, 48 px</td><td>Caption, label, body, card title, section title, screen title, KPI, hero figure (Section 06 app scale)</td></tr>
+        <tr><td><code>--radius-md</code>, <code>-xl</code>, <code>-2xl</code>, <code>-3xl</code></td><td>4, 8, 12, 16 px</td><td>Buttons and inputs, cards, modals and heroes, large containers</td></tr>
+        <tr><td><code>--shadow-2</code> to <code>--shadow-64</code></td><td>Cool Gray 10C tint</td><td>Elevation, never black</td></tr>
+        <tr><td><code>.dark</code> overrides</td><td>Same as light</td><td>Light theme only (Section 12)</td></tr>
+      </tbody>
+    </table></div>
+    <p>The template also carries <code>rnz:check</code>, a brand gate that fails the deploy build on black or near-black, raw or off-palette colours, Tailwind default palette classes, font links, dark variants, all-caps text, gradients, text under 12px and mock data.</p>
+
+    <h3>Retired tokens</h3>
+    <div class="table-wrap" tabindex="0"><table>
+      <thead><tr><th>Old token (v12 and earlier)</th><th>Replace with</th></tr></thead>
+      <tbody>
+        <tr><td><code>--dark</code> #1A1A1A, <code>--charcoal</code> #333333</td><td><code>--grey</code> for text. There is no replacement fill: use white, <code>--off-white</code> or <code>--red</code>.</td></tr>
+        <tr><td><code>--red-hover</code> #B01025, <code>#A50F22</code></td><td><code>--red-dark</code> #A51022</td></tr>
+        <tr><td><code>--grey-light</code> #E8E8E8, <code>--grey-mid</code> #D0D0D0, <code>--light-mid</code> #EEEEEE</td><td><code>--border</code> #E0E0E0 or <code>--off-white</code> #F5F5F5</td></tr>
+        <tr><td><code>--pillar-hybrid</code></td><td><code>--pillar-workplace</code> (same value, #606CBF)</td></tr>
+        <tr><td><code>--pillar-pastel</code>, <code>--pillar-muted</code>, <code>--balloon-filter</code></td><td>Removed. These were invented tints and filter hacks.</td></tr>
+        <tr><td><code>--label-size</code> / <code>--label-ls</code> (eyebrows)</td><td>Removed. Use <code>--fs-small</code> in sentence case.</td></tr>
+        <tr><td><code>--border-accent-top</code>, <code>--border-accent</code></td><td>Write them out: <code>4px solid var(--red)</code> / <code>3px solid var(--red)</code></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- ===================== 14 AI RULES ===================== -->
+<section class="section tint" id="s14">
+  <div class="wrap">
+    <div class="section-head"><span class="num">14</span><h2>Rules for AI builders</h2></div>
+    <p class="section-lead">Paste this block into any AI tool that generates RNZ pages, app screens, documents or skins. It is intentionally short so it survives context limits.</p>
+<pre class="code" tabindex="0" style="white-space:pre-wrap">RNZ BRAND RULES (Ricoh New Zealand) — follow exactly.
+COLOUR: Ricoh Red #CF142B (primary action, links, focus, key emphasis). Ricoh Grey #666666 (ALL text and icons). White #FFFFFF and #F5F5F5 (all backgrounds). #E0E0E0 (borders only). Pressed red #A51022.
+Red + white + grey = 80–90% of the screen. Secondary colours (#FF9AA8 #FFC13D #96C120 #00A9C5 #5EA8E6) only in charts/illustrations. Pillar colours (#606CBF #517D32 #0F7AC9 #00328F) only as thin accents on that pillar's pages.
+NEVER: black or near-black (#000, #111, #1A1A1A, #333) as text or fill; dark sections, dark heroes, dark footers, dark mode; gradients; Bootstrap/Material default colours; pastel fills behind body text.
+TYPE: font-family 'Frutiger','Frutiger LT Std',Arial,sans-serif. Headings bold, sentence case. Body 16px/1.6. No external font links. NO eyebrow/kicker labels. No ALL CAPS labels or buttons.
+SHAPE: radius 4px buttons/inputs, 8px cards, 12px heroes/modals. Accent bars: 4px top or 3–6px left, red (or pillar colour on pillar pages).
+BUTTONS: one red primary per view; secondary = white with red border; neutral = white with grey border. Verb-led labels, min 44px high.
+LOGO + BALLOON: use supplied master files only. The RICOH logo is always the lock-up with the "imagine. change." tagline, at least 80 px wide; never the logo alone, never a logo favicon; where it can't fit, show no logo. Never rename the master files. Never draw, recolour, animate, crop or combine the RICOH logo or the Imagination Balloon (a rounded square with a small square tail, not a circle). Never use the balloon as a chat bubble or UI shape.
+IMAGERY: real people in real NZ workplaces; no handshakes, hooded hackers, holograms, globes or AI-looking people.
+ACCESSIBILITY: WCAG 2.2 AA. Grey text only on white/#F5F5F5; white text only on red/grey/pillar colours. Visible labels, visible focus, alt text, one H1, colour never the only signal.
+VOICE: NZ English, plain, warm, direct, active verbs, no hype or superlatives. Ricoh is a "workplace services provider". Tagline written exactly: imagine. change.
+WHEN UNSURE: choose the simpler layout, white background, one red action.</pre>
+
+    <h3>Self-check before returning output</h3>
+    <ol>
+      <li>Search the output for <code>#000</code>, <code>#111</code>, <code>#1a1a1a</code>, <code>#333</code>, <code>black</code>, <code>text-transform: uppercase</code> and <code>letter-spacing</code> on small labels. Remove every one.</li>
+      <li>Confirm there is exactly one primary red button per view and one H1 per page.</li>
+      <li>Confirm there are no external font or CSS links, and no CSS-drawn balloons or logos.</li>
+      <li>Confirm every text and background pairing is one of the passing pairs in Section 05.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===================== 15 WEB PAGES ===================== -->
+<section class="section" id="s15">
+  <div class="wrap">
+    <div class="section-head"><span class="num">15</span><h2>Web pages and Sitecore handoff</h2></div>
+    <p class="section-lead">Page patterns for ricoh.co.nz. Use the shortest flow that meets the brief. Every page has one hero, one H1 and one primary action.</p>
+
+    <h3>Page flows</h3>
+    <div class="table-wrap" tabindex="0"><table>
+      <thead><tr><th>Page type</th><th>Section order</th><th>Primary action</th></tr></thead>
+      <tbody>
+        <tr><td>Product</td><td>Hero → Overview → Benefits → Features → Proof → CTA</td><td>In the hero, repeated once in the closing CTA</td></tr>
+        <tr><td>Service</td><td>Hero → Challenge → Solution → Benefits → Related services → CTA</td><td>Hero and closing CTA. Mid-page links are text only.</td></tr>
+        <tr><td>Solution (pillar)</td><td>Hero → Intro → Services (tabs) → Process → Proof → Why Ricoh → CTA</td><td>Red buttons. Pillar colour appears as accents only.</td></tr>
+        <tr><td>Article</td><td>Hero → Intro → Insights → Data → Recommendations → CTA</td><td>Soft CTA after the recommendations</td></tr>
+        <tr><td>Case study</td><td>Hero → Client context → Challenge → Solution → Results → CTA</td><td>After the results</td></tr>
+        <tr><td>Event</td><td>Hero → Why attend → Agenda → Speakers → Registration → FAQ</td><td>The registration form</td></tr>
+        <tr><td>Campaign landing</td><td>Hero → Value → Benefits → Supporting content → Form → Trust</td><td>The form. The hero button scrolls to it.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Hero patterns</h3>
+    <p><strong>A. Light hero</strong> is the default: #F5F5F5 panel, red (or pillar) left accent, image beside the copy.</p>
+    <div class="rnz-hero rnz-hero--split rnz-hero--light">
+      <div class="rnz-hero-body"><h2>Managed print for <span class="hl">NZ business</span></h2><p>Reduce costs and improve security with local Ricoh support.</p><div><a class="rnz-btn rnz-btn--primary" href="#s15">Request a print assessment</a></div></div>
+      <div class="img-placeholder">Real NZ workplace photo</div>
+    </div>
+    <p><strong>B. Red brand hero</strong> is for flagship campaigns and launches only. White text and "on red" buttons. The Imagination Balloon may appear as master artwork.</p>
+    <div class="rnz-hero rnz-hero--red">
+      <div class="rnz-hero-body"><h2>Ideas that change the way you work</h2><p>A flagship campaign message, used sparingly.</p><div><a class="rnz-btn rnz-btn--on-red" href="#s15">See what's new</a></div></div>
+    </div>
+    <p><strong>C. Photo hero</strong> puts a white content card over a photo. Use it instead of text on a dark image.</p>
+    <div class="rnz-hero rnz-hero--photo">
+      <div class="img-placeholder">Full-width photo</div>
+      <div class="rnz-hero-card"><h2>Support when you need it</h2><p>Log a service request or talk to our NZ team.</p><a class="rnz-btn rnz-btn--primary" href="#s15">Log a service request</a></div>
+    </div>
+    <p>Dark heroes, angled dark panels and heroes filled with a pillar colour are retired.</p>
+
+    <h3>CTA bands</h3>
+    <div class="rnz-cta rnz-cta--red"><div><h3>Let's talk about your workplace</h3><p>Talk to our NZ team about what you need.</p></div><div class="demo-row"><a class="rnz-btn rnz-btn--on-red" href="#s15">Contact us</a><a class="rnz-btn rnz-btn--on-red" href="tel:0800807676">0800 80 76 76</a></div></div>
+    <div class="rnz-cta rnz-cta--light"><div><h3>Have a question?</h3><p>Browse support or get in touch.</p></div><a class="rnz-btn rnz-btn--primary" href="#s15">Get support</a></div>
+    <p>Use one CTA band per page. Add a mid-page band only when conversion is the goal and the page runs past three sections. The dark band is retired. The RNZ number for support, sales and enquiries is <strong>0800 80 76 76</strong>.</p>
+
+    <h3>Sitecore handoff checklist</h3>
+    <ul>
+      <li>Use Sitecore components first. Custom HTML only when confirmed, per <code>rnz-sitecore-html-page-builder</code> and <code>rnz-design-elements-guide.html</code>.</li>
+      <li>Exported CSS uses hard-coded hex values, not <code>var()</code>. Scope it with a registered page prefix (e.g. <code>rca-</code>) so it can't clash with global classes.</li>
+      <li>No external font, CSS or script links. No editor controls, preview-only markup or inline event handlers.</li>
+      <li>Keep the title, meta description and JSON-LD. Their content comes from <code>rnz-seo-geo-specialist</code>.</li>
+      <li>Keep alt text, labels, ARIA roles and heading order.</li>
+      <li>Keep HTML and copy as separate deliverables. Copy is checked against <code>rnz-brand-writer</code>.</li>
+      <li>Record page inventory and prefix registration in <code>docs/page-library.md</code>, not in this document.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== 16 GOVERNANCE ===================== -->
+<section class="section tint" id="s16">
+  <div class="wrap">
+    <div class="section-head"><span class="num">16</span><h2>Governance, sources and open conflicts</h2></div>
+    <p class="section-lead">RNZ applies the global brand. It doesn't redefine it. Anything new or different needs approval.</p>
+
+    <h3>Approvals (APAC Brand Management Policy)</h3>
+    <ul>
+      <li><strong>Routine local marketing and social</strong> that follows the guidelines: RNZ can proceed on its own.</li>
+      <li><strong>New products, services, apps or campaigns</strong> that use the brand in a new way or depart from approved styles: notify the Region and submit the plan, design proofs and messaging for approval.</li>
+      <li><strong>Local adaptations</strong> of brand elements need approval from the APAC Head of Marketing Communications. Contact: <code>apac_brand@ricoh.com.au</code>. Global: <code>brand@ricoh.co.jp</code>.</li>
+      <li>Naming a product with the Ricoh name follows RGS-ABMC0006 Naming Rules.</li>
+    </ul>
+
+    <h3>Sources checked for this version</h3>
+    <ul>
+      <li>Ricoh Brand Communication Guidelines v6.0 (Dec 2024): §2 Brand, §3.1–3.3 Logo and tagline, §3.5 Imagination Balloon, §3.6 Typography, §3.7 Colour, §4 Creative principles, §5 Video, Appendix 1</li>
+      <li>Ricoh APAC Brand Management Policy (06-2024)</li>
+      <li>RNZ Brand Colour Chart.pdf</li>
+      <li>RNZ digital brand visual language guide, design visual guide, design elements guide, tables standard</li>
+      <li>RNZ Imagination Balloon master assets (<code>rnz-context/Imagination Balloon/</code>)</li>
+      <li>ricoh.co.nz (Sept 2026): theme colour #CF142B, phone 0800 80 76 76, no eyebrow labels</li>
+      <li>WCAG 2.2 contrast formula (all ratios calculated, not estimated)</li>
+      <li>Microsoft Fabric Apps data app template (<code>fabric-apps-analytic-templates</code>, October 2026): token names for the Section 13 map</li>
+    </ul>
+
+    <h3>Open conflicts found during review</h3>
+    <p>These sit outside this file. Fix them at the source so every tool agrees.</p>
+    <div class="table-wrap" tabindex="0"><table>
+      <thead><tr><th>Where</th><th>Conflict</th><th>Recommended fix</th></tr></thead>
+      <tbody>
+        <tr><td>Skills: <code>rnz-brand-guide</code>, <code>rnz-sitecore-html-page-builder</code>, <code>rnz-content-seo-strategy-doc</code>, SEMrush guide skills</td><td>Use <code>#1A1A1A</code> / <code>#333333</code> for text and keep optional dark heroes, CTA bands and footers</td><td>Change text to <code>#666666</code> and remove the dark variants</td></tr>
+        <tr><td>Skills: <code>rnz-brand-guide</code>, <code>rnz-sitecore-html-page-builder</code>, tables standard</td><td>Specify eyebrow / kicker labels</td><td>Remove them. Use metadata below titles instead.</td></tr>
+        <tr><td><code>rnz-design-visual-guide.html</code></td><td>Presents a dark CTA band (#1A1A1A) as acceptable</td><td>Remove it. Use the red or light band.</td></tr>
+        <tr><td><code>rnz-digital-brand-visual-language-guide.html</code></td><td>Shows a "cropped partial" balloon</td><td>Remove it. The global guidelines (§3.5.3) prohibit using part of the balloon.</td></tr>
+        <tr><td>RNZ balloon assets</td><td>The filled red master is #D1202D, not #CF142B. The CS outline is #243E89, not #00328F. Coloured outline balloons need approval (§3.5.9).</td><td>Ask the brand team for corrected masters and confirm approval status</td></tr>
+        <tr><td>Global guidelines §3.3.9 (Lock-up range of applications)</td><td>The global table marks the lock-up for marketing, PR, websites and stationery, but marks the RICOH Brand Logo (without tagline) for Product items: hardware, software, service portals (internet sites), packaging and manuals. It asks that the lock-up isn't used where display isn't permitted, and that applications used for more than a year are discussed with the brand team first. RNZ's October 2026 rule, lock-up always, departs from this for apps and portals.</td><td>Apply the RNZ rule (lock-up always, at 80 px wide or more, or no logo) and get it approved as a local adaptation through the APAC brand team (<code>apac_brand@ricoh.com.au</code>). If it isn't approved, apps return to the RICOH Brand Logo master: in the Fabric template that is one brand-managed file, <code>src/components/rnz/brand-assets.ts</code>, plus the master file.</td></tr>
+        <tr><td>Skills and templates that mention a logo-only version</td><td>Earlier guidance said app headers use the logo without the tagline</td><td>Change them to the lock-up. Done in the <code>rnz-fabric-apps</code> template 1.1.0.</td></tr>
+        <tr><td>Skill file references</td><td>Skills cite <code>RNZ Icon Library.html</code>. The file is <code>RNZ_Icon_Library.html</code>.</td><td>Align the name in the skills</td></tr>
+        <tr><td>Global guidelines</td><td>Pastel sRGB values on §3.7.3 differ from the §3.7.4 hex values</td><td>Keep the §3.7.4 / RNZ Colour Chart values</td></tr>
+        <tr><td>Global guidelines</td><td>The "Ricoh Group Web Guidelines" govern website fonts but were not available for this review</td><td>Obtain them from the APAC brand team and check this document against them</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- ===================== 17 QA ===================== -->
+<section class="section" id="s17">
+  <div class="wrap">
+    <div class="section-head"><span class="num">17</span><h2>QA checklist and version</h2></div>
+
+    <div class="grid">
+      <div class="card accent"><h3 class="t4">Brand</h3><ul>
+        <li>Master lock-up and balloon files only, used correctly; never the logo without the tagline</li>
+        <li>Red, white and grey make up 80–90% of the screen</li>
+        <li>No black, near-black or dark surfaces</li>
+        <li>No eyebrows and no all-caps labels</li>
+        <li>Pillar colour only as accents, on its own pages</li>
+        <li>Frutiger / Arial only, no external font links</li>
+      </ul></div>
+      <div class="card accent"><h3 class="t4">Interface</h3><ul>
+        <li>One primary red action per view</li>
+        <li>Verb-led, sentence-case button labels</li>
+        <li>Components follow Section 10</li>
+        <li>Hover, focus, error, disabled and loading states designed</li>
+        <li>Works at 320 px with no horizontal scroll</li>
+      </ul></div>
+      <div class="card accent"><h3 class="t4">Accessibility</h3><ul>
+        <li>Only passing colour pairs from Section 05</li>
+        <li>Visible labels and focus, 44 px targets</li>
+        <li>One H1 and sequential headings</li>
+        <li>Alt text, with <code>alt=""</code> for decoration</li>
+        <li>Colour never the only signal, reduced motion honoured</li>
+      </ul></div>
+      <div class="card accent"><h3 class="t4">Content</h3><ul>
+        <li>Copy checked by <code>rnz-brand-writer</code></li>
+        <li>NZ English, no unsupported claims or hype</li>
+        <li>Real, sourced figures only</li>
+        <li>Imagery meets Section 08</li>
+      </ul></div>
+    </div>
+
+    <h3>Version history</h3>
+    <div class="table-wrap" tabindex="0"><table>
+      <thead><tr><th>Version</th><th>Date</th><th>Summary</th></tr></thead>
+      <tbody>
+        <tr><td>12.3</td><td>Oct 2026</td><td>RNZ rule: the RICOH logo is always the lock-up with its tagline, at least 80 px wide, never the logo alone (Sections 03, 12, 14, 16, 17). File names are never changed. No other rules changed.</td></tr>
+        <tr><td>12.2</td><td>Oct 2026</td><td>Added the Fabric Apps token map (Section 13) and pointers to the <code>rnz-fabric-apps</code> template (Sections 01 and 12). No brand rules changed.</td></tr>
+        <tr><td>12.1</td><td>Sept 2026</td><td>Rebuilt against the global guidelines for web, apps and AI. Removed black and near-black, eyebrows, dark heroes, bands, tables and footers, CSS-drawn and filter-tinted balloons, invented pillar tints and emoji. Corrected contrast figures, the Frutiger licensing note, creative principle definitions and the authority order. Added the colour role map, app scale, app shell, AI chat rules, theming contract, JSON tokens, AI rule block, retired-token map and open-conflict log. Moved the CMS build detail, SEO specifics and page inventory to their owning skills and files.</td></tr>
+        <tr><td>12</td><td>June 2026</td><td>Repositioned as the RNZ Digital Design System (superseded)</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="doc-footer">
+  <div class="wrap">
+    <p><strong class="hl">Ricoh New Zealand</strong> · RNZ Digital Design System v12.3 · Internal use only</p>
+    <p>Based on the Ricoh Brand Communication Guidelines v6.0 and the RNZ Brand Colour Chart. Ricoh Company, Ltd. holds final authority over the Ricoh brand.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Active section highlight in the document nav
+  var links = Array.prototype.slice.call(document.querySelectorAll('.doc-nav-links a'));
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && map[e.target.id]) {
+          links.forEach(function (l) { l.classList.remove('active'); l.removeAttribute('aria-current'); });
+          map[e.target.id].classList.add('active');
+          map[e.target.id].setAttribute('aria-current', 'true');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    document.querySelectorAll('main section[id]').forEach(function (s) { io.observe(s); });
+  }
+
+  // Tabs (WAI-ARIA pattern with arrow keys)
+  document.querySelectorAll('[role="tablist"]').forEach(function (list) {
+    var tabs = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
+    function select(tab) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        var p = document.getElementById(t.getAttribute('aria-controls'));
+        if (p) p.hidden = !on;
+      });
+      tab.focus();
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { select(t); });
+      t.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); select(tabs[(i + 1) % tabs.length]); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); select(tabs[(i - 1 + tabs.length) % tabs.length]); }
+        if (e.key === 'Home') { e.preventDefault(); select(tabs[0]); }
+        if (e.key === 'End') { e.preventDefault(); select(tabs[tabs.length - 1]); }
+      });
+    });
+  });
+
+  // Accordion (one open at a time)
+  var accBtns = Array.prototype.slice.call(document.querySelectorAll('.rnz-acc-btn'));
+  accBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var open = b.getAttribute('aria-expanded') === 'true';
+      accBtns.forEach(function (o) {
+        o.setAttribute('aria-expanded', 'false');
+        var p = document.getElementById(o.getAttribute('aria-controls')); if (p) p.hidden = true;
+      });
+      if (!open) {
+        b.setAttribute('aria-expanded', 'true');
+        var panel = document.getElementById(b.getAttribute('aria-controls')); if (panel) panel.hidden = false;
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

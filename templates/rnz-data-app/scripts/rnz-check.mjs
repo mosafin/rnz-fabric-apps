@@ -28,6 +28,8 @@ const RNZ_HEX = new Set([
     "#606cbf", "#517d32", "#0f7ac9", "#00328f",
 ]);
 const BRAND_FILES = new Set(["src/global.css", "src/data-palette-presets.json"]);
+// The only logo artwork RNZ apps use: the RICOH lock-up (logo with tagline). Never rename it.
+const LOCKUP_FILE = "RICOH-Logo_sRGB_full-colour.png";
 const SELF = new Set(["scripts/rnz-check.mjs"]);
 
 function walk(dir, out = []) {
@@ -136,6 +138,22 @@ for (const abs of files) {
             add("warning", "house-style", rel, n, line, "No em or en dashes in interface text. Rewrite the sentence.");
         }
 
+        // 12a. Logo: always the lock-up, never typed, never another logo file, never a favicon.
+        if (/\.(tsx|html)$/.test(rel) && !isSpec) {
+            if (/>\s*RICOH\s*</.test(line)) {
+                add("error", "lockup-only", rel, n, line, "Never type the logo as text. <AppShell> shows the master RICOH lock-up.");
+            }
+            for (const m of line.matchAll(/["'(]\/?brand\/([^"')\s]+)/g)) {
+                const file = m[1];
+                if (/\.(png|svg|jpe?g|webp|gif)$/i.test(file) && file !== LOCKUP_FILE && /logo|ricoh/i.test(file)) {
+                    add("error", "lockup-only", rel, n, line, `Only the lock-up ${LOCKUP_FILE} may be used. The RICOH logo is never shown without the tagline.`);
+                }
+            }
+            if (/rel=["'](?:shortcut )?icon|apple-touch-icon/i.test(line) && /\/?brand\//.test(line)) {
+                add("error", "lockup-only", rel, n, line, "The lock-up can't be read at favicon size, and the logo alone is never used. Remove the logo favicon.");
+            }
+        }
+
         // 11. One primary action per view.
         if (/\.tsx$/.test(rel) && !isSpec && !rel.startsWith("src/components/rnz/")) {
             primaries += (line.match(/variant=["']primary["']/g) || []).length;
@@ -149,25 +167,40 @@ for (const abs of files) {
     }
 }
 
-// 12. Master logo, never typed or drawn.
+// 12. Logo: the master lock-up must be present, and it must be the only logo file.
 const brandDir = join(root, "public", "brand");
-const hasLogo = existsSync(brandDir) && readdirSync(brandDir).some((f) => /\.(svg|png)$/i.test(f));
-if (!hasLogo) {
-    add("warning", "master-logo", "public/brand", 0, "No master logo file found",
-        "Add the supplied RICOH logo file (SVG or PNG) to public/brand/ and pass it to <AppShell logoSrc>. Never type or draw the logo.");
+const brandFiles = existsSync(brandDir) ? readdirSync(brandDir) : [];
+if (!brandFiles.includes(LOCKUP_FILE)) {
+    add("error", "lockup-only", `public/brand/${LOCKUP_FILE}`, 0, "The RICOH lock-up file is missing or was renamed",
+        `Restore public/brand/${LOCKUP_FILE} with \`npm run rnz:sync -- --from <template> --apply\`. Never rename it.`);
+}
+for (const f of brandFiles) {
+    if (f !== LOCKUP_FILE && /\.(png|svg|jpe?g|webp|gif)$/i.test(f) && /logo|ricoh/i.test(f)) {
+        add("error", "lockup-only", `public/brand/${f}`, 0, "Extra logo file",
+            "RNZ always uses the lock-up. Remove this file; never use the logo without the tagline.");
+    }
 }
 
-// 13. Brand-managed files edited locally.
+// 13. Brand-managed files edited locally. Line endings are ignored, so a Windows
+// checkout (CRLF) doesn't count as an edit. Keep this function identical in
+// rnz-sync.mjs and the template repo's root scripts/rnz-lock.mjs.
+function brandHash(path) {
+    const buf = readFileSync(path);
+    const binary = /\.(png|jpe?g|gif|webp|ico|woff2?|ttf|otf|pdf)$/i.test(path);
+    const data = binary ? buf : Buffer.from(buf.toString("utf8").replace(/\r\n/g, "\n"), "utf8");
+    return createHash("sha256").update(data).digest("hex");
+}
 const lockPath = join(root, "rnz", "brand-lock.json");
 if (existsSync(lockPath)) {
     const lock = JSON.parse(readFileSync(lockPath, "utf8"));
     for (const [file, hash] of Object.entries(lock.files ?? {})) {
         const p = join(root, file);
         if (!existsSync(p)) {
-            add("warning", "brand-managed", file, 0, "Brand-managed file is missing", "Run `npm run rnz:sync -- --from <template> --apply`.");
+            add("error", "brand-managed", file, 0, "Brand-managed file is missing or was renamed",
+                "File names never change. Restore it with `npm run rnz:sync -- --from <template> --apply`.");
             continue;
         }
-        const now = createHash("sha256").update(readFileSync(p)).digest("hex");
+        const now = brandHash(p);
         if (now !== hash) {
             add("warning", "brand-managed", file, 0, "Brand-managed file has local edits",
                 "Change it in the RNZ template instead, then sync. Local edits are replaced on the next sync.");

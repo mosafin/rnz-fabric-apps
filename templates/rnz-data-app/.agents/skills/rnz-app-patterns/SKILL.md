@@ -63,6 +63,7 @@ Most apps are A plus B as two `NavTabs` items, with C on row click. Keep the num
 - Filters live in the URL query string (`?pillar=…&status=…`) so links can be shared and the back button works.
 - Show the result count in the card title. Put "Clear filters" last in the filter bar as a `neutral` button.
 - Status columns use text plus an icon, never colour alone.
+- Table and DataGrid styling (ricoh-brand-methodology-v12.html, Section 10): #F5F5F5 header row with bold grey sentence-case headers and a 2px red rule, white body rows with #E0E0E0 dividers, numbers right-aligned with tabular figures, no dark headers, no uppercase or letter-spaced headers.
 
 ## C. Detail drawer
 
@@ -75,6 +76,10 @@ This template reads data through DAX queries and doesn't write back. When someon
 - Build the request in the app (structured fields with `SelectField`, a live "what will happen" summary), then open the organisation's Power Apps form or flow with the fields prefilled in the URL. Use `LinkButton variant="primary"` labelled with the outcome, such as "Send the request".
 - Don't build direct write paths, file uploads or credential handling in the app unless the person confirms the platform supports it.
 - After hand-off, show a `StatusMessage tone="info"` saying what happens next and where to see progress.
+
+## Before a model is connected
+
+Show **one** "Connect your model" panel for the whole screen: an `EmptyState` inside a single `Card`, saying what to connect and how. Don't repeat an empty state in every card, and don't show placeholder charts or KPIs. Once a model is connected, each card handles its own states (below).
 
 ## Every data component handles three states
 

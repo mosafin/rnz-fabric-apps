@@ -13,6 +13,10 @@ description: >
 
 The goal is a running, on-brand app connected to the right semantic model, with as few questions and as little waiting as possible. People using this are often not developers, so do the work yourself, explain in one plain line what each step did, and only stop when a person genuinely has to act (signing in, approving a command).
 
+## 0. Check where you are
+
+If the current folder's path contains `rnz-fabric-apps/templates/rnz-data-app` (or `rnz-fabric-apps\templates\rnz-data-app`), you're inside the template source. Stop. Don't build here: the template must stay exactly as published. Go to step 2 to create the app in its own folder.
+
 ## 1. Get the four inputs in one message
 
 Ask once, all together, and accept whatever they already gave you:
@@ -21,7 +25,7 @@ Ask once, all together, and accept whatever they already gave you:
 |---|---|---|
 | What the app is for and who uses it | Drives the layout pattern and the wording | "Sales managers checking pipeline by pillar" |
 | Share link to the semantic model | Registers the data connection | `https://app.fabric.microsoft.com/groups/<ws>/semanticmodels/<id>/...` |
-| Fabric workspace for the app | Where `rayfin up` deploys it | Workspace name or URL |
+| Fabric workspace for the app | Where `rayfin up` deploys it | The workspace URL; take the ID after `/groups/` |
 | Pillar, if the app belongs to one | Sets the accent colour | Workplace Experience, Workflow and Automation, Cloud and IT, Cybersecurity, Print and Device Management, or none |
 
 Don't ask them to describe the model's tables or measures. Discover them (Microsoft `schema-discovery` skill).
@@ -30,19 +34,19 @@ Don't ask them to describe the model's tables or measures. Discover them (Micros
 
 If you're already inside a project made from this template (it has `rnz/brand-manifest.json`), skip to step 3.
 
-Otherwise, from the parent folder:
+Otherwise, in PowerShell, run the setup script from the template repo. It pulls the latest template, creates the app in `C:\dev` (outside OneDrive), checks the brand and opens VS Code:
 
-```bash
-npm create @microsoft/rayfin@latest -- <app-name> --template <path to the rnz-fabric-apps folder> --workspace "<workspace name>"
+```powershell
+& "PATH-TO\rnz-fabric-apps\scripts\new-app.ps1" -Name pipeline-by-pillar -WorkspaceId 00000000-0000-0000-0000-000000000000
 ```
 
-Pick **RNZ Data App** if the picker appears. Use a kebab-case app name, for example `pipeline-by-pillar`. Then open the new folder in VS Code and continue there, reading its `AGENTS.md` first.
+Replace `PATH-TO`, the name and the ID with real values. Use a kebab-case app name. Never type angle brackets (`<` `>`) in PowerShell; it treats them as operators. Then continue in the new VS Code window, reading its `AGENTS.md` first.
 
 ## 3. Connect the semantic model
 
 ```bash
 npm install
-npx fabric-app-data add <alias> --from-url "<share link>"
+npx fabric-app-data add pipelineModel --from-url "SHARE-LINK"
 npx fabric-app-data generate -o src/fabric.generated.ts
 ```
 
@@ -60,9 +64,9 @@ Pause and tell the person: "A browser window will ask you to sign in to Fabric. 
 
 1. Set the app name in two places: `appName` on `<AppShell>` in `src/App.tsx`, and `<title>` in `index.html`. Sentence case, plain words, no "Dashboard 2.0" style names.
 2. Set `pillar` on `<AppShell>` if the app belongs to one pillar. Leave it off for cross-pillar or general apps.
-3. Logo: if `public/brand/` holds a master RICOH logo file, set `LOGO_SRC` in `src/App.tsx`. If not, leave it unset and tell the person once that the logo appears after they add the supplied file. Never type, draw or approximate it.
+3. Logo: nothing to do. `<AppShell>` always shows the RICOH lock-up (logo with the "imagine. change." tagline) from `public/brand/RICOH-Logo_sRGB_full-colour.png`. Never add, swap, crop or rename logo files, never use the logo without its tagline, and never type, draw or approximate it.
 
-Don't touch `src/global.css` or anything else listed in `rnz/brand-manifest.json`. Those files carry the brand.
+Don't touch `src/global.css` or anything else listed in `rnz/brand-manifest.json`. Those files carry the brand. Never rename any file: references depend on exact names.
 
 ## 6. Hand over to the build
 
@@ -82,7 +86,7 @@ Deploy:
 
 ```bash
 npm run rnz:check
-npx rayfin up --workspace "<workspace name>"
+npx rayfin up --workspace-id WORKSPACE-ID
 npx rayfin up status
 ```
 
