@@ -34,13 +34,16 @@ Follow Microsoft's `app-validation` skill (Fabric portal embed flow, not bare lo
 
 Report each line as pass, fail or not applicable.
 
+**Files**
+- [ ] No existing file renamed or moved (references depend on exact names)
+
 **Brand**
 - [ ] Light theme only; no dark surfaces anywhere, including in the Fabric portal's dark mode
 - [ ] Red, white and grey dominate; colour used for meaning, not decoration
 - [ ] One red primary action per view; others secondary or neutral
 - [ ] No eyebrows, no ALL CAPS, sentence case throughout
 - [ ] Pillar colour (if any) only as accents
-- [ ] Logo is the master file or absent; nothing typed or drawn in its place
+- [ ] The only logo is the RICOH lock-up (with tagline) in `<AppShell>`, at least 80px wide; no logo-only version, no logo favicon, nothing typed or drawn in its place
 - [ ] Charts use theme colours; key series red; series beyond five labelled directly
 
 **Accessibility (WCAG 2.2 AA)**

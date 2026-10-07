@@ -1,6 +1,6 @@
 {
   "name": "rnz-data-app",
-  "description": "Ricoh New Zealand Fabric data app: Microsoft data app template with the RNZ Digital Design System (v12.2) brand layer and RNZ agent skills.",
+  "description": "Ricoh New Zealand Fabric data app: Microsoft data app template with the RNZ Digital Design System (v12.3) brand layer and RNZ agent skills.",
   "template": {
     "name": "rnz-data-app",
     "displayName": "RNZ Data App",
@@ -9,7 +9,7 @@
   "license": "MIT",
   "author": "Ricoh New Zealand Limited (brand layer); Microsoft (base template)",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "predev": "rayfin env --framework vite",

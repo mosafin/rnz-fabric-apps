@@ -1,9 +1,12 @@
-// RNZ component kit: app shell. Brand-managed (v12.1 Section 12).
-// White header, master logo on the left, 1px border. Active nav item red with a
+// RNZ component kit: app shell. Brand-managed (ricoh-brand-methodology-v12.html, Section 12).
+// White header, the RICOH lock-up on the left, 1px border. Active nav item red with a
 // 3px underline. Side nav on #F5F5F5. No dark sidebars, no dark headers.
+// The logo is always the lock-up (logo with the tagline). It is built in and can't be
+// swapped or hidden, so no app ever shows the logo without the tagline.
 
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { RICOH_LOCKUP_ALT, RICOH_LOCKUP_HEIGHT_PX, RICOH_LOCKUP_SRC } from "./brand-assets";
 
 export type Pillar = "workplace" | "workflow" | "cloud" | "cyber" | "print";
 
@@ -11,8 +14,8 @@ interface AppShellProps {
     /** App name shown in the header, e.g. "Content Shelf Mark". */
     appName: string;
     /**
-     * Path to the MASTER RICOH logo file (e.g. "/brand/ricoh-logo.svg").
-     * Never type, draw or rebuild the logo. If no file is supplied, no logo shows.
+     * Deprecated and ignored. The header always shows the master RICOH lock-up
+     * (public/brand/RICOH-Logo_sRGB_full-colour.png). Kept so older apps still compile.
      */
     logoSrc?: string;
     /** Sets the pillar accent for every component inside. Omit on general apps. */
@@ -27,6 +30,14 @@ interface AppShellProps {
 }
 
 export function AppShell({ appName, logoSrc, pillar, nav, actions, sideNav, children }: AppShellProps) {
+    useEffect(() => {
+        if (import.meta.env.DEV && logoSrc && logoSrc !== RICOH_LOCKUP_SRC) {
+            console.warn(
+                `[RNZ] AppShell ignores logoSrc="${logoSrc}". The header always shows the RICOH lock-up (${RICOH_LOCKUP_SRC}). Remove the logoSrc prop.`,
+            );
+        }
+    }, [logoSrc]);
+
     return (
         <div className={cn("flex min-h-full flex-col bg-background text-foreground", pillar && `pillar-${pillar}`)}>
             <a
@@ -36,10 +47,16 @@ export function AppShell({ appName, logoSrc, pillar, nav, actions, sideNav, chil
                 Skip to content
             </a>
             <header className="sticky top-0 z-20 border-b border-border bg-background">
-                <div className="mx-auto flex min-h-14 w-full max-w-[1160px] flex-wrap items-center gap-x-6 gap-y-1 px-4 pt-2 md:px-8 md:py-0">
+                <div className="mx-auto flex min-h-16 w-full max-w-[1160px] flex-wrap items-center gap-x-6 gap-y-1 px-4 pt-3 md:px-8 md:py-3">
                     <div className="flex items-center gap-4">
-                        {logoSrc && <img src={logoSrc} alt="RICOH" className="h-6 w-auto" />}
-                        <span className="text-[length:var(--text-500)] leading-[var(--leading-500)] font-bold text-foreground">
+                        <img
+                            src={RICOH_LOCKUP_SRC}
+                            alt={RICOH_LOCKUP_ALT}
+                            height={RICOH_LOCKUP_HEIGHT_PX}
+                            style={{ height: RICOH_LOCKUP_HEIGHT_PX, width: "auto" }}
+                            className="shrink-0"
+                        />
+                        <span className="border-l border-border pl-4 text-[length:var(--text-500)] leading-[var(--leading-500)] font-bold text-foreground">
                             {appName}
                         </span>
                     </div>

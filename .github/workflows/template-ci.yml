@@ -1,0 +1,38 @@
+# Checks every change to the RNZ template before it reaches main.
+name: Template checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  rnz-data-app:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: templates/rnz-data-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: templates/rnz-data-app/package-lock.json
+      - name: Install
+        run: npm ci
+      - name: Brand lock is current
+        run: node ../../scripts/rnz-lock.mjs --verify
+      - name: Required files are present (names never change)
+        run: |
+          test -f public/brand/RICOH-Logo_sRGB_full-colour.png
+          test -f .agents/skills/rnz-app-brand/references/ricoh-brand-methodology-v12.html
+          test -f "src/components/rnz/brand-assets.ts"
+      - name: Brand check
+        run: npm run rnz:check
+      - name: Unit tests (RNZ and app)
+        run: npx vitest run src
+      - name: Lint (RNZ files)
+        run: npx eslint src/components/rnz src/App.tsx src/hooks/use-theme.ts scripts/rnz-check.mjs scripts/rnz-sync.mjs
+      - name: Deploy build
+        run: npm run build:fabric

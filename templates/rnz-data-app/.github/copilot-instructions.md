@@ -9,5 +9,6 @@ Skills live in `.agents/skills/`. Load the RNZ skills named in `AGENTS.md` at th
 - `rnz-app-patterns`: choosing layouts and components
 - `rnz-app-content`: writing any visible text
 - `rnz-app-qa`: before saying you're done and before deploying
+- `rnz-rebrand`: restyling an app that wasn't made from this template
 
-Short version of the rules: light theme only, no black, tokens only, Frutiger then Arial with no font links, one red primary action per view, sentence case with no eyebrow labels, master logo file only, real data only, NZ English. Run `npm run rnz:check` before finishing.
+Short version of the rules: light theme only, no black, tokens only, Frutiger then Arial with no font links, one red primary action per view, sentence case with no eyebrow labels, the RICOH logo only ever as the lock-up with its tagline (built into `<AppShell>`), no renamed files, real data only, NZ English. Run `npm run rnz:check` before finishing.

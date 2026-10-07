@@ -8,3 +8,4 @@ export { AppShell, NavTabs, SideNav, type NavItem, type Pillar } from "./app-she
 export { PageHeader, Card, KpiCard, Tag } from "./surfaces";
 export { StatusMessage, LoadingSkeleton, EmptyState, ErrorState, type StatusTone } from "./states";
 export { FilterBar, SelectField, Tabs, type TabItem } from "./controls";
+export { RICOH_LOCKUP_SRC, RICOH_LOCKUP_ALT, RICOH_LOCKUP_HEIGHT_PX } from "./brand-assets";

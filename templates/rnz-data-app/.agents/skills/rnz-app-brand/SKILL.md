@@ -11,7 +11,7 @@ description: >
 
 # RNZ app brand
 
-Source: `ricoh-brand-methodology-v12.html` (RNZ Digital Design System), which applies the Ricoh Brand Communication Guidelines v6.0 and the RNZ Brand Colour Chart. The tokens in `src/global.css` already encode it. Your job is to use them consistently, not to reinterpret them.
+Source: `ricoh-brand-methodology-v12.html` (RNZ Digital Design System), shipped at [references/ricoh-brand-methodology-v12.html](references/ricoh-brand-methodology-v12.html), which applies the Ricoh Brand Communication Guidelines v6.0 and the RNZ Brand Colour Chart. The tokens in `src/global.css` already encode it. Your job is to use them consistently, not to reinterpret them.
 
 ## Why this replaces "pick a bold direction"
 
@@ -93,7 +93,7 @@ One pillar per app. Accents only: card top bars, active tab underline, icons, on
 
 ## Logo, Imagination Balloon, imagery, icons
 
-- Logo: master file only, in `public/brand/`, passed to `<AppShell logoSrc>`. Never typed as text, drawn in SVG or CSS, recoloured, animated or placed on the balloon.
+- Logo: **always the lock-up**, the RICOH logo with the "imagine. change." tagline: `public/brand/RICOH-Logo_sRGB_full-colour.png`. `<AppShell>` shows it at 40px tall (about 92px wide) and it can't be swapped or hidden. Never show the logo without the tagline, crop the tagline off, add another logo file, use it as a favicon or app icon, or show it under 80px wide. Where it can't fit, show no logo. Never typed as text, drawn in SVG or CSS, recoloured, animated or placed on the balloon. On Ricoh Red, only the master solid white lock-up from the brand team.
 - Imagination Balloon: avoid in apps. If a flagship screen truly needs it, use the supplied master PNG only. Never as a chat bubble, button, avatar, loader or map pin, and never imitated with CSS circles.
 - Imagery: real people in real NZ workplaces. No hooded hackers, holograms, globes, handshakes or AI-looking people. No text over busy images.
 - Icons: Lucide, one set, consistent stroke. Grey by default, red for the active or primary icon. 16 or 20px inline, 24px UI. No emoji as icons. Icon-only buttons need `aria-label`.
@@ -107,4 +107,5 @@ One pillar per app. Accents only: card top bars, active tab underline, icons, on
 1. Search your changes for `#000`, `#111`, `#1a1a1a`, `#333`, `black`, `dark:`, `uppercase`, `tracking-`, `gradient`, `font-family`, `fonts.googleapis`. Remove every one.
 2. Exactly one red primary button per view and one `h1` per screen.
 3. Every text and background pair is one of the passing pairs above.
-4. Run `npm run rnz:check`. Errors block deploys.
+4. The only logo on screen is the lock-up in `<AppShell>`.
+5. Run `npm run rnz:check`. Errors block deploys.
