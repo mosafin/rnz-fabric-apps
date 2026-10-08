@@ -31,6 +31,7 @@ Open Copilot Chat, switch to **Agent** mode, and type:
 | `/rnz-new` | Asks for a name, a Fabric workspace ID (optional) and which agents you want (yes or no to each), creates a branded app in `C:\dev\NAME`, makes the first commit and opens it. |
 | `/rnz-skin` | Applies the RNZ skin to the app open in VS Code, then has Copilot swap any hardcoded colours, fonts and weights for RNZ tokens, values only. |
 | `/rnz-update` | Brings the open app up to the latest RNZ release, whether it was made from the template or has the skin. |
+| `/rnz-agents` | Adds the builder, QA or reporter agents (yes or no to each) to the open app, which must have the RNZ skin or be made from the template. Only adds files, on a new branch. |
 | `/rnz-check` | Reports anything off brand. Changes nothing. |
 
 The tool updates itself from GitHub every time you use it, so everyone stays on the latest release.
@@ -44,9 +45,9 @@ node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" new my-app
 node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" help
 ```
 
-## Optional agents for new apps
+## Optional agents
 
-`/rnz-new` asks three yes or no questions. Each yes adds one agent to the new app, in `.claude/agents/`. Copilot in VS Code shows them in the agent list; Claude Code uses them by name.
+`/rnz-new` asks three yes or no questions, and `/rnz-agents` asks the same for an existing app. Each yes adds one agent to the repository's `.claude/agents/`. Copilot in VS Code shows them in the agent list; Claude Code uses them by name.
 
 | Agent | What it does | What it never does |
 |---|---|---|
@@ -54,9 +55,13 @@ node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" help
 | `rnz-qa` | Reviews the change against the brand, accessibility, content and data rules, and lists the problems | Fix anything (it can't edit files), so the work never checks itself |
 | `rnz-reporter` | Updates the app's version number and adds a plain-English entry to `CHANGELOG.md` | Change any other file, commit, push or deploy |
 
-With the reporter, the app starts at version 0.1.0 with a first `CHANGELOG.md` entry. A fix moves the last number (0.1.0 to 0.1.1), a new screen or feature moves the middle one (0.1.1 to 0.2.0), and the first number moves only when you say so.
+The reporter uses the change log the app already has (`VERSIONING.md`, `CHANGELOG.md`, `CHANGES.md` or `HISTORY.md`, in the app folder or the repository root) and follows its rules for entries and versions. Only if there's none does it start a `CHANGELOG.md`. A new app with the reporter starts at version 0.1.0; an existing app keeps its version.
 
-In a terminal: `node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" new my-app --agents builder,qa,reporter` (or `all`, or `none`, the default).
+For an app with the RNZ skin, the builder and QA follow the skin rules and run the app's own checks (skin check, lint, tests, build). For an app in a subfolder of a bigger repo, the agents are told which folder they work in. Open the repository at its root, so the agents can read the repository's own rules and change log.
+
+By default, a fix moves the last number (0.1.0 to 0.1.1), a new screen or feature moves the middle one (0.1.1 to 0.2.0), and the first number moves only when you say so.
+
+In a terminal: `node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" new my-app --agents builder,qa,reporter` (or `all`, or `none`, the default), or for an existing app `... agents "C:\path\to\app" --agents all`.
 
 ## What the skin does to an existing app
 
@@ -75,6 +80,7 @@ In a terminal: `node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" new my-app --agent
 - The repo is private. Give people read access: on GitHub, **Settings > Collaborators > Add people**. For a larger group, move the repo to a GitHub organisation and give a team read access.
 - Releases go through a pull request; the **Template checks** workflow must pass (it tests the template and the skin tool). Merge, then tag the release. Everyone gets it the next time they run an `/rnz-` command.
 - Your own clone (for example in your GitHub folder) is for maintaining the repo. Team members only need the copy in `~/.rnz`.
+- **Test a release before merging:** clone its branch into `~/.rnz` and install from there: `git clone -b release/1.2.0 https://github.com/mosafin/rnz-fabric-apps "$HOME/.rnz/rnz-fabric-apps"`, then `node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" install`. It keeps itself up to date with that branch. After merging, switch it back with `git -C "$HOME/.rnz/rnz-fabric-apps" checkout main`.
 
 ## Rules that never change
 
@@ -88,7 +94,7 @@ In a terminal: `node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" new my-app --agent
 |---|---|
 | `bin/rnz.mjs` | The RNZ tool: `install`, `new`, `skin`, `update`, `check` |
 | `skin/` | What the skin adds to existing apps: the check script, the `rnz-skin` skill, agent blocks and the lock-up component |
-| `agents/` | The optional builder, QA and reporter agents that `new` copies into an app |
+| `agents/` | The optional builder, QA and reporter agents that `new` and `agents` add to an app (`agents/skin/` holds the versions for skinned apps) |
 | `vscode/prompts/` | The `/rnz-` Copilot commands (`install` copies them into VS Code) |
 | `templates/rnz-data-app` | The RNZ Data App template for new Fabric apps |
 | `scripts/` | Maintainer scripts: `rnz-lock.mjs`, `test-skin.mjs`, `test-agents.mjs`, and the older PowerShell `new-app.ps1` and `update-app.ps1` (still work) |

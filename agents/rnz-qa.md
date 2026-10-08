@@ -43,5 +43,5 @@ Ready to deploy: yes / no
 
 Say "yes" only when every gate passes and nothing on the checklist fails.
 
-- If it's yes and `.claude/agents/rnz-reporter.md` exists, end with: "Next: ask the rnz-reporter agent to record the version and change."
+- If it's yes and the rnz-reporter agent is set up (`.claude/agents/rnz-reporter.md` in the repository), end with: "Next: ask the rnz-reporter agent to record the version and change."
 - If it's no, end with: "Next: fix the problems above (or ask the rnz-builder agent to), then run QA again."

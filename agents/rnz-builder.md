@@ -35,5 +35,5 @@ Then tell the person, in a few lines, what changed, the check results and anythi
 
 You never review or record your own work. Those are separate agents' jobs.
 
-- If `.claude/agents/rnz-qa.md` exists, end with: "Next: ask the rnz-qa agent to review this change."
-- Otherwise, if `.claude/agents/rnz-reporter.md` exists, end with: "Next: ask the rnz-reporter agent to record the version and change."
+- If the rnz-qa agent is set up (`.claude/agents/rnz-qa.md` in the repository), end with: "Next: ask the rnz-qa agent to review this change."
+- Otherwise, if the rnz-reporter agent is set up, end with: "Next: ask the rnz-reporter agent to record the version and change."

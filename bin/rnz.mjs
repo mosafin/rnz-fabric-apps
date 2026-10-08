@@ -4,6 +4,7 @@
 //   node bin/rnz.mjs new NAME [--workspace-id ID] [--agents builder,qa,reporter|none] [--parent DIR] [--no-open]
 //   node bin/rnz.mjs skin [FOLDER] [--apply] [--light-only|--keep-dark] [--no-verify] [--force]
 //   node bin/rnz.mjs update [FOLDER] [--apply] [--no-verify] [--force]
+//   node bin/rnz.mjs agents [FOLDER] [--agents builder,qa,reporter]
 //   node bin/rnz.mjs check [FOLDER]
 // No dependencies. Needs Node 20+ and git. Never renames or deletes the app's own files, never
 // pushes, merges or deploys.
@@ -14,7 +15,7 @@ import { join, resolve, dirname, relative, sep, basename } from "node:path";
 import { homedir, tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { scanLiterals, walk } from "../skin/skin-check.mjs";
-import { parseAgents, addAgents } from "../agents/add-agents.mjs";
+import { AGENTS, START_VERSION, parseAgents, addAgents, renderAgent, findChangeLog, logInfo, skinChecks, startChangeLog } from "../agents/add-agents.mjs";
 
 const TOOL_VERSION = "1.2.0";
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -492,7 +493,7 @@ function safely(app, a, { label, branchBase, message, flags }, apply) {
   }
 
   if (branch) {
-    const add = git(g.root, "add", "--", ...changes.all().map((p) => relative(g.root, p)));
+    const add = git(g.root, "add", "-f", "--", ...changes.all().map((p) => relative(g.root, p)));
     const commit = add.code === 0 ? git(g.root, "commit", "-m", message) : add;
     if (commit.code !== 0) say(`  Couldn't commit automatically (${tail(commit.out, 3)}). The changes are on branch ${branch}; commit them yourself.`);
     else say(`  Committed on ${branch}: "${message}".`);
@@ -548,6 +549,7 @@ In VS Code, open Copilot Chat in Agent mode and type:
   /rnz-skin     apply the RNZ skin (colours, fonts, weights) to the open app
   /rnz-update   bring the open app up to the latest RNZ release
   /rnz-check    check the open app against the brand (changes nothing)
+  /rnz-agents   add the builder, QA or reporter agents to the open app
 If they don't show, reload VS Code (Developer: Reload Window).`);
 }
 
@@ -826,6 +828,50 @@ function cmdCheck(pos) {
   process.exit(isSkinnedApp(app) ? r.code : 0);
 }
 
+function cmdAgents(pos, flags) {
+  const app = resolveApp(pos[0]);
+  const kind = isTemplateApp(app) ? "template" : isSkinnedApp(app) ? "skin" : null;
+  if (!kind) fail(`${app} doesn't have the RNZ brand layer yet. The agents follow the RNZ rules, so apply the RNZ skin first (/rnz-skin or the skin command), merge it, then add the agents.`);
+  let list;
+  try { list = parseAgents(flags.agents); } catch (e) { fail(e.message); }
+  const g = gitInfo(app);
+  const root = g.isRepo ? g.root : app;
+  const appRel = posix(relative(root, app));
+  const have = AGENTS.filter((x) => existsSync(join(root, ".claude", "agents", `rnz-${x}.md`)));
+  const pkg = readJson(join(app, "package.json"));
+  const existingLog = findChangeLog(app, root);
+  const log = existingLog || logInfo(join(app, "CHANGELOG.md"), app, root);
+  say(`App: ${app}${appRel ? ` (folder ${appRel}/ in the repository)` : ""}`);
+  say(`  RNZ layer: ${kind === "template" ? "made from the RNZ template" : "RNZ skin"}`);
+  say(`  Agents set up: ${have.length ? have.map((x) => `rnz-${x}`).join(", ") : "none"}`);
+  say(`  Change log for the reporter: ${existingLog ? `${log.display.replace(/`/g, "")} (its own rules are kept)` : "none yet; CHANGELOG.md would be started in the app folder"}`);
+  if (list === undefined) {
+    say(`\nNothing changed. To add or refresh agents, run the same command with --agents builder,qa,reporter (any of them, or all).`);
+    return;
+  }
+  if (!list.length) { say("\nNo agents chosen. Nothing changed."); return; }
+  say(`\nAdding ${list.map((x) => `rnz-${x}`).join(", ")}...`);
+  const result = safely(app, { git: g }, {
+    label: "Adding the agents",
+    branchBase: "rnz-agents",
+    message: `RNZ agents: ${list.join(", ")} (rnz-fabric-apps ${TOOL_VERSION})`,
+    flags: { ...flags, "no-verify": true },
+  }, (ch) => {
+    for (const x of list) {
+      ch.write(join(root, ".claude", "agents", `rnz-${x}.md`), renderAgent(x, { kind, appRel, checks: kind === "skin" ? skinChecks(pkg) : "", log }));
+    }
+    if (list.includes("reporter") && !existingLog) {
+      const v = pkg.version || START_VERSION;
+      ch.write(log.file, startChangeLog({ appName: pkg.name, version: v, firstLine: `Started this change log. The app was at version ${v}.` }));
+    }
+  });
+  if (result.unchanged) return;
+  say(`
+Done. Agents are in ${posix(join(root, ".claude", "agents"))}. They only add files; nothing in the app changed.
+  In Copilot Chat, choose them from the agent list (where Agent mode is picked). In Claude Code, ask for them by name, for example "use rnz-qa".
+  Merge ${result.branch || "the changes"} when you're happy.`);
+}
+
 function help() {
   say(`RNZ tool ${TOOL_VERSION} (template ${templateVersion()})
 
@@ -843,6 +889,9 @@ function help() {
       after, and undoes itself if anything that passed before now fails.
   node bin/rnz.mjs update [FOLDER] [--apply]
       Bring an RNZ template app or a skinned app up to the latest release.
+  node bin/rnz.mjs agents [FOLDER] [--agents LIST]
+      Add or refresh the builder, QA and reporter agents in an RNZ template app or a skinned app.
+      Without --agents, shows what's set up. Only adds files, on a new branch.
   node bin/rnz.mjs check [FOLDER]
       Report brand problems. Changes nothing.`);
 }
@@ -857,6 +906,7 @@ switch (cmd) {
   case "skin": cmdSkin(pos, flags); break;
   case "update": cmdUpdate(pos, flags); break;
   case "check": cmdCheck(pos, flags); break;
+  case "agents": cmdAgents(pos, flags); break;
   case "version": case "--version": say(`${TOOL_VERSION} (template ${templateVersion()})`); break;
   default: help(); if (cmd && cmd !== "help" && cmd !== "--help") process.exit(1);
 }
