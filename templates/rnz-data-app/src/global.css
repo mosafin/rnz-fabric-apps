@@ -268,3 +268,32 @@ body,
 #root {
   height: 100%;
 }
+
+/* Fabric DataGrid header (v12 Section 10): #F5F5F5 (via --color-muted), bold grey
+   sentence-case text and a 2px red rule. Number column headings line up right, like
+   their numbers (the DataGrid only right-aligns the cells). Unlayered on purpose so it
+   wins over the DataGrid's own styles. */
+.data-grid-root { --dg-header-font-weight: 700; }
+.data-grid-root thead th { border-bottom: 2px solid var(--color-primary); }
+.data-grid-root:has(tbody tr:first-child > td:nth-child(1)[data-numeric-styling]) thead tr > th:nth-child(1),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(2)[data-numeric-styling]) thead tr > th:nth-child(2),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(3)[data-numeric-styling]) thead tr > th:nth-child(3),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(4)[data-numeric-styling]) thead tr > th:nth-child(4),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(5)[data-numeric-styling]) thead tr > th:nth-child(5),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(6)[data-numeric-styling]) thead tr > th:nth-child(6),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(7)[data-numeric-styling]) thead tr > th:nth-child(7),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(8)[data-numeric-styling]) thead tr > th:nth-child(8),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(9)[data-numeric-styling]) thead tr > th:nth-child(9),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(10)[data-numeric-styling]) thead tr > th:nth-child(10),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(11)[data-numeric-styling]) thead tr > th:nth-child(11),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(12)[data-numeric-styling]) thead tr > th:nth-child(12),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(13)[data-numeric-styling]) thead tr > th:nth-child(13),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(14)[data-numeric-styling]) thead tr > th:nth-child(14),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(15)[data-numeric-styling]) thead tr > th:nth-child(15),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(16)[data-numeric-styling]) thead tr > th:nth-child(16),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(17)[data-numeric-styling]) thead tr > th:nth-child(17),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(18)[data-numeric-styling]) thead tr > th:nth-child(18),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(19)[data-numeric-styling]) thead tr > th:nth-child(19),
+.data-grid-root:has(tbody tr:first-child > td:nth-child(20)[data-numeric-styling]) thead tr > th:nth-child(20) {
+  text-align: right;
+}

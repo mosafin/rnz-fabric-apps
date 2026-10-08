@@ -1,6 +1,14 @@
 # Changelog
 
-All brand-layer changes are listed here. After updating the template, run `scripts\update-app.ps1 -App C:\dev\your-app` for each app.
+All brand-layer changes are listed here. After a release, run `/rnz-update` in each app (or `node bin/rnz.mjs update APP --apply`).
+
+## 1.2.0 (October 2026)
+
+- **RNZ tool (`bin/rnz.mjs`) and Copilot commands.** One-time setup per person (`install`), then `/rnz-new`, `/rnz-skin`, `/rnz-update` and `/rnz-check` in Copilot Chat. Works from a private GitHub repo with normal git sign-in and keeps itself up to date. No dependencies beyond Node 20 and git.
+- **RNZ skin for existing apps.** Changes colours, fonts and font weights only, without restructuring: an unlayered `src/rnz-skin.css` maps the app's own tokens (Tailwind v4, Microsoft Fabric data app and shadcn names) to RNZ values, plus the lock-up component and file, the `rnz-skin` skill, a skin check and a report of hardcoded values for a Copilot values-only pass. It works on a new branch, runs the app's build and tests before and after, and undoes itself completely on any regression. Copilot, Claude Code and Cursor get the rules through marked blocks and `.github/instructions/`, including for apps in a subfolder of a bigger repo. Tested on a copy of Content Shelf Mark (RNZ-GTM-Agent): build and all 36 tests pass before and after, no layout change.
+- **Fabric DataGrid header** (template and skin): 2px Ricoh Red rule under the header, bold grey headings, and number column headings right-aligned like their numbers.
+- **Template checks** now also run `scripts/test-skin.mjs`.
+- No change for apps made from the template other than the DataGrid header; update with `/rnz-update`.
 
 ## 1.1.1 (October 2026)
 

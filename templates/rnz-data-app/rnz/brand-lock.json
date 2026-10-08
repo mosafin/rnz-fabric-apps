@@ -1,5 +1,5 @@
 {
-  "templateVersion": "1.1.1",
+  "templateVersion": "1.2.0",
   "files": {
     ".agents/skills/app-design/SKILL.md": "5eab889ca9bc4b60beffbb50db8e5ca02e6ed85d143aeb0676e6737ba4026fbc",
     ".agents/skills/rnz-app-brand/SKILL.md": "060e3de904bbf1ad4f9e8d0a14cd5e1411a9a88919a3776bbed8c89d1320221f",
@@ -13,7 +13,7 @@
     "CLAUDE.md": "d53b11ad0668baaec00bd459a71525cacc6f6007f18b761f2e70226e00b414c2",
     "public/brand/README.md": "27e161d0b958974cdd1eb1e0586a6f2cadd5c23f5803292a329ddf1b331c858b",
     "public/brand/RICOH-Logo_sRGB_full-colour.png": "f85733e6bd4672b4c767562cf1a07f9ec866d8208d5413b2e11722301507f402",
-    "rnz/brand-manifest.json": "4524554aa856a8743db1694a0999c2c2705dbd888b197deef6fce93d91602da8",
+    "rnz/brand-manifest.json": "1f97100c7acd86e90597d954598bb3a5d740e842b6b279ea134479684cc00027",
     "scripts/rnz-check.mjs": "7576f4c7395c1571eb54c7b7c419b348381247074c660113d2218e54a4ec68e6",
     "scripts/rnz-sync.mjs": "0223f86f57f152cb590feffaeafc311882f83e0723455e7bfae6dad578d3b4d3",
     "src/ErrorFallback.tsx": "6e71f3cc745bc950d9f579a19cbf2e37fffdf0779cdc760d8be248c817ed501e",
@@ -28,8 +28,8 @@
     "src/components/rnz/states.tsx": "b48e982083f64266a9525656e5a458898361a85343b0c5bbbb5149173c5d3d8d",
     "src/components/rnz/surfaces.tsx": "231755b461b0afc3a80ec579923ff305b3e7b861557987c4031a74bad3b1bd89",
     "src/data-palette-presets.json": "bccdd33128b985889dd87450573b3560a9fbd01811e039a0eb9666bdc1356329",
-    "src/global.css": "226a8d5ecf496c6695b4212cdc298af319d3c0c1624dd2a3040b4708c70f7ca4",
+    "src/global.css": "1c9edefb3675508827b73f1be4523e4c5727ba1ab5f6587d8f877f5fc9270db7",
     "src/hooks/use-theme.ts": "9fe44383ff5ad68464da319361b268f0e00bb17c231d6834882bd43fa8d6c4a7"
   },
-  "syncedAt": "2026-10-07T23:18:13.872Z"
+  "syncedAt": "2026-10-08T03:37:44.571Z"
 }

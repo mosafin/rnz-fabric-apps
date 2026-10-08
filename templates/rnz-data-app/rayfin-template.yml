@@ -4,7 +4,7 @@ metadata:
     name: rnz-data-app
     displayName: RNZ Data App
     description: Fabric data app connected to a semantic model, styled to the RNZ Digital Design System, with RNZ agent skills
-    version: 1.1.1
+    version: 1.2.0
 entries:
     - name: RNZ Data App
       path: .

@@ -36,3 +36,15 @@ jobs:
         run: npx eslint src/components/rnz src/App.tsx src/hooks/use-theme.ts scripts/rnz-check.mjs scripts/rnz-sync.mjs
       - name: Deploy build
         run: npm run build:fabric
+
+  rnz-tool:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: RNZ tool syntax
+        run: node --check bin/rnz.mjs && node --check skin/skin-check.mjs
+      - name: RNZ skin safety tests
+        run: node scripts/test-skin.mjs

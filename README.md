@@ -1,49 +1,86 @@
-# Ricoh NZ Fabric app templates
+# Ricoh NZ Fabric app templates and brand skin
 
-Templates for building Microsoft Fabric Apps that look and behave like one Ricoh New Zealand product. Each template carries the RNZ Digital Design System (`ricoh-brand-methodology-v12.html`) as theme tokens, a component kit with the RICOH lock-up built in, agent skills, and a brand check that runs before every deploy.
+One place for the Ricoh New Zealand (RNZ) look in apps built with VS Code and Copilot:
 
-| Template | Use it for |
-|---|---|
-| `templates/rnz-data-app` | Dashboards, register explorers and detail views over a Power BI semantic model |
+- **New app:** a ready Microsoft Fabric app repo with the RNZ Digital Design System built in: theme, component kit with the RICOH lock-up, agent skills and a brand check before every deploy.
+- **Existing app:** the **RNZ skin** changes colours, fonts and font weights to RNZ, and nothing else. No layout, component, logic or file-name changes. It works on its own branch, checks the app's build and tests before and after, and undoes itself if anything that worked stops working.
 
-You never work inside this repo. You clone it once, and the scripts below create and update apps in their own folders.
+After either one, Copilot (and Claude Code or Cursor) automatically gets the RNZ rules for that app, so new work stays on brand without repeated corrections.
 
-## Make a new app
+Everything the tool needs is in this repo. It doesn't need the `rnz-ai-library` repo.
 
-1. Clone this repo once (later, the script pulls updates for you).
-2. In PowerShell, from this repo's folder (replace the name and the workspace ID; never type angle brackets):
+## Set up (once per person, about two minutes)
 
-   ```powershell
-   .\scripts\new-app.ps1 -Name pipeline-by-pillar -WorkspaceId 00000000-0000-0000-0000-000000000000
-   ```
+You need Git, Node.js 20 or later, VS Code with GitHub Copilot, and access to this repo on GitHub (ask the maintainer).
 
-   The workspace ID is the GUID after `/groups/` in the workspace's URL. The script creates the app in `C:\dev` (outside OneDrive), checks the brand and opens VS Code.
-
-3. In Copilot Chat (Agent mode):
-
-   > Build this RNZ app. It's for [who] to see [what]. Model: [semantic model share link]. Pillar: [pillar or none].
-
-4. Deploy with `npx rayfin up` when you're happy.
-
-## Update an app, or rebrand one made elsewhere
+In VS Code, open a terminal (Terminal > New Terminal) and paste:
 
 ```powershell
-.\scripts\update-app.ps1 -App C:\dev\pipeline-by-pillar
+git clone https://github.com/mosafin/rnz-fabric-apps "$HOME/.rnz/rnz-fabric-apps"
+node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" install
 ```
 
-It previews first, then only changes brand-managed files (theme, component kit, RNZ skills, scripts, the RICOH lock-up and the RNZ block in `AGENTS.md`). Screens, queries and `App.tsx` are never touched, files are never renamed or deleted, and anything replaced is backed up in the app's `rnz/backup/` folder.
+The first line may open a GitHub sign-in window. Then reload VS Code (Command Palette > Developer: Reload Window).
 
-For an app that wasn't made from this template, run the same script, then ask Copilot in that app: "Rebrand this app to RNZ. Change the look only."
+## Use it
+
+Open Copilot Chat, switch to **Agent** mode, and type:
+
+| Type | What happens |
+|---|---|
+| `/rnz-new` | Asks for a name (and optionally a Fabric workspace ID), creates a branded app in `C:\dev\NAME`, makes the first commit and opens it. |
+| `/rnz-skin` | Applies the RNZ skin to the app open in VS Code, then has Copilot swap any hardcoded colours, fonts and weights for RNZ tokens, values only. |
+| `/rnz-update` | Brings the open app up to the latest RNZ release, whether it was made from the template or has the skin. |
+| `/rnz-check` | Reports anything off brand. Changes nothing. |
+
+The tool updates itself from GitHub every time you use it, so everyone stays on the latest release.
+
+Without Copilot, the same commands work in a terminal:
+
+```powershell
+node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" skin .            # preview only
+node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" skin . --apply    # apply on a new branch
+node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" new my-app
+node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" help
+```
+
+## What the skin does to an existing app
+
+**Adds** (new files the tool manages): `src/rnz-skin.css` (maps the app's own colour, font and weight tokens to RNZ values), `src/rnz-lockup.tsx` (the RICOH lock-up, ready to place), `public/brand/RICOH-Logo_sRGB_full-colour.png`, `rnz/` (settings, a check script and a report of hardcoded values), and the `rnz-skin` agent skill.
+
+**Changes, one line or one marked block each:** the app's entry file (one import line), its `AGENTS.md` (an RNZ block at the top), `package.json` (an `rnz:skin-check` script, only if missing), and in the repository: `.github/copilot-instructions.md`, `.github/instructions/` and, for apps in a subfolder, a short pointer block at the end of the repo's own `AGENTS.md` or `CLAUDE.md`. Everything else in those files is kept exactly.
+
+**Never:** restructures screens, edits the app's own CSS or components (Copilot's follow-up pass only swaps values, on the same branch, and you review it), renames or deletes files, pushes, merges or deploys.
+
+**Safety:** it needs a clean git working tree, works on a new `rnz-skin` branch, runs the app's build and tests before and after, and if anything that passed before now fails, it removes everything it added, returns you to your branch and deletes its own. You merge when you're happy.
+
+**Light theme:** RNZ apps are light only. If the app's components don't use `dark:` classes, the skin keeps it light even when the host switches to dark mode. If they do, dark mode is left alone and the report says so.
+
+## Share it with the team (maintainer)
+
+- The repo is private. Give people read access: on GitHub, **Settings > Collaborators > Add people**. For a larger group, move the repo to a GitHub organisation and give a team read access.
+- Releases go through a pull request; the **Template checks** workflow must pass (it tests the template and the skin tool). Merge, then tag the release. Everyone gets it the next time they run an `/rnz-` command.
+- Your own clone (for example in your GitHub folder) is for maintaining the repo. Team members only need the copy in `~/.rnz`.
 
 ## Rules that never change
 
 - **The RICOH logo is always the lock-up** (logo with the "imagine. change." tagline), at least 80px wide. Never the logo alone, never a logo favicon. (RNZ decision; for apps it departs from global guidelines §3.3.9 and needs APAC brand approval.)
 - **File names never change.** Skills, scripts and other repos reference exact names, including `ricoh-brand-methodology-v12.html`, `RNZ Tables & Structured Data Design Standard.html` and `RICOH-Logo_sRGB_full-colour.png`.
-- **The brand guide's source of truth is the `rnz-ai-library` repo.** This repo carries a copy for the skills.
+- **This repo works on its own.** The brand guide's source of truth is the `rnz-ai-library` repo; this repo carries the copy the skills use, so apps never need the library.
+
+## What's in this repo
+
+| Path | What it is |
+|---|---|
+| `bin/rnz.mjs` | The RNZ tool: `install`, `new`, `skin`, `update`, `check` |
+| `skin/` | What the skin adds to existing apps: the check script, the `rnz-skin` skill, agent blocks and the lock-up component |
+| `vscode/prompts/` | The `/rnz-` Copilot commands (`install` copies them into VS Code) |
+| `templates/rnz-data-app` | The RNZ Data App template for new Fabric apps |
+| `scripts/` | Maintainer scripts: `rnz-lock.mjs`, `test-skin.mjs`, and the older PowerShell `new-app.ps1` and `update-app.ps1` (still work) |
 
 ## Change the brand layer (maintainers)
 
-Follow the root `AGENTS.md`. In short: change the template, run `node scripts/rnz-lock.mjs`, bump the version, add a `CHANGELOG.md` entry, open a pull request (the Template checks workflow must pass), merge, then tag the release.
+Follow the root `AGENTS.md`. In short: change the template or `skin/`, run `node scripts/rnz-lock.mjs` and `node scripts/test-skin.mjs`, bump the version, add a `CHANGELOG.md` entry, open a pull request (Template checks must pass), merge, then tag the release.
 
 ## Where the rules come from
 
@@ -51,6 +88,6 @@ Follow the root `AGENTS.md`. In short: change the template, run `node scripts/rn
 |---|---|
 | Ricoh Brand Communication Guidelines v6.0 | Logo, balloon, typeface, palettes, creative principles |
 | RNZ Brand Colour Chart | RNZ hex values |
-| `ricoh-brand-methodology-v12.html` (in `rnz-ai-library`) | How those apply to websites, apps and AI-built interfaces, including the RNZ lock-up-only rule |
-| This template | The working code version of that guide for Fabric Apps |
+| `ricoh-brand-methodology-v12.html` (source in `rnz-ai-library`, copy in the template's skills) | How those apply to websites, apps and AI-built interfaces, including the RNZ lock-up-only rule |
+| This repo | The working code version of that guide for Fabric Apps and existing apps |
 | `UPSTREAM.md` | Which Microsoft template version this is built on |

@@ -1,5 +1,5 @@
 {
-  "templateVersion": "1.1.1",
+  "templateVersion": "1.2.0",
   "brandSource": "ricoh-brand-methodology-v12.html (RNZ Digital Design System v12.3)",
   "description": "Files the RNZ template owns. Apps don't edit or rename these; change them in the template, then run `npm run rnz:sync` in each app. File names never change: skills, scripts and references use them exactly.",
   "files": [
