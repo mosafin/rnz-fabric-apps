@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // RNZ tool (rnz-fabric-apps). One entry point for the team:
 //   node bin/rnz.mjs install                 add /rnz-new, /rnz-skin, /rnz-update, /rnz-check to Copilot Chat
-//   node bin/rnz.mjs new NAME [--workspace-id ID] [--parent DIR] [--no-open]
+//   node bin/rnz.mjs new NAME [--workspace-id ID] [--agents builder,qa,reporter|none] [--parent DIR] [--no-open]
 //   node bin/rnz.mjs skin [FOLDER] [--apply] [--light-only|--keep-dark] [--no-verify] [--force]
 //   node bin/rnz.mjs update [FOLDER] [--apply] [--no-verify] [--force]
 //   node bin/rnz.mjs check [FOLDER]
@@ -14,6 +14,7 @@ import { join, resolve, dirname, relative, sep, basename } from "node:path";
 import { homedir, tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { scanLiterals, walk } from "../skin/skin-check.mjs";
+import { parseAgents, addAgents } from "../agents/add-agents.mjs";
 
 const TOOL_VERSION = "1.2.0";
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -50,7 +51,7 @@ function parseArgs(argv) {
     const a = argv[i];
     if (a.startsWith("--")) {
       const k = a.slice(2);
-      if (["workspace-id", "parent"].includes(k)) flags[k] = argv[++i];
+      if (["workspace-id", "parent", "agents"].includes(k)) flags[k] = argv[++i];
       else flags[k] = true;
     } else pos.push(a);
   }
@@ -558,6 +559,8 @@ function cmdNew(pos, flags) {
   const target = join(parent, name);
   if (existsSync(target)) fail(`${target} already exists. Pick another name or delete that folder first.`);
   if (/onedrive/i.test(parent)) say("Note: apps inside OneDrive can hit file locks while building. C:\\dev is safer.");
+  let agents;
+  try { agents = parseAgents(flags.agents) ?? []; } catch (e) { fail(e.message); }
   for (const c of ["node", "npm", "git"]) if (run(c, ["--version"]).code !== 0) fail(`${c} wasn't found. Install it, then try again.`);
 
   say(`Creating ${name} in ${parent} from the RNZ Data App template (${templateVersion()})...`);
@@ -569,17 +572,25 @@ function cmdNew(pos, flags) {
   say("Checking the brand...");
   const chk = run("npm", ["run", "rnz:check"], { cwd: target });
   say(tail(chk.out, 3));
+  const added = addAgents(target, agents, { appName: name, templateVersion: templateVersion() });
+  if (agents.length) say(`Agents added: ${agents.map((a) => `rnz-${a}`).join(", ")} (in .claude/agents).${agents.includes("reporter") ? " Version set to 0.1.0, with CHANGELOG.md." : ""}`);
   if (git(target, "rev-parse", "--is-inside-work-tree").code !== 0) {
     git(target, "init", "-q");
     git(target, "add", "-A");
     const c = git(target, "commit", "-q", "-m", `Create ${name} from the RNZ Data App template ${templateVersion()}`);
     say(c.code === 0 ? "First commit made." : `Couldn't make the first commit (${tail(c.out, 2)}).`);
+  } else if (added.length) {
+    git(target, "add", "--", ...added);
+    const c = git(target, "commit", "-q", "-m", `Add RNZ agents: ${agents.join(", ")}`, "--", ...added);
+    say(c.code === 0 ? "Agents committed." : `Couldn't commit the agents (${tail(c.out, 2)}).`);
   }
   if (!flags["no-open"] && run("code", ["--version"]).code === 0) run("code", ["-n", target]);
+  const pick = agents.includes("builder") ? ", pick the rnz-builder agent" : "";
   say(`
 Done: ${target}
-Next, in that VS Code window, open Copilot Chat (Agent mode) and type:
-  Build this RNZ app. It's for [who] to see [what]. Model: [semantic model share link]. Pillar: [pillar or none].
+Next, in that VS Code window, open Copilot Chat (Agent mode)${pick} and type:
+  Build this RNZ app. It's for [who] to see [what]. Model: [semantic model share link]. Pillar: [pillar or none].${agents.length ? `
+Agents: in Copilot Chat, choose them from the agent list (where Agent mode is picked). In Claude Code, ask for them by name, for example "use rnz-qa".` : ""}
 To put it on GitHub: Source Control > Publish Branch (choose private).`);
 }
 
@@ -820,8 +831,12 @@ function help() {
 
   node bin/rnz.mjs install
       Add /rnz-new, /rnz-skin, /rnz-update and /rnz-check to Copilot Chat (once per person).
-  node bin/rnz.mjs new NAME [--workspace-id ID] [--parent DIR] [--no-open]
+  node bin/rnz.mjs new NAME [--workspace-id ID] [--agents LIST] [--parent DIR] [--no-open]
       Create a new branded Fabric app (default folder C:\\dev on Windows).
+      --agents adds optional agents: any of builder,qa,reporter, or all, or none (the default).
+        builder   builds screens following the RNZ skills
+        qa        reviews changes and reports problems, never fixes them
+        reporter  only updates the app's version and records each change in CHANGELOG.md
   node bin/rnz.mjs skin [FOLDER] [--apply] [--light-only | --keep-dark] [--no-verify]
       Existing app: change colours, fonts and weights to RNZ without changing its structure.
       Analyses only, unless --apply. Works on a new branch, checks build and tests before and

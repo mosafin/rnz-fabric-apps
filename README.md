@@ -28,7 +28,7 @@ Open Copilot Chat, switch to **Agent** mode, and type:
 
 | Type | What happens |
 |---|---|
-| `/rnz-new` | Asks for a name (and optionally a Fabric workspace ID), creates a branded app in `C:\dev\NAME`, makes the first commit and opens it. |
+| `/rnz-new` | Asks for a name, a Fabric workspace ID (optional) and which agents you want (yes or no to each), creates a branded app in `C:\dev\NAME`, makes the first commit and opens it. |
 | `/rnz-skin` | Applies the RNZ skin to the app open in VS Code, then has Copilot swap any hardcoded colours, fonts and weights for RNZ tokens, values only. |
 | `/rnz-update` | Brings the open app up to the latest RNZ release, whether it was made from the template or has the skin. |
 | `/rnz-check` | Reports anything off brand. Changes nothing. |
@@ -43,6 +43,20 @@ node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" skin . --apply    # apply on a new
 node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" new my-app
 node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" help
 ```
+
+## Optional agents for new apps
+
+`/rnz-new` asks three yes or no questions. Each yes adds one agent to the new app, in `.claude/agents/`. Copilot in VS Code shows them in the agent list; Claude Code uses them by name.
+
+| Agent | What it does | What it never does |
+|---|---|---|
+| `rnz-builder` | Builds and changes screens following the RNZ skills, then runs the brand check, tests and build | Edit brand-managed files, rename files, commit, push or deploy |
+| `rnz-qa` | Reviews the change against the brand, accessibility, content and data rules, and lists the problems | Fix anything (it can't edit files), so the work never checks itself |
+| `rnz-reporter` | Updates the app's version number and adds a plain-English entry to `CHANGELOG.md` | Change any other file, commit, push or deploy |
+
+With the reporter, the app starts at version 0.1.0 with a first `CHANGELOG.md` entry. A fix moves the last number (0.1.0 to 0.1.1), a new screen or feature moves the middle one (0.1.1 to 0.2.0), and the first number moves only when you say so.
+
+In a terminal: `node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" new my-app --agents builder,qa,reporter` (or `all`, or `none`, the default).
 
 ## What the skin does to an existing app
 
@@ -74,13 +88,14 @@ node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" help
 |---|---|
 | `bin/rnz.mjs` | The RNZ tool: `install`, `new`, `skin`, `update`, `check` |
 | `skin/` | What the skin adds to existing apps: the check script, the `rnz-skin` skill, agent blocks and the lock-up component |
+| `agents/` | The optional builder, QA and reporter agents that `new` copies into an app |
 | `vscode/prompts/` | The `/rnz-` Copilot commands (`install` copies them into VS Code) |
 | `templates/rnz-data-app` | The RNZ Data App template for new Fabric apps |
-| `scripts/` | Maintainer scripts: `rnz-lock.mjs`, `test-skin.mjs`, and the older PowerShell `new-app.ps1` and `update-app.ps1` (still work) |
+| `scripts/` | Maintainer scripts: `rnz-lock.mjs`, `test-skin.mjs`, `test-agents.mjs`, and the older PowerShell `new-app.ps1` and `update-app.ps1` (still work) |
 
 ## Change the brand layer (maintainers)
 
-Follow the root `AGENTS.md`. In short: change the template or `skin/`, run `node scripts/rnz-lock.mjs` and `node scripts/test-skin.mjs`, bump the version, add a `CHANGELOG.md` entry, open a pull request (Template checks must pass), merge, then tag the release.
+Follow the root `AGENTS.md`. In short: change the template or `skin/`, run `node scripts/rnz-lock.mjs`, `node scripts/test-skin.mjs` and `node scripts/test-agents.mjs`, bump the version, add a `CHANGELOG.md` entry, open a pull request (Template checks must pass), merge, then tag the release.
 
 ## Where the rules come from
 

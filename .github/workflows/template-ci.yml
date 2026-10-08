@@ -45,6 +45,8 @@ jobs:
         with:
           node-version: 22
       - name: RNZ tool syntax
-        run: node --check bin/rnz.mjs && node --check skin/skin-check.mjs
+        run: node --check bin/rnz.mjs && node --check skin/skin-check.mjs && node --check agents/add-agents.mjs
       - name: RNZ skin safety tests
         run: node scripts/test-skin.mjs
+      - name: Optional agents for new apps
+        run: node scripts/test-agents.mjs
