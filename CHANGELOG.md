@@ -2,6 +2,10 @@
 
 All brand-layer changes are listed here. After a release, run `/rnz-update` in each app (or `node bin/rnz.mjs update APP --apply`).
 
+## Documentation (October 2026)
+
+New `docs/` folder: quick start, cheat sheet, guides for new apps, existing apps and agents, troubleshooting, how it works, and a maintainers page. No change to the tool or template, so no version change.
+
 ## 1.2.0 (October 2026)
 
 - **RNZ tool (`bin/rnz.mjs`) and Copilot commands.** One-time setup per person (`install`), then `/rnz-new`, `/rnz-skin`, `/rnz-update` and `/rnz-check` in Copilot Chat. Works from a private GitHub repo with normal git sign-in and keeps itself up to date. No dependencies beyond Node 20 and git.
