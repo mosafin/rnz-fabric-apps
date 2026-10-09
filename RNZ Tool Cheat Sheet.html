@@ -1,0 +1,173 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>RNZ Tool Cheat Sheet</title>
+<style>
+/* Layout: one reading column of short reference blocks, RNZ light theme only (brand rule), tables in the RNZ style. */
+:root {
+  --red: #CF142B;
+  --red-pressed: #A51022;
+  --grey: #666666;
+  --white: #FFFFFF;
+  --light: #F5F5F5;
+  --border: #E0E0E0;
+  --font: Frutiger, "Frutiger LT Std", Arial, Helvetica, sans-serif;
+  --mono: Consolas, "Cascadia Mono", Menlo, monospace;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { background: var(--white); color: var(--grey); font-family: var(--font); font-weight: 400; font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 880px; margin: 0 auto; padding-inline: 20px; padding-block: 28px 56px; display: grid; gap: 40px; }
+header { display: grid; gap: 18px; border-bottom: 2px solid var(--red); padding-bottom: 22px; }
+.lockup { height: 40px; width: auto; }
+h1 { margin: 0; font-size: 32px; line-height: 1.2; font-weight: 700; text-wrap: balance; }
+.lede { margin: 0; max-width: 62ch; font-size: 17px; }
+.meta { margin: 0; font-size: 13px; }
+h2 { margin: 0 0 12px; font-size: 21px; font-weight: 700; text-wrap: balance; }
+p { margin: 0; }
+section { display: grid; gap: 12px; min-width: 0; }
+code { font-family: var(--mono); font-size: 0.92em; background: var(--light); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; }
+.table { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th { text-align: left; background: var(--light); font-weight: 700; border-bottom: 2px solid var(--red); padding: 10px 14px; white-space: nowrap; }
+td { padding: 10px 14px; border-top: 1px solid var(--border); vertical-align: top; }
+td:first-child { white-space: nowrap; font-weight: 700; }
+td code { white-space: nowrap; }
+ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 14px; }
+ol.steps > li { counter-increment: s; display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 12px; align-items: start; }
+ol.steps > li::before { content: counter(s); width: 32px; height: 32px; border-radius: 50%; background: var(--red); color: var(--white); font-weight: 700; display: grid; place-items: center; }
+.step { display: grid; gap: 8px; min-width: 0; }
+.cmd { display: flex; align-items: stretch; border: 1px solid var(--border); border-radius: 8px; background: var(--light); min-width: 0; }
+.cmd pre { margin: 0; padding: 10px 12px; overflow-x: auto; flex: 1; min-width: 0; font-family: var(--mono); font-size: 13px; line-height: 1.5; color: var(--grey); }
+.copy { flex: none; border: 0; border-left: 1px solid var(--border); background: var(--white); color: var(--red); font: 700 13px var(--font); padding: 0 14px; min-height: 44px; border-radius: 0 8px 8px 0; cursor: pointer; }
+.copy:hover { color: var(--red-pressed); }
+.copy:focus-visible, a:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.panel { border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; display: grid; gap: 8px; align-content: start; }
+.panel h3 { margin: 0; font-size: 16px; font-weight: 700; }
+.panel ul, .rules { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.swatches { display: flex; flex-wrap: wrap; gap: 10px; }
+.sw { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.chip { width: 28px; height: 28px; border-radius: 4px; border: 1px solid var(--border); }
+dl.fixes { margin: 0; display: grid; gap: 12px; }
+dl.fixes div { border-left: 3px solid var(--border); padding-left: 14px; }
+dl.fixes dt { font-weight: 700; }
+dl.fixes dd { margin: 2px 0 0; }
+a { color: var(--red); font-weight: 700; }
+footer { border-top: 1px solid var(--border); padding-top: 18px; font-size: 13px; display: grid; gap: 6px; }
+@media (max-width: 520px) { h1 { font-size: 26px; } td:first-child { white-space: normal; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <img class="lockup" src="data:image/png;base64,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" alt="RICOH imagine. change.">
+    <h1>RNZ tool cheat sheet</h1>
+    <p class="lede">Gives apps built in VS Code the Ricoh New Zealand look, and keeps them that way. Make new branded Fabric apps, or re-skin apps you already have (colours, fonts and font weights only) without breaking them.</p>
+    <p class="meta">Release 1.2.0, October 2026. Full guides in the <code>docs</code> folder of the rnz-fabric-apps repository.</p>
+  </header>
+
+  <section aria-labelledby="setup">
+    <h2 id="setup">Set up once (about 5 minutes)</h2>
+    <p>You need access to the rnz-fabric-apps repository on GitHub (ask the maintainer), Git, Node.js 20 or later, and VS Code with GitHub Copilot.</p>
+    <ol class="steps">
+      <li><div class="step"><p>In VS Code, open a terminal (Terminal &gt; New Terminal) and paste:</p>
+        <div class="cmd"><pre id="c1">git clone https://github.com/mosafin/rnz-fabric-apps "$HOME/.rnz/rnz-fabric-apps"
+node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" install</pre><button class="copy" type="button" data-copy="c1" id="b1">Copy</button></div></div></li>
+      <li><div class="step"><p>Reload VS Code: press <code>Ctrl + Shift + P</code>, type <code>reload window</code>, press Enter.</p></div></li>
+      <li><div class="step"><p>Open Copilot Chat in <strong>Agent</strong> mode and type <code>/rnz</code>. Five commands should appear. You never need to install again: the tool updates itself.</p></div></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="commands">
+    <h2 id="commands">The five commands</h2>
+    <p>Type them in Copilot Chat, in Agent mode. Each one asks you or shows a preview before it changes anything.</p>
+    <div class="table"><table>
+      <thead><tr><th scope="col">Command</th><th scope="col">Use it to</th><th scope="col">Changes files?</th></tr></thead>
+      <tbody>
+        <tr><td><code>/rnz-new</code></td><td>Create a new branded Fabric app</td><td>Creates a new app folder</td></tr>
+        <tr><td><code>/rnz-skin</code></td><td>Put the RNZ look on an app you already have</td><td>Yes, on a new branch</td></tr>
+        <tr><td><code>/rnz-update</code></td><td>Bring an app up to the latest RNZ release</td><td>Yes, on a new branch</td></tr>
+        <tr><td><code>/rnz-agents</code></td><td>Add the builder, QA or reporter agents</td><td>Adds files, on a new branch</td></tr>
+        <tr><td><code>/rnz-check</code></td><td>See what's off brand</td><td>No</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section aria-labelledby="safe">
+    <h2 id="safe">Every time you change an app</h2>
+    <div class="two">
+      <div class="panel"><h3>Before</h3><ul>
+        <li>Open only the app's repository, at its top folder.</li>
+        <li>Commit or stash your work. The tool stops if anything is uncommitted.</li>
+        <li>Pause OneDrive if the repository is in it.</li>
+      </ul></div>
+      <div class="panel"><h3>After</h3><ul>
+        <li>Try the app on the new branch (<code>npm run dev</code>).</li>
+        <li>Happy: merge the branch.</li>
+        <li>Not happy: switch back and delete the new branch. Your branch was never touched.</li>
+      </ul></div>
+    </div>
+    <p>The tool never restructures screens, renames or deletes your files, pushes, merges or deploys. If a change would break a build or test that passed before, it undoes itself.</p>
+  </section>
+
+  <section aria-labelledby="agents">
+    <h2 id="agents">Agents (optional)</h2>
+    <div class="table"><table>
+      <thead><tr><th scope="col">Agent</th><th scope="col">Does</th><th scope="col">Never does</th></tr></thead>
+      <tbody>
+        <tr><td><code>rnz-builder</code></td><td>Builds screens and changes on brand, then runs the checks</td><td>Edit brand files, commit, push or deploy</td></tr>
+        <tr><td><code>rnz-qa</code></td><td>Reviews a change and lists the problems</td><td>Change any file</td></tr>
+        <tr><td><code>rnz-reporter</code></td><td>Updates the version and adds a change log entry</td><td>Change anything else</td></tr>
+      </tbody>
+    </table></div>
+    <p>In Copilot, pick the agent from the agent list. In Claude Code, ask for it by name, for example "use rnz-qa".</p>
+  </section>
+
+  <section aria-labelledby="brand">
+    <h2 id="brand">Brand rules in one breath</h2>
+    <div class="swatches" aria-label="RNZ colours">
+      <span class="sw"><span class="chip" style="background:var(--red)"></span>Ricoh Red #CF142B</span>
+      <span class="sw"><span class="chip" style="background:var(--grey)"></span>Ricoh Grey #666666</span>
+      <span class="sw"><span class="chip" style="background:var(--white)"></span>White #FFFFFF</span>
+      <span class="sw"><span class="chip" style="background:var(--light)"></span>Light #F5F5F5</span>
+    </div>
+    <ul class="rules">
+      <li>Red, white and grey. Red for the main action and key emphasis only.</li>
+      <li>Text is Ricoh Grey, never black. White text only on red or grey.</li>
+      <li>Frutiger, then Arial. Weights 300, 400 and 700 only. Light theme only.</li>
+      <li>The RICOH logo always with its "imagine. change." tagline (the lock-up), at least 80px wide. Never on its own, never as a favicon.</li>
+      <li>NZ English, sentence case, no em or en dashes.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="fixes">
+    <h2 id="fixes">If something goes wrong</h2>
+    <dl class="fixes">
+      <div><dt>The /rnz commands don't show</dt><dd>Reload VS Code and make sure Copilot Chat is in Agent mode.</dd></div>
+      <div><dt>"The repository has uncommitted changes"</dt><dd>Commit your work, or run <code>git stash -u</code> and bring it back later with <code>git stash pop</code>.</dd></div>
+      <div><dt>"Deletion of directory ... failed. Should I try again? (y/n)"</dt><dd>Type <code>n</code> and press Enter. OneDrive or the app preview had the folder open; pause OneDrive next time.</dd></div>
+      <div><dt>Copilot ran a command in the wrong repository</dt><dd>Open only the app's repository in VS Code, or run git yourself with the folder named: <code>git -C "folder" status</code>.</dd></div>
+      <div><dt>"... was undone, because something that worked before stopped working"</dt><dd>Nothing was changed. Send the full message to the maintainer.</dd></div>
+    </dl>
+  </section>
+
+  <footer>
+    <p>Full guides: quick start, how-tos, troubleshooting and maintainers, in the <code>docs</code> folder of <a href="https://github.com/mosafin/rnz-fabric-apps/tree/main/docs">the rnz-fabric-apps repository</a> (needs access).</p>
+    <p>Ricoh New Zealand Limited. Brand source: Ricoh brand methodology v12 (RNZ Digital Design System).</p>
+  </footer>
+</div>
+
+<script>
+document.querySelectorAll('.copy').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var pre = document.getElementById(btn.getAttribute('data-copy'));
+    var text = pre.textContent;
+    function done(label) { btn.textContent = label; setTimeout(function () { btn.textContent = 'Copy'; }, 1800); }
+    function select() { var r = document.createRange(); r.selectNodeContents(pre); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); done('Selected'); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done('Copied'); }, select);
+    } else { select(); }
+  });
+});
+</script>
+
+</body></html>
