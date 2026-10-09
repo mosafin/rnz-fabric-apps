@@ -34,7 +34,7 @@ Open Copilot Chat, switch to **Agent** mode, and type:
 | `/rnz-agents` | Adds the builder, QA or reporter agents (yes or no to each) to the open app, which must have the RNZ skin or be made from the template. Only adds files, on a new branch. |
 | `/rnz-check` | Reports anything off brand. Changes nothing. |
 
-The tool updates itself from GitHub every time you use it, so everyone stays on the latest release.
+The tool updates itself from GitHub every time you use it, and refreshes the `/rnz-` commands in VS Code at the same time, so everyone stays on the latest release without reinstalling. If a command looks out of date, reload VS Code.
 
 Without Copilot, the same commands work in a terminal:
 

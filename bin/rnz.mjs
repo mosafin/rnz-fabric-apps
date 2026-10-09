@@ -73,9 +73,53 @@ function templateVersion() {
 /** Team copies live in ~/.rnz/rnz-fabric-apps; keep them current. Maintainer clones are left alone. */
 function selfUpdate() {
   const cache = resolve(homedir(), ".rnz");
-  if (!REPO.toLowerCase().startsWith(cache.toLowerCase()) || process.env.RNZ_NO_PULL) return;
-  const r = git(REPO, "pull", "--ff-only", "-q");
-  if (r.code !== 0) say(`Note: couldn't get the latest RNZ tool (${tail(r.out, 2)}). Carrying on with the copy you have.`);
+  if (REPO.toLowerCase().startsWith(cache.toLowerCase()) && !process.env.RNZ_NO_PULL) {
+    const r = git(REPO, "pull", "--ff-only", "-q");
+    if (r.code !== 0) say(`Note: couldn't get the latest RNZ tool (${tail(r.out, 2)}). Carrying on with the copy you have.`);
+  }
+  refreshPrompts();
+}
+
+/** VS Code user folders (and profiles) where the /rnz- commands go. */
+function promptTargets() {
+  if (process.env.RNZ_PROMPTS_DIR) return [join(process.env.RNZ_PROMPTS_DIR, "prompts")];
+  const appData = IS_WIN ? process.env.APPDATA : process.platform === "darwin" ? join(homedir(), "Library", "Application Support") : join(homedir(), ".config");
+  const targets = [];
+  for (const user of ["Code", "Code - Insiders"].map((e) => join(appData || "", e, "User")).filter((d) => existsSync(d))) {
+    targets.push(join(user, "prompts"));
+    const profiles = join(user, "profiles");
+    if (existsSync(profiles)) for (const p of readdirSync(profiles)) if (statSync(join(profiles, p)).isDirectory()) targets.push(join(profiles, p, "prompts"));
+  }
+  return targets;
+}
+
+const promptSource = () => join(REPO, "vscode", "prompts");
+const renderPrompt = (f) => read(join(promptSource(), f)).replaceAll("{{RNZ_HOME}}", posix(REPO));
+
+/**
+ * Keep the /rnz- commands in VS Code in step with this copy of the tool. Only touches folders where
+ * they were installed from this copy (so a maintainer's clone never takes over the team's commands),
+ * and adds any new command files. Never fails a command.
+ */
+function refreshPrompts() {
+  try {
+    const home = posix(REPO);
+    let changed = 0;
+    for (const t of promptTargets()) {
+      if (!existsSync(t)) continue;
+      const ours = readdirSync(t).filter((f) => /^rnz-.*\.prompt\.md$/.test(f) && read(join(t, f)).includes(`"${home}/bin/rnz.mjs"`));
+      if (!ours.length) continue;
+      for (const f of readdirSync(promptSource())) {
+        const want = renderPrompt(f);
+        const p = join(t, f);
+        if (existsSync(p) && read(p) === want) continue;
+        if (existsSync(p) && !ours.includes(f)) continue; // someone else's file with the same name
+        writeFileSync(p, want);
+        changed++;
+      }
+    }
+    if (changed) say(`Updated the /rnz- commands in VS Code (${changed} file${changed === 1 ? "" : "s"}). If one looks out of date, reload VS Code.`);
+  } catch { /* never block the real command */ }
 }
 
 // ---------------------------------------------------------------- app discovery
@@ -525,21 +569,12 @@ function undo(g, branch, changes) {
 // ---------------------------------------------------------------- commands
 
 function cmdInstall() {
-  const appData = IS_WIN ? process.env.APPDATA : process.platform === "darwin" ? join(homedir(), "Library", "Application Support") : join(homedir(), ".config");
-  const editors = ["Code", "Code - Insiders"].map((e) => join(appData || "", e, "User")).filter((d) => existsSync(d));
-  if (process.env.RNZ_PROMPTS_DIR) editors.splice(0, editors.length, process.env.RNZ_PROMPTS_DIR);
-  if (!editors.length) fail("VS Code's user settings folder wasn't found. Open VS Code once, then run this again.");
-  const targets = [];
-  for (const user of editors) {
-    targets.push(join(user, "prompts"));
-    const profiles = join(user, "profiles");
-    if (existsSync(profiles)) for (const p of readdirSync(profiles)) if (statSync(join(profiles, p)).isDirectory()) targets.push(join(profiles, p, "prompts"));
-  }
-  const src = join(REPO, "vscode", "prompts");
-  const home = posix(REPO);
+  const targets = promptTargets();
+  if (!targets.length) fail("VS Code's user settings folder wasn't found. Open VS Code once, then run this again.");
+  const src = promptSource();
   for (const t of targets) {
     mkdirSync(t, { recursive: true });
-    for (const f of readdirSync(src)) writeFileSync(join(t, f), read(join(src, f)).replaceAll("{{RNZ_HOME}}", home));
+    for (const f of readdirSync(src)) writeFileSync(join(t, f), renderPrompt(f));
   }
   say(`RNZ commands added to Copilot Chat (${readdirSync(src).length} prompts) in:`);
   for (const t of targets) say(`  ${t}`);
@@ -550,10 +585,12 @@ In VS Code, open Copilot Chat in Agent mode and type:
   /rnz-update   bring the open app up to the latest RNZ release
   /rnz-check    check the open app against the brand (changes nothing)
   /rnz-agents   add the builder, QA or reporter agents to the open app
-If they don't show, reload VS Code (Developer: Reload Window).`);
+If they don't show, reload VS Code (Developer: Reload Window).
+From now on the tool keeps itself and these commands up to date.`);
 }
 
 function cmdNew(pos, flags) {
+  selfUpdate();
   const name = pos[0];
   if (!name || !/^[a-z0-9][a-z0-9-]*$/.test(name)) fail("Give the app a name in lowercase letters, numbers and hyphens, for example: node bin/rnz.mjs new pipeline-by-pillar");
   const parent = resolve(flags.parent || (IS_WIN ? "C:\\dev" : join(homedir(), "dev")));
@@ -829,6 +866,7 @@ function cmdCheck(pos) {
 }
 
 function cmdAgents(pos, flags) {
+  selfUpdate();
   const app = resolveApp(pos[0]);
   const kind = isTemplateApp(app) ? "template" : isSkinnedApp(app) ? "skin" : null;
   if (!kind) fail(`${app} doesn't have the RNZ brand layer yet. The agents follow the RNZ rules, so apply the RNZ skin first (/rnz-skin or the skin command), merge it, then add the agents.`);

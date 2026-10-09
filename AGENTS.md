@@ -4,7 +4,7 @@ This repository is the **source of the RNZ Fabric app templates**. It is not an 
 
 ## If the person wants to build or change an app
 
-Don't do it here. Every app lives in its own folder. Use the RNZ tool (or the `/rnz-new`, `/rnz-skin`, `/rnz-update` and `/rnz-check` Copilot commands it installs):
+Don't do it here. Every app lives in its own folder. Use the RNZ tool (or the `/rnz-new`, `/rnz-skin`, `/rnz-update`, `/rnz-agents` and `/rnz-check` Copilot commands it installs):
 
 ```powershell
 node bin/rnz.mjs new my-app                       # new branded Fabric app in C:\dev\my-app
@@ -28,5 +28,5 @@ Only then change files in this repo, and follow these rules:
 8. NZ English, no em or en dashes in anything people read.
 9. **The skin (`skin/`, `bin/rnz.mjs`) changes colours, fonts and font weights only.** It must never restructure an app, edit the app's own CSS or components, rename or delete the app's files, push, merge or deploy. Every edit to an existing app file is one line or one marked `RNZ-SKIN` block. Keep the safety wrapper (clean tree, new branch, build and tests before and after, full undo on regression) and extend `scripts/test-skin.mjs` for anything new.
 10. **Self-contained.** Nothing in this repo may need the `rnz-ai-library` repo at run time. Copy what apps need into the template or `skin/`.
-11. The `/rnz-` Copilot commands live in `vscode/prompts/`. `{{RNZ_HOME}}` is replaced with the tool's folder when people run `install`; keep it in every command.
-12. **Optional agents** (`agents/rnz-builder.md`, `rnz-qa.md`, `rnz-reporter.md`, and `agents/skin/` for skinned apps) are written to the repository's `.claude/agents/` by `new --agents` and `agents --agents`. The reporter must keep using an app's existing change log and its rules. Keep them in the Claude sub-agent format (Copilot in VS Code reads it too). QA stays review-only (no Edit or Write tools). The reporter only changes the version and `CHANGELOG.md`. Extend `scripts/test-agents.mjs` for anything new.
+11. The `/rnz-` Copilot commands live in `vscode/prompts/`. `{{RNZ_HOME}}` is replaced with the tool's folder when people run `install`; keep it in every command. Every tool command also refreshes these files in VS Code (only where they were installed from that copy of the tool), so changes reach people without reinstalling.
+12. **Optional agents** (`agents/rnz-builder.md`, `rnz-qa.md`, `rnz-reporter.md`, and `agents/skin/` for skinned apps) are written to the repository's `.claude/agents/` by `new --agents` and `agents --agents`. The reporter must keep using an app's existing change log and its rules. Keep them in the Claude sub-agent format (Copilot in VS Code reads it too). QA stays review-only (no Edit or Write tools). The reporter only changes the version and the change log. Extend `scripts/test-agents.mjs` for anything new.

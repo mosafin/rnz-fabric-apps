@@ -99,5 +99,32 @@ function fixture(root, { buildBreaksWithSkin = false } = {}) {
   rmSync(root, { recursive: true, force: true });
 }
 
+// 6: the /rnz- commands in VS Code stay in step with the tool
+{
+  const root = mkdtempSync(join(tmpdir(), "rnz-prompts-"));
+  const app = fixture(root);
+  const user = join(root, "vscode-user");
+  const other = join(root, "vscode-other");
+  const withDir = (dir) => ({ ...env, RNZ_PROMPTS_DIR: dir });
+  const run = (args, dir) => spawnSync(process.execPath, [RNZ, ...args], { cwd: root, env: withDir(dir), encoding: "utf8" });
+  const prompts = join(user, "prompts");
+  const sources = sh("ls", [join(REPO, "vscode", "prompts")], root).stdout.trim().split("\n");
+  run(["install"], user);
+  ok(sources.every((f) => existsSync(join(prompts, f))), `install writes all ${sources.length} commands`);
+  const fresh = readFileSync(join(prompts, "rnz-new.prompt.md"), "utf8");
+  writeFileSync(join(prompts, "rnz-new.prompt.md"), fresh.replace("Add a builder agent?", "OLD QUESTION"));
+  rmSync(join(prompts, "rnz-agents.prompt.md"));
+  const r = run(["skin", app], user);
+  ok(readFileSync(join(prompts, "rnz-new.prompt.md"), "utf8") === fresh && existsSync(join(prompts, "rnz-agents.prompt.md")) && /Updated the \/rnz- commands/.test(r.stdout), "an out-of-date command is refreshed and a new one added when the tool runs");
+  const quiet = run(["skin", app], user);
+  ok(!/Updated the \/rnz- commands/.test(quiet.stdout), "nothing to refresh when they're current");
+  mkdirSync(join(other, "prompts"), { recursive: true });
+  const foreign = 'node "/somewhere/else/rnz-fabric-apps/bin/rnz.mjs" new\n';
+  writeFileSync(join(other, "prompts", "rnz-new.prompt.md"), foreign);
+  run(["skin", app], other);
+  ok(readFileSync(join(other, "prompts", "rnz-new.prompt.md"), "utf8") === foreign && !existsSync(join(other, "prompts", "rnz-skin.prompt.md")), "commands installed from another copy of the tool are left alone");
+  rmSync(root, { recursive: true, force: true });
+}
+
 console.log(failures ? `\n${failures} check(s) failed.` : "\nAll RNZ tool checks passed.");
 process.exit(failures ? 1 : 0);
