@@ -9,6 +9,8 @@ After either one, Copilot (and Claude Code or Cursor) automatically gets the RNZ
 
 Everything the tool needs is in this repo. It doesn't need the `rnz-ai-library` repo.
 
+**Documentation:** short guides, a cheat sheet and troubleshooting are in [docs/](docs/README.md). New here? Start with the [quick start](docs/quick-start.md).
+
 ## Set up (once per person, about two minutes)
 
 You need Git, Node.js 20 or later, VS Code with GitHub Copilot, and access to this repo on GitHub (ask the maintainer).
@@ -97,6 +99,7 @@ In a terminal: `node "$HOME/.rnz/rnz-fabric-apps/bin/rnz.mjs" new my-app --agent
 | `agents/` | The optional builder, QA and reporter agents that `new` and `agents` add to an app (`agents/skin/` holds the versions for skinned apps) |
 | `vscode/prompts/` | The `/rnz-` Copilot commands (`install` copies them into VS Code) |
 | `templates/rnz-data-app` | The RNZ Data App template for new Fabric apps |
+| `docs/` | Guides for everyone: quick start, cheat sheet, how-tos, troubleshooting, maintainers |
 | `scripts/` | Maintainer scripts: `rnz-lock.mjs`, `test-skin.mjs`, `test-agents.mjs`, and the older PowerShell `new-app.ps1` and `update-app.ps1` (still work) |
 
 ## Change the brand layer (maintainers)
