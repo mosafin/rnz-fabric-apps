@@ -56,7 +56,7 @@ The header always shows the RICOH lock-up (logo with the "imagine. change." tagl
 | `npm run build` | Generates the connection config, type-checks and builds |
 | `npm run build:fabric` | The build `npx rayfin up` runs. Runs `rnz:check` first, so brand errors stop a deploy |
 | `npm run rnz:check` | RNZ brand gate. Add `-- --json` for agent-readable output |
-| `npm run rnz:sync -- --from PATH-TO\rnz-fabric-apps [--apply]` | Pulls the latest RNZ brand layer into this app. Preview by default. Or use `scripts/update-app.ps1` in the template repo |
+| `npm run rnz:sync -- --from PATH-TO\rnz-fabric-apps [--apply]` | Pulls the latest RNZ brand layer into this app. Preview by default. Easier: type `/rnz-update` in Copilot Chat |
 | `npm test` | Unit tests (Vitest) |
 | `npm run lint` | ESLint |
 | `npm run validate:visual -- <factory.ts>` | Microsoft's visual validation for query factories |
